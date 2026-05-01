@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu - PCT News</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/assets/img/favicon.png">
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container-main {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-home {
+            text-decoration: none;
+            color: #0056a3;
+            font-weight: 500;
+        }
+
+        .back-home:hover {
+            color: #e31e24;
+        }
+
+        /* FILTER */
+        .filter-item {
+            margin-right: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+        }
+
+        .filter-item.active {
+            color: #0056a3;
+            font-weight: 700;
+        }
+
+        .filter-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #0056a3;
+        }
+
+        /* DOC */
+        .doc-item {
+            transition: 0.25s;
+        }
+
+        .doc-item:hover {
+            transform: translateY(-3px);
+            background: #f8f9fa;
+        }
+
+        .doc-title {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-main">
+
+        <!-- BACK -->
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left me-1"></i> Trang chủ
+        </a>
+
+        <!-- TITLE -->
+        <h2 id="page-title" class="mt-2 mb-3"></h2>
+
+        <!-- FILTER -->
+        <div class="mb-3">
+            <span class="filter-item" data-cat="toan">Toán - Tin</span>
+            <span class="filter-item" data-cat="van">Ngữ Văn</span>
+            <span class="filter-item" data-cat="anh">Tiếng Anh</span>
+            <span class="filter-item" data-cat="ly">Vật Lý</span>
+            <span class="filter-item" data-cat="hoa">Hóa Học</span>
+            <span class="filter-item" data-cat="sinh">Sinh học</span>
+            <span class="filter-item" data-cat="sudia">Sử - Địa</span>
+        </div>
+
+        <!-- SORT -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted small">Danh sách tài liệu PDF</span>
+
+            <select id="sort-select" class="form-select" style="max-width:200px">
+                <option value="new">Mới nhất</option>
+                <option value="old">Cũ nhất</option>
+                <option value="name">Tên A-Z</option>
+            </select>
+        </div>
+
+        <!-- LIST -->
+        <div id="docs-container"></div>
+
+    </div>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
+            authDomain: "pct-news-aec76.firebaseapp.com",
+            projectId: "pct-news-aec76"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const subjectMap = {
+            toan: "Toán - Tin",
+            van: "Ngữ Văn",
+            anh: "Tiếng Anh",
+            ly: "Vật Lý",
+            hoa: "Hóa Học",
+            sinh: "Sinh học",
+            sudia: "Sử - Địa"
+        };
+
+        let currentCat = "toan";
+
+        // ===== LOAD DATA =====
+        function loadDocs() {
+            const container = document.getElementById("docs-container");
+            const sort = document.getElementById("sort-select").value;
+
+            container.innerHTML = `<p class="text-muted">Đang tải...</p>`;
+
+            db.collection("tests")
+                .where("class", "==", currentCat)
+                .get()
+                .then(snapshot => {
+
+                    if (snapshot.empty) {
+                        container.innerHTML = `<p class="text-muted">Chưa có tài liệu.</p>`;
+                        return;
+                    }
+
+                    let docs = [];
+
+                    snapshot.forEach(doc => {
+                        docs.push(doc.data());
+                    });
+
+                    // SORT
+                    docs.sort((a, b) => {
+                        const t1 = a.createdAt?.seconds || 0;
+                        const t2 = b.createdAt?.seconds || 0;
+
+                        if (sort === "new") return t2 - t1;
+                        if (sort === "old") return t1 - t2;
+                        return (a.role || "").localeCompare(b.role || "");
+                    });
+
+                    container.innerHTML = "";
+
+                    docs.forEach(data => {
+                        const date = data.createdAt
+                            ? new Date(data.createdAt.seconds * 1000).toLocaleDateString('vi-VN')
+                            : "Mới";
+
+                        container.innerHTML += `
+                        <div class="doc-item d-flex justify-content-between align-items-center p-3 border rounded mb-3">
+                            <div>
+                                <div class="doc-title">${data.role}</div>
+                                <div class="small text-muted">
+                                    ${data.author || "Ẩn danh"} • ${date}
+                                </div>
+                                <span class="badge bg-primary mt-1">${subjectMap[currentCat]}</span>
+                            </div>
+
+                            <a href="${data.url}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-file-pdf me-1"></i> Xem
+                            </a>
+                        </div>
+                        `;
+                    });
+
+                })
+                .catch(err => {
+                    console.error(err);
+                    container.innerHTML = `<p class="text-danger">Lỗi tải dữ liệu</p>`;
+                });
+        }
+
+        // ===== FILTER CLICK =====
+        document.querySelectorAll(".filter-item").forEach(item => {
+            item.addEventListener("click", () => {
+
+                document.querySelectorAll(".filter-item")
+                    .forEach(i => i.classList.remove("active"));
+
+                item.classList.add("active");
+
+                currentCat = item.dataset.cat;
+
+                document.getElementById("page-title").innerText =
+                    "Tài liệu " + subjectMap[currentCat];
+
+                loadDocs();
+            });
+        });
+
+        // ===== INIT =====
+        window.onload = () => {
+
+            // set mặc định
+            document.querySelector(`[data-cat="${currentCat}"]`)
+                .classList.add("active");
+
+            document.getElementById("page-title").innerText =
+                "Tài liệu " + subjectMap[currentCat];
+
+            loadDocs();
+
+            document.getElementById("sort-select")
+                .addEventListener("change", loadDocs);
+        };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bản Tin Phan Châu Trinh - Tin tức & Sự kiện</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/assets/img/favicon.png">
+    <style>
+        :root {
+            --news-red: #e31e24;
+            --news-blue: #0056a3;
+            --text-main: #1a1a1a;
+            --text-sub: #555;
+            --bg-gray: #f4f4f4;
+            --border: #ececec;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        #clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        /* --- TOP BAR --- */
+        .top-bar {
+            background: #f8f8f8;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 0;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 25px 0;
+            border-bottom: 4px solid var(--news-blue);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .newspaper-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--news-blue);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .newspaper-tagline {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--news-red);
+            letter-spacing: 3px;
+            text-align: center;
+            margin-top: -5px;
+        }
+
+        /* --- NAV --- */
+        .navbar-main {
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link {
+            color: #222 !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 12px 15px !important;
+        }
+
+        .nav-link:hover {
+            color: var(--news-red) !important;
+        }
+
+        .nav-link.active {
+            color: var(--news-blue) !important;
+            border-bottom: 3px solid var(--news-blue);
+        }
+
+        /* --- TRENDING --- */
+        .trending-box {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
+
+        .trending-box {
+            display: flex;
+            align-items: center;
+            /* căn giữa theo chiều dọc */
+            margin-right: 20px;
+            /* tạo khoảng cách đẹp */
+            white-space: nowrap;
+            /* tránh xuống dòng */
+            color: var(--news-red);
+            font-weight: 500;
+        }
+
+        /* --- FEATURED SECTION --- */
+        .main-story {
+            margin-bottom: 40px;
+        }
+
+        .main-story-img-wrap {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .main-story-img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .main-story-img-wrap:hover .main-story-img {
+            transform: scale(1.03);
+        }
+
+        .story-category {
+            background: var(--news-red);
+            color: white;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #000;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .main-title:hover {
+            color: var(--news-blue);
+        }
+
+        .main-excerpt {
+            color: #444;
+            font-size: 1.1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Dropdown Styling */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px 0;
+        }
+
+        .dropdown-item {
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 20px;
+            transition: 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: var(--news-red);
+            padding-left: 25px;
+        }
+
+        .dropdown:hover>.dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        /* --- SUB NEWS --- */
+        .sub-news-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px dotted var(--border);
+        }
+
+        .sub-news-img {
+            width: 180px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .sub-news-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #222;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+
+        .sub-news-title:hover {
+            color: var(--news-red);
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar-heading {
+            border-top: 3px solid #000;
+            padding-top: 10px;
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .most-read-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .rank {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ddd;
+            line-height: 1;
+        }
+
+        .rank-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* --- MULTIMEDIA BLOCK --- */
+        .multimedia-section {
+            background: #111;
+            padding: 60px 0;
+            color: #fff;
+            margin-top: 50px;
+        }
+
+        /* Video iframe */
+        .multimedia-section iframe {
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        /* Tiêu đề video */
+        .multimedia-section h5,
+        .multimedia-section h6 {
+            color: #fff;
+        }
+
+        /* VIDEO LITE */
+        .video-lite {
+            position: relative;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+
+        .video-lite img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* nút play */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: rgb(255, 255, 255);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            padding: 15px 22px;
+        }
+
+        /* hover đẹp */
+        .video-lite:hover {
+            transform: scale(1.02);
+            transition: 0.3s;
+        }
+
+        /* Hover nhẹ cho đẹp */
+        .multimedia-section iframe:hover {
+            transform: scale(1.02);
+            transition: 0.3s;
+        }
+
+        footer {
+            background: #fff;
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 991px) {
+            .sub-news-img {
+                width: 120px;
+                height: 80px;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div><i class="fas fa-calendar-alt me-1"></i><span id="current-date"></span></div>
+            <div>
+                <a href="phan_chau_trinh_intranet.html" class="text-dark text-decoration-none small fw-bold">
+                    <i class="fas fa-user-shield me-1"></i> Cổng thông tin nội bộ
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container text-center">
+            <a href="index.html" class="logo-area text-decoration-none">
+                <h1 class="newspaper-name">PHAN CHÂU TRINH NEWS</h1>
+            </a>
+            <div class="newspaper-tagline">TIN TỨC - SỰ KIỆN - KẾT NỐI NỘI BỘ</div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg navbar-main">
+        <div class="container">
+            <button class="navbar-toggler w-100 border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#newsNav">
+                <span class="navbar-toggler-icon"></span> DANH MỤC TIN
+            </button>
+
+            <div class="collapse navbar-collapse" id="newsNav">
+                <ul class="navbar-nav mx-auto">
+
+                    <!-- Thời sự -->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html?cat=thoisu">Thời sự học đường</a>
+                    </li>
+
+                    <!-- Gương mặt (Đã thêm class active vào đây) -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="gmsd.html" role="button">
+                            Gương mặt PCT
+                        </a>
+
+                        <ul class="dropdown-menu shadow">
+                            <li><a class="dropdown-item py-2" href="gmsd.html?cat=hocsinh">
+                                    <i class="fas fa-star me-2 text-warning"></i> Học sinh tiêu biểu
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item py-2" href="gmsd.html?cat=giaovien">
+                                    <i class="fas fa-chalkboard-teacher me-2 text-primary"></i> Thầy cô tâm huyết
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item py-2" href="gmsd.html?cat=cuuhs">
+                                    <i class="fas fa-user-graduate me-2 text-success"></i> Cựu học sinh
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item py-2" href="gmsd.html?cat=clb">
+                                    <i class="fas fa-users me-2 text-info"></i> CLB & Đội nhóm
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Chuyên môn -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-graduation-cap"></i> Chuyên môn
+                        </a>
+
+                        <ul class="dropdown-menu shadow">
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=toan">
+                                    <i class="fa-solid fa-calculator text-primary"></i> Toán - Tin
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=van">
+                                    <i class="fa-solid fa-pen-nib text-danger"></i> Ngữ Văn
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=anh">
+                                    <i class="fa-solid fa-language text-info"></i> Tiếng Anh
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=ly">
+                                    <i class="fa-solid fa-atom text-warning"></i> Vật Lý
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=hoa">
+                                    <i class="fa-solid fa-flask-vial text-success"></i> Hóa Học
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=sinh">
+                                    <i class="fa-solid fa-dna text-success"></i> Sinh học
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="tailieu.html?cat=sudia">
+                                    <i class="fa-solid fa-earth-asia text-secondary"></i> Sử - Địa
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item fw-bold" href="https://thuvienhoclieu.com/">
+                                    <i class="fa-solid fa-box-archive"></i> Kho tài liệu
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item fw-bold" href="https://thuvienhoclieu.com/">
+                                    <i class="fa-solid fa-file-lines"></i> Ngân hàng đề
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <!-- Khác -->
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showThongBao()">Góc kỹ năng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showThongBao()">Sáng kiến số</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showThongBao()">Thông báo</a></li>
+
+                </ul>
+
+                <form class="d-flex ms-lg-3">
+                    <button class="btn btn-link text-dark" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- TRENDING BAR -->
+        <div class="trending-box d-flex align-items-center overflow-hidden">
+            <span class="trending-label">TIN NÓNG:</span>
+            <marquee behavior="scroll" direction="left" class="small fw-bold text-secondary">
+                Chào mừng ngày giải phóng miền Nam 30/4... Chúc mừng học sinh PCT đạt giải Nhất kỳ thi Tin học trẻ...
+                Lịch thi HKII bắt đầu từ ngày 15/05...
+            </marquee>
+        </div>
+
+        <div class="row">
+            <!-- MAIN COLUMN (DỮ LIỆU TỪ FIREBASE ĐỔ VÀO ĐÂY) -->
+            <div class="col-lg-8 border-end pe-lg-4">
+
+                <!-- VÙNG TIN NỔI BẬT (FEATURED) -->
+                <div id="featured-news-container">
+                    <div class="text-center p-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 text-muted">Đang tải tin tức từ Firebase...</p>
+                    </div>
+                </div>
+
+                <!-- VÙNG DANH SÁCH TIN PHỤ (SUB LIST) -->
+                <h4 class="sidebar-heading mt-5">Tin tức mới nhất</h4>
+                <div id="sub-news-list">
+                    <!-- Firebase sẽ render các tin sub-news-item vào đây -->
+                </div>
+            </div>
+
+            <!-- SIDEBAR COLUMN -->
+            <div class="col-lg-4 ps-lg-4">
+                <div class="sidebar-section">
+                    <h5 class="sidebar-heading">Đọc nhiều nhất</h5>
+                    <div class="most-read-item">
+                        <span class="rank">1</span>
+                        <a href="#" class="rank-title">Thông báo lịch nghỉ lễ 30/4 và 1/5 cho học sinh toàn trường</a>
+                    </div>
+                    <div class="most-read-item">
+                        <span class="rank">2</span>
+                        <a href="#" class="rank-title">Danh sách học sinh đạt thành tích xuất sắc phong trào "Dạy tốt -
+                            Học tốt"</a>
+                    </div>
+                    <div class="most-read-item">
+                        <span class="rank">3</span>
+                        <a href="#" class="rank-title">Cẩm nang phòng chống dịch bệnh mùa hè trong học đường</a>
+                    </div>
+                </div>
+
+                <!-- BANNER PORTAL -->
+                <div class="mt-5 p-4 bg-light border-top border-4 border-primary rounded-3 text-center shadow-sm">
+                    <h6 class="fw-bold text-primary">CỔNG NỘI BỘ</h6>
+                    <p class="small text-muted">Hệ thống quản lý học liệu và hồ sơ chuyên môn PCT.</p>
+                    <a href="phan_chau_trinh_intranet.html" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm">ĐĂNG
+                        NHẬP NGAY</a>
+                </div>
+
+                <!-- THƯ VIỆN ẢNH -->
+                <div class="mt-5">
+                    <h5 class="sidebar-heading">Thư viện ảnh</h5>
+                    <div class="row g-2">
+                        <div class="col-6"><img src="https://picsum.photos/400/300" class="img-fluid rounded shadow-sm"
+                                alt="Gallery"></div>
+                        <div class="col-6"><img src="https://picsum.photos/id/1/400/300"
+                                class="img-fluid rounded shadow-sm" alt="Gallery"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MULTIMEDIA -->
+    <section class="multimedia-section">
+        <div class="container">
+            <h4 class="mb-4 fw-bold" style="border-left: 5px solid var(--news-red); padding-left: 15px;">
+                MULTIMEDIA
+            </h4>
+
+            <div class="row g-3">
+
+                <!-- Video lớn -->
+                <div class="col-md-6">
+                    <div class="video-lite" data-id="L0-dg9Qjg_w">
+                        <img src="https://img.youtube.com/vi/L0-dg9Qjg_w/maxresdefault.jpg">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <h5 class="mt-2 text-white">
+                        Toàn cảnh lễ chào cờ đầu tuần của trường PCT
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="video-lite" data-id="SapA5egfLMk">
+                        <img src="https://img.youtube.com/vi/SapA5egfLMk/hqdefault.jpg">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <h5 class="mt-2 text-white">
+                        Radio: Lời nhắn gửi từ Thầy Cô
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container border-top pt-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="fw-bold text-dark">PHAN CHÂU TRINH NEWS</h5>
+                    <p class="mb-0 small">Cơ quan ngôn luận nội bộ - THPT Phan Châu Trinh Đà Nẵng</p>
+                    <p class="small text-muted">Số 154 Lê Lợi, Quận Hải Châu, Đà Nẵng</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="mb-2">
+                        <a href="https://www.facebook.com/doanpct/?locale=vi_VN" class="text-dark me-3"><i
+                                class="fab fa-facebook fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@doantruongpctdanang1952/videos" class="text-dark me-3"><i
+                                class="fab fa-youtube fa-lg"></i></a>
+                        <a href="tel:12363834567" class="text-dark"><i class="fas fa-phone fa-lg"></i></a>
+                    </div>
+                    <p class="small mb-0">&copy; 2026 Bản quyền thuộc về Ban Biên Tập Bản Tin PCT.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST THÔNG BÁO -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+        <div id="thongBaoToast" class="toast align-items-center text-bg-primary border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    🎓 Nhà trường hiện đang tập trung phát triển hệ thống học liệu số và nâng cao chất lượng ôn thi
+                    , mong các em cố gắng học tập tốt và các giáo viên hỗ trợ tốt.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showThongBao() {
+            const toastEl = document.getElementById('thongBaoToast');
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+    </script>
+    <!-- FIREBASE SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
+            authDomain: "pct-news-aec76.firebaseapp.com",
+            databaseURL: "https://pct-news-aec76-default-rtdb.firebaseio.com",
+            projectId: "pct-news-aec76",
+            storageBucket: "pct-news-aec76.firebasestorage.app",
+            messagingSenderId: "285083279404",
+            appId: "1:285083279404:web:068fe440e5855aeab3f189",
+            measurementId: "G-XM8FR8RKKM"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function loadNews() {
+            const featuredContainer = document.getElementById('featured-news-container');
+            const subNewsList = document.getElementById('sub-news-list');
+            function getCategoryFromURL() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get("cat");
+            }
+            db.collection("news")
+                .orderBy("timestamp", "desc")
+                .limit(10)
+                .get()
+                .then((querySnapshot) => {
+
+                    featuredContainer.innerHTML = "";
+                    subNewsList.innerHTML = "";
+
+                    if (querySnapshot.empty) {
+                        featuredContainer.innerHTML = "<p>Không có tin tức</p>";
+                        return;
+                    }
+
+                    querySnapshot.forEach((doc, index) => {
+                        const data = doc.data();
+                        const date = data.timestamp
+                            ? data.timestamp.toDate().toLocaleDateString('vi-VN')
+                            : "Mới";
+
+                        // 🔥 TIN NỔI BẬT
+                        if (index === 0) {
+                            featuredContainer.innerHTML = `
+                        <div class="main-story">
+                            <div class="main-story-img-wrap">
+                                <img src="${data.imageUrl || 'https://via.placeholder.com/800x480'}" class="main-story-img">
+                                <span class="story-category">${data.category || 'TIN TỨC'}</span>
+                            </div>
+
+                            <a href="article.html?id=${doc.id}" class="main-title text-decoration-none">
+                                ${data.title || 'Không có tiêu đề'}
+                            </a>
+
+                            <p class="main-excerpt">${data.excerpt || ''}</p>
+
+                            <div class="small text-muted fw-bold">
+                                ${date}
+                            </div>
+                        </div>
+                    `;
+                        }
+                        // 🔥 TIN PHỤ
+                        else {
+                            subNewsList.innerHTML += `
+                        <div class="sub-news-item">
+                            <img src="${data.imageUrl || 'https://via.placeholder.com/180x110'}" class="sub-news-img">
+
+                            <div>
+                                <a href="article.html?id=${doc.id}" class="sub-news-title text-decoration-none">
+                                    ${data.title || 'Không có tiêu đề'}
+                                </a>
+
+                                <p class="small text-muted mt-2 mb-0">
+                                    ${data.excerpt ? data.excerpt.substring(0, 100) + '...' : ''}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error("Lỗi Firebase:", error);
+                    featuredContainer.innerHTML = "<p class='text-danger'>Lỗi tải dữ liệu</p>";
+                });
+        }
+
+        // 🔥 VIDEO LITE (phải đặt sau DOM load)
+        function initVideoLite() {
+            document.querySelectorAll('.video-lite').forEach(el => {
+                el.addEventListener('click', () => {
+                    const id = el.dataset.id;
+                    el.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${id}?autoplay=1&modestbranding=1&rel=0"
+                    frameborder="0"
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen>
+                </iframe>
+            `;
+                });
+            });
+        }
+
+        // 🔥 CHẠY
+        window.onload = () => {
+            loadNews();
+            initVideoLite();
+        };
+
+        function updateTime() {
+            const now = new Date();
+
+            const thu = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+            const dayName = thu[now.getDay()];
+
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const second = String(now.getSeconds()).padStart(2, '0');
+
+            const timeString = `${dayName}, ${day}/${month}/${year} - ${hour}:${minute}:${second}`;
+
+            document.getElementById('current-date').innerText = timeString;
+        }
+
+        // chạy
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

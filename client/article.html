@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Đang tải bài viết... | Phan Châu Trinh News</title>
+    
+    <!-- Google Fonts & Bootstrap -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --news-red: #e31e24;
+            --news-blue: #0056a3;
+            --text-main: #1a1a1a;
+            --border: #ececec;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.8;
+            color: var(--text-main);
+            background-color: #fff;
+        }
+
+        /* --- NAVIGATION --- */
+        .navbar-minimal {
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* --- ARTICLE HEADER --- */
+        .article-header {
+            padding-top: 40px;
+            padding-bottom: 30px;
+        }
+        .category-badge {
+            background: var(--news-red);
+            color: white;
+            padding: 4px 12px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .article-meta {
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        /* --- CONTENT --- */
+        .main-image {
+            width: 100%;
+            max-height: 550px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .article-excerpt {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--news-blue);
+            padding-left: 20px;
+        }
+        .article-body {
+            font-size: 1.15rem;
+            text-align: justify;
+        }
+        .article-body p { margin-bottom: 20px; }
+
+        /* --- SIDEBAR --- */
+        .sidebar-box {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            position: sticky;
+            top: 100px;
+        }
+
+        footer {
+            background: #f8f8f8;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 991px) {
+            .article-title { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar-minimal">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="text-decoration-none text-dark fw-bold">
+                <i class="fas fa-arrow-left me-2"></i> QUAY LẠI TRANG CHỦ
+            </a>
+            <div class="fw-bold text-primary">PHAN CHÂU TRINH NEWS</div>
+        </div>
+    </nav>
+
+    <div class="container article-header">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div id="article-loading" class="text-center p-5">
+                    <div class="spinner-border text-danger" role="status"></div>
+                    <p class="mt-3">Đang tải nội dung...</p>
+                </div>
+
+                <div id="article-content-area" style="display: none;">
+                    <!-- Thông tin bài viết sẽ đổ vào đây -->
+                    <span class="category-badge" id="art-category">Danh mục</span>
+                    <h1 class="article-title" id="art-title">Tiêu đề bài viết</h1>
+                    
+                    <div class="article-meta d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="far fa-user me-1"></i> Tác giả: <b id="art-author">Admin</b>
+                        </div>
+                        <div>
+                            <i class="far fa-calendar-alt me-1"></i> Ngày đăng: <span id="art-date">00/00/0000</span>
+                        </div>
+                    </div>
+
+                    <img src="" id="art-image" class="main-image shadow-sm" alt="Feature Image">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="article-excerpt" id="art-excerpt">
+                                Đây là nội dung tóm tắt của bài viết...
+                            </div>
+                            <div class="article-body" id="art-body">
+                                <!-- Nội dung chi tiết -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0 small text-muted">&copy; 2026 Bản quyền thuộc về Ban Biên Tập Bản Tin PCT.</p>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Cấu hình Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
+            authDomain: "pct-news-aec76.firebaseapp.com",
+            projectId: "pct-news-aec76",
+            storageBucket: "pct-news-aec76.firebasestorage.app",
+            messagingSenderId: "285083279404",
+            appId: "1:285083279404:web:068fe440e5855aeab3f189"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 1. Lấy ID từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('id');
+
+        if (articleId) {
+            // 2. Truy vấn Firestore lấy bài viết theo ID
+            db.collection("news").doc(articleId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const dateStr = data.timestamp ? data.timestamp.toDate().toLocaleDateString('vi-VN') : "Vừa cập nhật";
+
+                    // Đổ dữ liệu vào giao diện
+                    document.getElementById('page-title').innerText = data.title + " | Phan Châu Trinh News";
+                    document.getElementById('art-title').innerText = data.title;
+                    document.getElementById('art-category').innerText = data.category || "TIN TỨC";
+                    document.getElementById('art-author').innerText = data.author || "Ban Biên Tập";
+                    document.getElementById('art-date').innerText = dateStr;
+                    document.getElementById('art-image').src = data.imageUrl || 'https://via.placeholder.com/800x450';
+                    document.getElementById('art-excerpt').innerText = data.excerpt || "";
+                    
+                    // Nội dung chi tiết (Dùng innerHTML để hỗ trợ thẻ <p>, <b>, <br>...)
+                    document.getElementById('art-body').innerHTML = data.content || data.excerpt;
+
+                    // Hiện nội dung, ẩn loading
+                    document.getElementById('article-loading').style.display = 'none';
+                    document.getElementById('article-content-area').style.display = 'block';
+                } else {
+                    document.getElementById('article-loading').innerHTML = "<h3 class='text-danger'>Bài viết không tồn tại hoặc đã bị xóa.</h3><a href='index.html'>Quay về trang chủ</a>";
+                }
+            }).catch((error) => {
+                console.error("Lỗi:", error);
+                document.getElementById('article-loading').innerHTML = "<p class='text-danger'>Lỗi kết nối dữ liệu. Vui lòng thử lại sau.</p>";
+            });
+        } else {
+            // Nếu không có ID trên URL thì đẩy về trang chủ
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

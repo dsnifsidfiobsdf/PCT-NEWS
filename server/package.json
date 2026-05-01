@@ -1,0 +1,15 @@
+{
+  "name": "pct-news",
+  "version": "1.0.0",
+  "description": "the information website that introduct, product important information and schedules about school Phan Chau Trinh highschool",
+  "keywords": [
+    "1234"
+  ],
+  "license": "ISC",
+  "author": "Binhnguyen",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "Jesh"
+  }
+}
