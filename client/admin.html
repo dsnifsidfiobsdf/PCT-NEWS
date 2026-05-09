@@ -1,0 +1,1958 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCT News CMS</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://placehold.co/32x32/2563eb/white?text=P" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <!-- TinyMCE -->
+  <script src="https://cdn.tiny.cloud/1/dl6iokr89ri6qiq51lqyo0n4rz32afxs8uixwyueacqy5upe/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --sidebar: #0f172a;
+      --sidebar-hover: #1e293b;
+      --primary: #2563eb;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --info: #0ea5e9;
+      --bg: #f1f5f9;
+      --card: rgba(255, 255, 255, 0.9);
+      --border: #e2e8f0;
+      --muted: #64748b;
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #f8fafc);
+      display: flex;
+      min-height: 100vh;
+      color: #0f172a;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: linear-gradient(180deg, #0f172a, #1e293b);
+      color: white;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar-brand {
+      padding: 25px 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-brand i {
+      font-size: 32px;
+      color: #60a5fa;
+    }
+
+    .sidebar-brand h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .sidebar-brand small {
+      color: #94a3b8;
+    }
+
+    .admin-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .admin-box img {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .menu-title {
+      padding: 18px 20px 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      margin: 4px 12px;
+      color: #f8fafc;
+      text-decoration: none;
+      border-radius: 14px;
+      transition: 0.25s ease;
+    }
+
+    .menu-item:hover {
+      background: var(--sidebar-hover);
+      color: white;
+    }
+
+    .menu-item.active {
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 280px;
+      width: calc(100% - 280px);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .topbar small {
+      color: var(--muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      gap: 12px;
+    }
+
+    .top-btn {
+      width: 45px;
+      height: 45px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.75);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .top-btn:hover {
+      transform: scale(1.08);
+      background: #dbeafe;
+    }
+
+    .content {
+      padding: 30px;
+      flex-grow: 1;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 22px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+      transition: 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .stat-icon {
+      width: 65px;
+      height: 65px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    .thumb {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+
+    /* Tùy chỉnh Table */
+    .table th {
+      color: #64748b;
+      font-weight: 600;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .table td {
+      vertical-align: middle;
+    }
+
+    .custom-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+    }
+
+    .custom-modal-overlay.show {
+      display: flex;
+    }
+
+    .edit-modal {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+      animation: fadeInScale 0.25s ease;
+      position: relative;
+    }
+
+    .edit-modal .btn-close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .custom-modal {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+      animation: fadeInScale 0.25s ease;
+    }
+
+    .table .btn {
+      border-radius: 10px;
+      padding: 6px 10px;
+    }
+
+    .table .btn i {
+      font-size: 13px;
+    }
+
+    .table tr:hover {
+      background: rgba(37, 99, 235, 0.04);
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(#2563eb, #1d4ed8);
+      border-radius: 20px;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <i class="fas fa-newspaper"></i>
+      <div>
+        <h3>PCT NEWS CMS</h3>
+        <small>Hệ thống quản trị thông minh</small>
+      </div>
+    </div>
+
+    <div class="admin-box">
+      <img src="https://i.pravatar.cc/100" alt="Admin" />
+      <div>
+        <h6 class="mb-0">Quản trị viên</h6>
+        <small>Administrator</small>
+      </div>
+    </div>
+
+    <div class="menu-title">Dashboard</div>
+
+    <a href="javascript:void(0)" class="menu-item active" onclick="navigate('dashboard')">
+      <i class="fas fa-chart-line"></i> Dashboard
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('post-form')">
+      <i class="fas fa-newspaper"></i> Quản lý Bài viết
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('gmsd-form')">
+      <i class="fas fa-users"></i> Gương mặt PCT
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('document-form')">
+      <i class="fas fa-file-pdf"></i> Tài liệu PDF
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('schedule-form')">
+      <i class="fas fa-calendar"></i> Đặt lịch
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('internal-news')">
+      <i class="fas fa-bullhorn"></i> Tin nội bộ
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('comments-view')">
+      <i class="fas fa-comments"></i> Bình luận
+    </a>
+
+    <a href="index.html" target="_blank" class="menu-item mt-4">
+      <i class="fas fa-globe"></i> Xem trang chủ
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item text-danger" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Đăng xuất
+    </a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Hệ thống CMS</h2>
+        <small>Xin chào quản trị viên 👋</small>
+      </div>
+
+      <div class="topbar-right">
+        <button class="top-btn" onclick="loadAllData()">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- BREAKING NEWS -->
+    <div class="bg-danger text-white px-4 py-2">
+      <marquee id="breakingNews">
+        Chào mừng đến với hệ thống Quản trị viên PCT News CMS...
+      </marquee>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="content content-section active" id="dashboard">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-primary">
+              <i class="fas fa-newspaper"></i>
+            </div>
+            <div>
+              <h3 id="totalPosts">0</h3>
+              <p class="mb-0">Bài viết</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-success">
+              <i class="fas fa-users"></i>
+            </div>
+            <div>
+              <h3 id="totalPeople">0</h3>
+              <p class="mb-0">Gương mặt PCT</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-warning">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div>
+              <h3 id="totalDocs">0</h3>
+              <p class="mb-0">Tài liệu PDF</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-danger">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div>
+              <h3 id="totalComments">0</h3>
+              <p class="mb-0">Bình luận</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box mt-4">
+        <h4 class="fw-bold mb-3">Bài viết mới nhất</h4>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Danh mục</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="postTableDashboard">
+              <tr>
+                <td colspan="4" class="text-center text-muted">
+                  Đang tải...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="box mt-4 h-100">
+            <h4 class="fw-bold mb-3">Gương mặt PCT mới</h4>
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>Họ tên</th>
+                    <th>Vai trò</th>
+                  </tr>
+                </thead>
+                <tbody id="gmsdDashboardTable">
+                  <tr>
+                    <td colspan="2" class="text-center text-muted">
+                      Đang tải...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box mt-4 h-100">
+            <h4 class="fw-bold mb-3">Lịch sắp tới</h4>
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>Tiêu đề</th>
+                    <th>Ngày giờ</th>
+                  </tr>
+                </thead>
+                <tbody id="scheduleDashboardTable">
+                  <tr>
+                    <td colspan="2" class="text-center text-muted">
+                      Đang tải...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST FORM -->
+    <div id="post-form" class="content content-section">
+      <div class="box">
+        <div class="d-flex justify-content-between mb-4">
+          <h4 class="fw-bold" id="postFormTitle">Đăng bài viết mới</h4>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tiêu đề</label>
+            <input type="text" id="title" class="form-control" placeholder="Nhập tiêu đề bài viết..." />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Tác giả</label>
+            <input type="text" id="author" class="form-control" placeholder="Tên tác giả..." />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Danh mục</label>
+            <select id="category" class="form-select">
+              <option value="Học sinh tiêu biểu">Học sinh tiêu biểu</option>
+              <option value="Thầy cô tâm huyết">Thầy cô tâm huyết</option>
+              <option value="Cựu học sinh">Cựu học sinh</option>
+              <option value="CLB & Đội nhóm">CLB & Đội nhóm</option>
+              <option value="Sự kiện - Hoạt động">Sự kiện - Hoạt động</option>
+              <option value="Thời sự">Thời sự</option>
+              <option value="Khác">Khác</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Ảnh đại diện (Sẽ được tự động upload)</label>
+          <input type="file" id="imageFile" class="form-control" accept="image/*" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nội dung bài viết</label>
+          <textarea id="editor" class="tinymce-editor"></textarea>
+        </div>
+
+        <button class="btn btn-primary px-4 py-2" onclick="savePost(event)">
+          <i class="fas fa-save me-2"></i>Lưu bài viết
+        </button>
+      </div>
+
+      <div class="box mt-4">
+        <h5 class="fw-bold mb-3">Tất cả bài viết</h5>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Danh mục</th>
+                <th>Tác giả</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="postTableFull">
+              <tr>
+                <td colspan="5" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- GMSD FORM -->
+    <div id="gmsd-form" class="content content-section">
+      <div class="box">
+        <h4 class="fw-bold mb-4">Thêm Gương mặt PCT</h4>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Họ tên</label>
+            <input type="text" id="gmsdTitle" class="form-control" placeholder="Nguyễn Văn A" />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Vai trò</label>
+            <input type="text" id="gmsdRole" class="form-control" placeholder="Học sinh lớp 12A1" />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Thành tích nổi bật</label>
+            <input type="text" id="gmsdReward" class="form-control" placeholder="Giải Nhất HSG Quốc Gia" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Ảnh chân dung</label>
+          <input type="file" id="gmsdImage" class="form-control" accept="image/*" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Câu chuyện / Chia sẻ</label>
+          <textarea id="gmsdStory" class="form-control tinymce-editor"></textarea>
+        </div>
+
+        <button class="btn btn-success px-4" onclick="saveGMSD(event)">
+          <i class="fas fa-check me-2"></i>Lưu thông tin
+        </button>
+      </div>
+
+      <div class="box mt-4">
+        <h5 class="fw-bold mb-3">Danh sách Gương mặt PCT</h5>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Ảnh</th>
+                <th>Họ tên</th>
+                <th>Vai trò</th>
+                <th>Thành tích</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="gmsdFullTable">
+              <tr>
+                <td colspan="5" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENT FORM -->
+    <div id="document-form" class="content content-section">
+      <div class="box">
+        <h4 class="fw-bold mb-4">Tải lên Tài liệu (PDF)</h4>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tiêu đề tài liệu</label>
+            <input type="text" id="docTitle" class="form-control" placeholder="Đề cương ôn tập Toán 12" />
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Tác giả/Nguồn</label>
+            <input type="text" id="docAuthor" class="form-control" placeholder="Tổ Toán" />
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Khối lớp</label>
+            <select id="docClass" class="form-select">
+              <option value="Khối 10">Khối 10</option>
+              <option value="Khối 11">Khối 11</option>
+              <option value="Khối 12">Khối 12</option>
+              <option value="Khác">Khác</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Chọn File PDF (Hoặc Link Drive)</label>
+          <input type="text" id="docFileLink" class="form-control"
+            placeholder="Nhập đường link tới PDF (Google Drive, OneDrive...)" />
+          <small class="text-muted">Vì lý do lưu trữ, vui lòng dán đường link chia sẻ PDF của bạn vào
+            đây.</small>
+        </div>
+
+        <button class="btn btn-warning px-4" onclick="saveDocument()">
+          <i class="fas fa-upload me-2"></i>Lưu tài liệu
+        </button>
+      </div>
+
+      <div class="box mt-4">
+        <h5 class="fw-bold mb-3">Quản lý Tài liệu</h5>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Khối</th>
+                <th>Link</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="docsFullTable">
+              <tr>
+                <td colspan="5" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div id="schedule-form" class="content content-section">
+      <div class="box">
+        <h4 class="fw-bold mb-4">Thêm Sự kiện / Lịch trình</h4>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tên sự kiện</label>
+            <input type="text" id="scheduleTitle" class="form-control" placeholder="Họp phụ huynh, Thi học kì..." />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Ngày giờ diễn ra</label>
+            <input type="datetime-local" id="scheduleDate" class="form-control" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Mô tả chi tiết</label>
+          <textarea id="scheduleDesc" class="form-control" rows="3" placeholder="Ghi chú về sự kiện..."></textarea>
+        </div>
+
+        <button class="btn btn-info text-white px-4" onclick="saveSchedule()">
+          <i class="fas fa-calendar-plus me-2"></i>Tạo lịch
+        </button>
+      </div>
+
+      <div class="box mt-4">
+        <h5 class="fw-bold mb-3">Danh sách Sự kiện sắp tới</h5>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Sự kiện</th>
+                <th>Thời gian</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleFullTable">
+              <tr>
+                <td colspan="4" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERNAL NEWS -->
+    <div id="internal-news" class="content content-section">
+      <div class="box">
+        <h4 class="fw-bold mb-4">Phát Thông báo Nội bộ</h4>
+        <div class="mb-3">
+          <label class="form-label">Tiêu đề thông báo</label>
+          <input type="text" id="internalTitle" class="form-control" placeholder="Thông báo nghỉ lễ, Đổi lịch học..." />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nội dung</label>
+          <textarea id="internalContent" class="form-control tinymce-editor"></textarea>
+        </div>
+        <button class="btn btn-danger px-4" onclick="saveInternalNews()">
+          <i class="fas fa-paper-plane me-2"></i>Phát thông báo
+        </button>
+      </div>
+      <div class="box mt-4">
+        <h5 class="fw-bold mb-3">Lịch sử Thông báo</h5>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Tiêu đề</th>
+                <th>Thời gian phát</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="internalFullTable">
+              <tr>
+                <td colspan="3" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div id="comments-view" class="content content-section">
+      <div class="box">
+        <h4 class="fw-bold mb-4">Kiểm duyệt Bình luận</h4>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Người dùng</th>
+                <th>Nội dung bình luận</th>
+                <th>Bài viết ID</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="commentFullTable">
+              <tr>
+                <td colspan="4" class="text-center text-muted">
+                  Chưa có bình luận nào...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+    <div id="liveToast" class="toast align-items-center text-white border-0 shadow-lg" role="alert">
+      <div class="d-flex">
+        <div class="toast-body fw-medium" id="toastMsg">Thông báo</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="custom-modal-overlay" id="confirmModal">
+    <div class="custom-modal">
+      <div class="text-danger mb-3" style="font-size: 45px">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h4 class="fw-bold">Xác nhận thao tác?</h4>
+      <p id="confirmMessage" class="text-muted mb-4">
+        Dữ liệu sẽ bị xóa vĩnh viễn và không thể khôi phục.
+      </p>
+      <div class="d-flex gap-2 justify-content-center">
+        <button class="btn btn-light border px-4" onclick="closeConfirmModal()">
+          Hủy
+        </button>
+        <button class="btn btn-danger px-4" id="confirmActionBtn">
+          Đồng ý Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="custom-modal-overlay" id="editModalOverlay">
+    <div class="edit-modal" id="editModalContent">
+      <!-- Content will be injected dynamically -->
+    </div>
+  </div>
+
+  <!-- Lớp phủ Loading khi upload -->
+  <div class="custom-modal-overlay" id="loadingOverlay">
+    <div class="spinner-border text-light" style="width: 3rem; height: 3rem" role="status"></div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      signInAnonymously,
+      signInWithCustomToken,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc,
+      serverTimestamp,
+      updateDoc,
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Khởi tạo Firebase từ môi trường (Nếu không có lấy mặc định)
+    const firebaseConfigStr =
+      typeof __firebase_config !== "undefined"
+        ? __firebase_config
+        : JSON.stringify({
+          apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
+          authDomain: "pct-news-aec76.firebaseapp.com",
+          projectId: "pct-news-aec76",
+        });
+    const firebaseConfig = JSON.parse(firebaseConfigStr);
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Xác định App ID chuẩn theo hệ thống Artifact
+    const appId = typeof __app_id !== "undefined" ? __app_id : "pct-news-cms";
+
+    // Cấu hình đường dẫn bảo mật bắt buộc của Firestore (Public Data)
+    const getCol = (colName) =>
+      collection(db, "artifacts", appId, "public", "data", colName);
+
+    // API Keys
+    const IMGBB_API_KEY = "c8e10c1df9380fd1aedf208a8cdd0a2a";
+
+    // Khởi tạo TinyMCE
+    tinymce.init({
+      selector: ".tinymce-editor",
+      plugins: "lists link image table code media wordcount",
+      toolbar:
+        "undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | code",
+      height: 350,
+      branding: false,
+      menubar: false,
+      setup: function (editor) {
+        editor.on("change", function () {
+          editor.save();
+        });
+      },
+    });
+
+    window.navigate = function (sectionId) {
+      document
+        .querySelectorAll(".content-section")
+        .forEach((sec) => sec.classList.remove("active"));
+      document.getElementById(sectionId)?.classList.add("active");
+
+      document
+        .querySelectorAll(".menu-item")
+        .forEach((item) => item.classList.remove("active"));
+      const activeBtn = document.querySelector(
+        `[onclick="navigate('${sectionId}')"]`,
+      );
+      if (activeBtn) activeBtn.classList.add("active");
+    };
+
+    window.showToast = function (message, type = "success") {
+      const toast = document.getElementById("liveToast");
+      document.getElementById("toastMsg").textContent = message;
+      toast.className = `toast align-items-center text-white bg-${type} border-0 shadow-lg`;
+      new bootstrap.Toast(toast).show();
+    };
+
+    window.showLoading = (show) => {
+      document
+        .getElementById("loadingOverlay")
+        .classList.toggle("show", show);
+    };
+
+    window.openConfirmModal = function (message, onConfirm) {
+      document.getElementById("confirmMessage").textContent = message;
+      document.getElementById("confirmActionBtn").onclick =
+        async function () {
+          await onConfirm();
+          closeConfirmModal();
+        };
+      document.getElementById("confirmModal").classList.add("show");
+    };
+
+    window.closeConfirmModal = function () {
+      document.getElementById("confirmModal").classList.remove("show");
+    };
+
+    window.closeEditModal = function () {
+      document.getElementById("editModalOverlay").classList.remove("show");
+    };
+
+    window.openEditModal = function (htmlContent) {
+      const contentDiv = document.getElementById("editModalContent");
+      contentDiv.innerHTML = `
+            <button class="btn-close-modal" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+            <h4 class="fw-bold mb-4">Chỉnh sửa thông tin</h4>
+            ${htmlContent}
+        `;
+      document.getElementById("editModalOverlay").classList.add("show");
+
+      // Re-initialize TinyMCE for textareas inside the modal if they have the class
+      const textareas = contentDiv.querySelectorAll(".tinymce-editor-modal");
+      if (textareas.length > 0) {
+        tinymce.init({
+          selector: ".tinymce-editor-modal",
+          plugins: "lists link image table code media wordcount",
+          toolbar:
+            "undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | code",
+          height: 300,
+          branding: false,
+          menubar: false,
+          setup: function (editor) {
+            editor.on("change", function () {
+              editor.save();
+            });
+          },
+        });
+      }
+    };
+
+    async function uploadToImgBB(file) {
+      if (!file) return "";
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+        const data = await res.json();
+        if (!data.success) throw new Error("Lỗi upload ảnh");
+        return data.data.url;
+      } catch (e) {
+        console.error("ImgBB Upload Error:", e);
+        return "";
+      }
+    }
+
+    async function initAuth() {
+      try {
+        if (typeof __initial_auth_token !== "undefined") {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (e) {
+        console.error("Authentication failed:", e);
+        showToast("Lỗi xác thực người dùng!", "danger");
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.loadAllData();
+      }
+    });
+
+    window.loadAllData = async function () {
+      showLoading(true);
+      await Promise.all([
+        loadPosts(),
+        loadGMSD(),
+        loadDocs(),
+        loadSchedules(),
+        loadInternal(),
+        loadComments(),
+      ]);
+      showLoading(false);
+    };
+
+    window.savePost = async function (e) {
+      e.preventDefault();
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const category = document.getElementById("category").value;
+      const content = tinymce.get("editor").getContent();
+      const imageFile = document.getElementById("imageFile").files[0];
+
+      if (!title || !content)
+        return showToast("Vui lòng nhập tiêu đề và nội dung", "danger");
+
+      showLoading(true);
+      try {
+        const imageUrl = await uploadToImgBB(imageFile);
+        await addDoc(getCol("posts"), {
+          title,
+          author: author || "Admin",
+          category,
+          content,
+          image: imageUrl,
+          createdAt: serverTimestamp(),
+        });
+        showToast("Đăng bài thành công!");
+
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("imageFile").value = "";
+        tinymce.get("editor").setContent("");
+
+        await loadPosts();
+        navigate("dashboard");
+      } catch (err) {
+        showToast("Lỗi khi đăng bài", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.loadPosts = async function () {
+      try {
+
+        const snapshot = await getDocs(getCol("posts"));
+        let posts = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Sort ở client thay vì dùng orderBy (Theo quy tắc Firestore đơn giản)
+        posts.sort(
+          (a, b) =>
+            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
+        );
+
+        document.getElementById("totalPosts").textContent = posts.length;
+
+        const fullTable = document.getElementById("postTableFull");
+        const dashTable = document.getElementById("postTableDashboard");
+        fullTable.innerHTML = "";
+        dashTable.innerHTML = "";
+
+        if (posts.length === 0) {
+          fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có bài viết.</td></tr>`;
+          dashTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Chưa có bài viết.</td></tr>`;
+          return;
+        }
+
+        posts.forEach((post, index) => {
+          const imgHtml = post.image
+            ? `<img src="${post.image}" class="thumb">`
+            : `<div class="thumb bg-secondary text-white d-flex align-items-center justify-content-center"><i class="fas fa-image"></i></div>`;
+
+          // Chuẩn bị dữ liệu an toàn để đưa vào hàm onclick
+          const safePostData = encodeURIComponent(JSON.stringify(post));
+
+          const rowFull = `
+              <tr>
+                <td>${imgHtml}</td>
+                <td><strong>${post.title}</strong></td>
+                <td><span class="badge bg-primary">${post.category}</span></td>
+                <td>${post.author}</td>
+                
+                <td>
+                  <button class="btn btn-sm btn-warning me-1"
+                    onclick="editPost('${safePostData}')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${post.id}', loadPosts)"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+          fullTable.innerHTML += rowFull;
+
+          if (index < 4) {
+            const rowDash = `
+                  <tr>
+                    <td>${imgHtml}</td>
+                    <td><div class="text-truncate" style="max-width: 200px;"><strong>${post.title}</strong></div></td>
+                    <td><span class="badge bg-primary">${post.category}</span></td>
+                    <td>
+                      <button class="btn btn-sm btn-warning me-1"
+                        onclick="editPost('${safePostData}')">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${post.id}', loadPosts)"><i class="fas fa-trash"></i></button>
+                    </td>
+                  </tr>
+                `;
+            dashTable.innerHTML += rowDash;
+          }
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    window.editPost = function (encodedPostData) {
+      const post = JSON.parse(decodeURIComponent(encodedPostData));
+      const formHtml = `
+            <form id="editPostForm" onsubmit="updatePost(event, '${post.id}')">
+                <div class="mb-3">
+                    <label class="form-label">Tiêu đề</label>
+                    <input type="text" id="editPostTitle" class="form-control" value="${post.title || ""}" required>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Tác giả</label>
+                        <input type="text" id="editPostAuthor" class="form-control" value="${post.author || ""}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Danh mục</label>
+                        <select id="editPostCategory" class="form-select">
+                          <option value="Học sinh tiêu biểu" ${post.category === "Học sinh tiêu biểu" ? "selected" : ""}>Học sinh tiêu biểu</option>
+                          <option value="Thầy cô tâm huyết" ${post.category === "Thầy cô tâm huyết" ? "selected" : ""}>Thầy cô tâm huyết</option>
+                          <option value="Cựu học sinh" ${post.category === "Cựu học sinh" ? "selected" : ""}>Cựu học sinh</option>
+                          <option value="CLB & Đội nhóm" ${post.category === "CLB & Đội nhóm" ? "selected" : ""}>CLB & Đội nhóm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ảnh mới (Bỏ trống nếu không đổi)</label>
+                    <input type="file" id="editPostImage" class="form-control" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nội dung</label>
+                    <textarea id="editPostContent" class="tinymce-editor-modal">${post.content || ""}</textarea>
+                </div>
+                <button type="submit" class="btn btn-warning w-100"><i class="fas fa-save me-2"></i>Cập nhật Bài viết</button>
+            </form>
+        `;
+      openEditModal(formHtml);
+    };
+
+    window.updatePost = async function (e, postId) {
+      e.preventDefault();
+      const title = document.getElementById("editPostTitle").value.trim();
+      const author = document.getElementById("editPostAuthor").value.trim();
+      const category = document.getElementById("editPostCategory").value;
+      const content = tinymce.get("editPostContent").getContent();
+      const imageFile = document.getElementById("editPostImage").files[0];
+
+      if (!title || !content)
+        return showToast("Vui lòng nhập tiêu đề và nội dung", "warning");
+
+      showLoading(true);
+      try {
+        const updateData = {
+          title,
+          author: author || "Admin",
+          category,
+          content,
+        };
+        if (imageFile) {
+          const imageUrl = await uploadToImgBB(imageFile);
+          if (imageUrl) updateData.image = imageUrl;
+        }
+        await updateDoc(doc(getCol("posts"), postId), updateData);
+        showToast("Cập nhật thành công!");
+        closeEditModal();
+        // Cleanup TinyMCE instance created for modal
+        tinymce.remove(".tinymce-editor-modal");
+        await loadPosts();
+      } catch (err) {
+        console.error(err);
+        showToast("Lỗi cập nhật", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.saveGMSD = async function (e) {
+      e.preventDefault();
+      const name = document.getElementById("gmsdTitle").value.trim();
+      const role = document.getElementById("gmsdRole").value.trim();
+      const reward = document.getElementById("gmsdReward").value.trim();
+      const story = tinymce.get("gmsdStory").getContent();
+      const file = document.getElementById("gmsdImage").files[0];
+
+      if (!name || !role)
+        return showToast("Nhập đủ Họ tên và Vai trò", "danger");
+
+      showLoading(true);
+      try {
+        const image = await uploadToImgBB(file);
+        await addDoc(getCol("gmsd"), {
+          name,
+          role,
+          reward,
+          story,
+          image,
+          createdAt: serverTimestamp(),
+        });
+        showToast("Đã thêm Gương mặt PCT");
+
+        document.getElementById("gmsdTitle").value = "";
+        document.getElementById("gmsdRole").value = "";
+        document.getElementById("gmsdReward").value = "";
+        document.getElementById("gmsdImage").value = "";
+        tinymce.get("gmsdStory").setContent("");
+
+        await loadGMSD();
+        navigate("dashboard");
+      } catch (err) {
+        showToast("Lỗi thêm dữ liệu", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.loadGMSD = async function () {
+      try {
+        const snapshot = await getDocs(getCol("gmsd"));
+        let items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        items.sort(
+          (a, b) =>
+            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
+        );
+
+        document.getElementById("totalPeople").textContent = items.length;
+
+        const fullTable = document.getElementById("gmsdFullTable");
+        const dashTable = document.getElementById("gmsdDashboardTable");
+        fullTable.innerHTML = "";
+        dashTable.innerHTML = "";
+
+        if (items.length === 0) {
+          fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`;
+          dashTable.innerHTML = `<tr><td colspan="2" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`;
+          return;
+        }
+
+        items.forEach((item, index) => {
+          const imgHtml = item.image
+            ? `<img src="${item.image}" class="thumb rounded-circle" style="width:50px; height:50px;">`
+            : `<i class="fas fa-user-circle fs-1 text-muted"></i>`;
+
+          const safeItemData = encodeURIComponent(JSON.stringify(item));
+
+          fullTable.innerHTML += `
+              <tr>
+                <td>${imgHtml}</td>
+                <td><strong>${item.name}</strong></td>
+                <td>${item.role}</td>
+                <td>${item.reward}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1"
+                      onclick="editGMSD('${safeItemData}')">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('gmsd', '${item.id}', loadGMSD)"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+
+          if (index < 3) {
+            dashTable.innerHTML += `
+                  <tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.role}</td>
+                  </tr>
+                `;
+          }
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    window.editGMSD = function (encodedItemData) {
+      const item = JSON.parse(decodeURIComponent(encodedItemData));
+      const formHtml = `
+            <form id="editGMSDForm" onsubmit="updateGMSD(event, '${item.id}')">
+                <div class="mb-3">
+                    <label class="form-label">Họ tên</label>
+                    <input type="text" id="editGMSDTitle" class="form-control" value="${item.name || ""}" required>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Vai trò</label>
+                        <input type="text" id="editGMSDRole" class="form-control" value="${item.role || ""}" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Thành tích</label>
+                        <input type="text" id="editGMSDReward" class="form-control" value="${item.reward || ""}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ảnh mới (Bỏ trống nếu không đổi)</label>
+                    <input type="file" id="editGMSDImage" class="form-control" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Câu chuyện</label>
+                    <textarea id="editGMSDStory" class="tinymce-editor-modal">${item.story || ""}</textarea>
+                </div>
+                <button type="submit" class="btn btn-warning w-100"><i class="fas fa-save me-2"></i>Cập nhật Gương mặt</button>
+            </form>
+        `;
+      openEditModal(formHtml);
+    };
+
+    window.updateGMSD = async function (e, itemId) {
+      e.preventDefault();
+      const name = document.getElementById("editGMSDTitle").value.trim();
+      const role = document.getElementById("editGMSDRole").value.trim();
+      const reward = document.getElementById("editGMSDReward").value.trim();
+      const story = tinymce.get("editGMSDStory").getContent();
+      const imageFile = document.getElementById("editGMSDImage").files[0];
+
+      if (!name || !role)
+        return showToast("Nhập đủ Họ tên và Vai trò", "warning");
+
+      showLoading(true);
+      try {
+        const updateData = { name, role, reward, story };
+        if (imageFile) {
+          const imageUrl = await uploadToImgBB(imageFile);
+          if (imageUrl) updateData.image = imageUrl;
+        }
+        await updateDoc(doc(getCol("gmsd"), itemId), updateData);
+        showToast("Cập nhật thành công!");
+        closeEditModal();
+        tinymce.remove(".tinymce-editor-modal");
+        await loadGMSD();
+      } catch (err) {
+        console.error(err);
+        showToast("Lỗi cập nhật", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.saveDocument = async function () {
+      const title = document.getElementById("docTitle").value.trim();
+      const author = document.getElementById("docAuthor").value.trim();
+      const docClass = document.getElementById("docClass").value;
+      const link = document.getElementById("docFileLink").value.trim();
+
+      if (!title || !link)
+        return showToast("Vui lòng nhập Tên tài liệu và Link", "danger");
+
+      try {
+        await addDoc(getCol("docs"), {
+          title,
+          author,
+          class: docClass,
+          link,
+          createdAt: serverTimestamp(),
+        });
+        showToast("Lưu tài liệu thành công");
+        document.getElementById("docTitle").value = "";
+        document.getElementById("docAuthor").value = "";
+        document.getElementById("docFileLink").value = "";
+        await loadDocs();
+      } catch (e) {
+        showToast("Lỗi", "danger");
+      }
+    };
+
+    window.loadDocs = async function () {
+      try {
+        const snapshot = await getDocs(getCol("docs"));
+        let items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        items.sort(
+          (a, b) =>
+            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
+        );
+
+        document.getElementById("totalDocs").textContent = items.length;
+        const fullTable = document.getElementById("docsFullTable");
+        fullTable.innerHTML = "";
+
+        if (items.length === 0)
+          return (fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`);
+
+        items.forEach((item) => {
+          const safeItemData = encodeURIComponent(JSON.stringify(item));
+          fullTable.innerHTML += `
+              <tr>
+                <td><i class="fas fa-file-pdf text-danger me-2"></i><strong>${item.title}</strong></td>
+                <td>${item.author || "Ẩn danh"}</td>
+                <td><span class="badge bg-secondary">${item.class}</span></td>
+                <td><a href="${item.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-link"></i></a></td>
+                <td>
+                  <button class="btn btn-sm btn-primary me-1"
+                    onclick="window.open('${item.link}')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-warning me-1"
+                    onclick="editDoc('${safeItemData}')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                    onclick="deleteRecord('docs','${item.id}',loadDocs)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+        });
+      } catch (e) { }
+    }
+
+    window.editDoc = function (encodedItemData) {
+      const item = JSON.parse(decodeURIComponent(encodedItemData));
+      const formHtml = `
+            <form id="editDocForm" onsubmit="updateDocument(event, '${item.id}')">
+                <div class="mb-3">
+                    <label class="form-label">Tiêu đề tài liệu</label>
+                    <input type="text" id="editDocTitle" class="form-control" value="${item.title || ""}" required>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Tác giả/Nguồn</label>
+                        <input type="text" id="editDocAuthor" class="form-control" value="${item.author || ""}">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Khối lớp</label>
+                        <select id="editDocClass" class="form-select">
+                            <option value="Khối 10" ${item.class === "Khối 10" ? "selected" : ""}>Khối 10</option>
+                            <option value="Khối 11" ${item.class === "Khối 11" ? "selected" : ""}>Khối 11</option>
+                            <option value="Khối 12" ${item.class === "Khối 12" ? "selected" : ""}>Khối 12</option>
+                            <option value="Khác" ${item.class === "Khác" ? "selected" : ""}>Khác</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Link PDF (Drive, OneDrive...)</label>
+                    <input type="text" id="editDocFileLink" class="form-control" value="${item.link || ""}" required>
+                </div>
+                <button type="submit" class="btn btn-warning w-100"><i class="fas fa-save me-2"></i>Cập nhật Tài liệu</button>
+            </form>
+        `;
+      openEditModal(formHtml);
+    };
+
+    window.updateDocument = async function (e, itemId) {
+      e.preventDefault();
+      const title = document.getElementById("editDocTitle").value.trim();
+      const author = document.getElementById("editDocAuthor").value.trim();
+      const docClass = document.getElementById("editDocClass").value;
+      const link = document.getElementById("editDocFileLink").value.trim();
+
+      if (!title || !link)
+        return showToast("Vui lòng nhập Tên tài liệu và Link", "warning");
+
+      showLoading(true);
+      try {
+        await updateDoc(doc(getCol("docs"), itemId), {
+          title,
+          author,
+          class: docClass,
+          link,
+        });
+        showToast("Cập nhật thành công!");
+        closeEditModal();
+        await loadDocs();
+      } catch (e) {
+        showToast("Lỗi cập nhật", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.saveSchedule = async function () {
+      const title = document.getElementById("scheduleTitle").value;
+      const date = document.getElementById("scheduleDate").value;
+      const desc = document.getElementById("scheduleDesc").value;
+      if (!title || !date)
+        return showToast("Nhập Tiêu đề và Thời gian", "danger");
+      try {
+        await addDoc(getCol("schedules"), {
+          title,
+          date,
+          desc,
+          createdAt: serverTimestamp(),
+        });
+        showToast("Đã thêm lịch!");
+        await loadSchedules();
+      } catch (e) { }
+    };
+
+    window.loadSchedules = async function () {
+      try {
+        const snapshot = await getDocs(getCol("schedules"));
+        let items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        items.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by upcoming date
+
+        const fullTable = document.getElementById("scheduleFullTable");
+        const dashTable = document.getElementById("scheduleDashboardTable");
+        fullTable.innerHTML = "";
+        dashTable.innerHTML = "";
+
+        if (items.length === 0) {
+          fullTable.innerHTML =
+            dashTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Không có lịch.</td></tr>`;
+          return;
+        }
+
+        items.forEach((item, i) => {
+          const dateStr = new Date(item.date).toLocaleString("vi-VN");
+          const safeItemData = encodeURIComponent(JSON.stringify(item));
+          fullTable.innerHTML += `
+              <tr>
+                <td><strong>${item.title}</strong></td>
+                <td><span class="badge bg-info text-dark">${dateStr}</span></td>
+                <td><small>${item.desc}</small></td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-1"
+                    onclick="editSchedule('${safeItemData}')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                    onclick="deleteRecord('schedules','${item.id}',loadSchedules)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          if (i < 3)
+            dashTable.innerHTML += `<tr><td><strong>${item.title}</strong></td><td><small>${dateStr}</small></td></tr>`;
+        });
+      } catch (e) { }
+    }
+
+    window.editSchedule = function (encodedItemData) {
+      const item = JSON.parse(decodeURIComponent(encodedItemData));
+      const formHtml = `
+            <form id="editScheduleForm" onsubmit="updateSchedule(event, '${item.id}')">
+                <div class="mb-3">
+                    <label class="form-label">Tên sự kiện</label>
+                    <input type="text" id="editScheduleTitle" class="form-control" value="${item.title || ""}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ngày giờ diễn ra</label>
+                    <input type="datetime-local" id="editScheduleDate" class="form-control" value="${item.date || ""}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mô tả chi tiết</label>
+                    <textarea id="editScheduleDesc" class="form-control" rows="3">${item.desc || ""}</textarea>
+                </div>
+                <button type="submit" class="btn btn-warning w-100"><i class="fas fa-save me-2"></i>Cập nhật Lịch</button>
+            </form>
+        `;
+      openEditModal(formHtml);
+    };
+
+    window.updateSchedule = async function (e, itemId) {
+      e.preventDefault();
+      const title = document.getElementById("editScheduleTitle").value;
+      const date = document.getElementById("editScheduleDate").value;
+      const desc = document.getElementById("editScheduleDesc").value;
+      if (!title || !date)
+        return showToast("Nhập Tiêu đề và Thời gian", "warning");
+
+      showLoading(true);
+      try {
+        await updateDoc(doc(getCol("schedules"), itemId), {
+          title,
+          date,
+          desc,
+        });
+        showToast("Cập nhật thành công!");
+        closeEditModal();
+        await loadSchedules();
+      } catch (e) {
+        showToast("Lỗi cập nhật", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.saveInternalNews = async function () {
+      const title = document.getElementById("internalTitle").value.trim();
+      const content = tinymce.get("internalContent")?.getContent();
+
+      if (!title || !content) {
+        showToast("Vui lòng nhập đầy đủ tiêu đề và nội dung!");
+        return;
+      }
+
+      try {
+        await addDoc(getCol("noi_bo"), {
+          title,
+          content,
+          isBreaking: true, // nếu bạn muốn hiện ở ticker
+          createdAt: serverTimestamp(),
+        });
+
+        showToast("Đã phát thông báo nội bộ!");
+
+        await loadInternal(); // refresh danh sách nếu có
+      } catch (e) {
+        console.error("Save internal news error:", e);
+        showToast("Lỗi khi lưu thông báo!");
+      }
+    };
+
+    window.loadInternal = async function () {
+      try {
+        const snapshot = await getDocs(getCol("internal"));
+        let items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        items.sort(
+          (a, b) =>
+            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
+        );
+
+        const fullTable = document.getElementById("internalFullTable");
+        fullTable.innerHTML = "";
+        if (items.length > 0)
+          document.getElementById("breakingNews").textContent =
+            "📢 THÔNG BÁO: " + items[0].title;
+
+        items.forEach((item) => {
+          const safeItemData = encodeURIComponent(JSON.stringify(item));
+          fullTable.innerHTML += `
+              <tr>
+                <td><strong>${item.title}</strong></td>
+                <td><small class="text-muted">Gần đây</small></td>
+                <td>
+                  <button class="btn btn-sm btn-info me-1"
+                    onclick="previewInternal('${safeItemData}')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-warning me-1"
+                    onclick="editInternalNews('${safeItemData}')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                    onclick="deleteRecord('internal','${item.id}',loadInternal)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+        });
+      } catch (e) { }
+    }
+
+    window.previewInternal = function (encodedItemData) {
+      const item = JSON.parse(decodeURIComponent(encodedItemData));
+
+      openEditModal(`
+          <div>
+            <h3 class="fw-bold mb-3">${item.title}</h3>
+
+            <div class="border rounded p-3 bg-light">
+              ${item.content}
+            </div>
+
+            <button class="btn btn-secondary mt-3 w-100"
+              onclick="closeEditModal()">
+              Đóng
+            </button>
+          </div>
+        `);
+    };
+
+    window.editInternalNews = function (encodedItemData) {
+      const item = JSON.parse(decodeURIComponent(encodedItemData));
+      const formHtml = `
+            <form id="editInternalForm" onsubmit="updateInternal(event, '${item.id}')">
+                <div class="mb-3">
+                    <label class="form-label">Tiêu đề thông báo</label>
+                    <input type="text" id="editInternalTitle" class="form-control" value="${item.title || ""}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nội dung</label>
+                    <textarea id="editInternalContent" class="tinymce-editor-modal">${item.content || ""}</textarea>
+                </div>
+                <button type="submit" class="btn btn-warning w-100"><i class="fas fa-save me-2"></i>Cập nhật Thông báo</button>
+            </form>
+        `;
+      openEditModal(formHtml);
+    };
+
+    window.updateInternal = async function (e, itemId) {
+      e.preventDefault();
+      const title = document.getElementById("editInternalTitle").value;
+      const content = tinymce.get("editInternalContent").getContent();
+      if (!title) return showToast("Nhập Tiêu đề", "warning");
+
+      showLoading(true);
+      try {
+        await updateDoc(doc(getCol("internal"), itemId), { title, content });
+        showToast("Cập nhật thành công!");
+        closeEditModal();
+        tinymce.remove(".tinymce-editor-modal");
+        await loadInternal();
+      } catch (e) {
+        showToast("Lỗi cập nhật", "danger");
+      } finally {
+        showLoading(false);
+      }
+    };
+
+    window.loadComments = async function () {
+      try {
+        const snapshot = await getDocs(getCol("comments"));
+        let items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        document.getElementById("totalComments").textContent = items.length;
+        const fullTable = document.getElementById("commentFullTable");
+        fullTable.innerHTML = "";
+        if (items.length === 0)
+          return (fullTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Chưa có bình luận.</td></tr>`);
+
+        items.forEach((item) => {
+          fullTable.innerHTML += `
+              <tr>
+                <td><i class="fas fa-user text-muted me-2"></i>${item.user || "Ẩn danh"}</td>
+                <td>"${item.content}"</td>
+                <td><span class="badge bg-secondary">Post ID: ${item.postId}</span></td>
+                <td>
+                  <button class="btn btn-sm btn-success me-1"
+                    onclick="approveComment('${item.id}')">
+                    <i class="fas fa-check"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-warning me-1"
+                    onclick="hideComment('${item.id}')">
+                    <i class="fas fa-eye-slash"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                    onclick="deleteRecord('comments','${item.id}',loadComments)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+        });
+      } catch (e) { }
+    }
+
+    window.approveComment = async function (id) {
+      try {
+        await updateDoc(doc(getCol("comments"), id), {
+          approved: true,
+        });
+
+        showToast("Đã duyệt bình luận");
+
+        loadComments();
+      } catch (e) {
+        console.error(e);
+
+        showToast("Lỗi duyệt", "danger");
+      }
+    };
+
+    window.hideComment = async function (id) {
+      try {
+        await updateDoc(doc(getCol("comments"), id), {
+          hidden: true,
+        });
+
+        showToast("Đã ẩn bình luận");
+
+        loadComments();
+      } catch (e) {
+        console.error(e);
+
+        showToast("Lỗi", "danger");
+      }
+    };
+
+    // Generic Delete Function
+    window.deleteRecord = function (collectionName, id, reloadCallback) {
+      openConfirmModal(
+        "Bạn có chắc chắn muốn xóa mục này vĩnh viễn?",
+        async () => {
+          try {
+            await deleteDoc(doc(getCol(collectionName), id));
+            showToast("Xóa thành công", "success");
+            if (reloadCallback) reloadCallback();
+          } catch (e) {
+            showToast("Lỗi khi xóa", "danger");
+            console.error(e);
+          }
+        },
+      );
+    };
+
+    window.logout = async function () {
+      if (!confirm("Bạn muốn đăng xuất?")) return;
+
+      try {
+        await auth.signOut();
+        localStorage.clear();
+
+        showToast("Đăng xuất thành công!");
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1200);
+      } catch (e) {
+        console.error(e);
+        showToast("Lỗi đăng xuất", "danger");
+      }
+    };
+
+    // Bootstrap
+    window.addEventListener("DOMContentLoaded", () => {
+      initAuth();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,226 +1,1081 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Đang tải bài viết... | Phan Châu Trinh News</title>
-    
-    <!-- Google Fonts & Bootstrap -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --news-red: #e31e24;
-            --news-blue: #0056a3;
-            --text-main: #1a1a1a;
-            --border: #ececec;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.8;
-            color: var(--text-main);
-            background-color: #fff;
-        }
+  <title>Chi tiết bài viết - PCT News</title>
 
-        /* --- NAVIGATION --- */
-        .navbar-minimal {
-            border-bottom: 1px solid var(--border);
-            padding: 15px 0;
-            background: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+  <!-- GOOGLE FONT -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap"
+    rel="stylesheet">
 
-        /* --- ARTICLE HEADER --- */
-        .article-header {
-            padding-top: 40px;
-            padding-bottom: 30px;
-        }
-        .category-badge {
-            background: var(--news-red);
-            color: white;
-            padding: 4px 12px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-        .article-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-        .article-meta {
-            color: #666;
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 0;
-            margin-bottom: 30px;
-        }
+  <!-- BOOTSTRAP -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        /* --- CONTENT --- */
-        .main-image {
-            width: 100%;
-            max-height: 550px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        .article-excerpt {
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #444;
-            margin-bottom: 30px;
-            border-left: 5px solid var(--news-blue);
-            padding-left: 20px;
-        }
-        .article-body {
-            font-size: 1.15rem;
-            text-align: justify;
-        }
-        .article-body p { margin-bottom: 20px; }
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* --- SIDEBAR --- */
-        .sidebar-box {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            position: sticky;
-            top: 100px;
-        }
+  <style>
+    :root {
+      --news-red: #e31e24;
+      --news-blue: #0056a3;
+      --text-main: #1a1a1a;
+      --text-sub: #666;
+      --border: #ececec;
+      --bg: #f4f6fb;
+    }
 
-        footer {
-            background: #f8f8f8;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid var(--border);
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        @media (max-width: 991px) {
-            .article-title { font-size: 2.2rem; }
-        }
-    </style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* ======================
+       TOP BAR
+    ====================== */
+
+    .top-bar {
+      background: #f8f8f8;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    /* ======================
+       HEADER
+    ====================== */
+
+    header {
+      background: white;
+      padding: 25px 0;
+      border-bottom: 4px solid var(--news-blue);
+    }
+
+    .logo-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .newspaper-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--news-blue);
+    }
+
+    .newspaper-tagline {
+      color: var(--news-red);
+      letter-spacing: 3px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: -5px;
+    }
+
+    /* ======================
+       NAVBAR
+    ====================== */
+
+    .navbar-main {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-link {
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #222 !important;
+      font-size: 14px;
+      padding: 14px 18px !important;
+    }
+
+    .nav-link:hover {
+      color: var(--news-red) !important;
+    }
+
+    .dropdown-menu {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .dropdown-item {
+      padding: 10px 18px;
+      font-weight: 500;
+    }
+
+    .dropdown-item:hover {
+      background: #f5f5f5;
+      color: var(--news-red);
+    }
+
+    /* ======================
+       ARTICLE
+    ====================== */
+
+    .article-wrapper {
+      max-width: 1000px;
+      margin: 40px auto;
+    }
+
+    .article-card {
+      background: white;
+      border-radius: 22px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--news-blue);
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+
+    .back-btn:hover {
+      color: var(--news-red);
+    }
+
+    .article-category {
+      display: inline-block;
+      background: var(--news-red);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .article-title {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .article-meta {
+      color: var(--text-sub);
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    .article-img {
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 30px;
+      max-height: 500px;
+      object-fit: cover;
+    }
+
+    .article-content {
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .article-content img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .article-content iframe {
+      width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    /* ======================
+       COMMENTS
+    ====================== */
+
+    .comment-box {
+      background: white;
+      border-radius: 22px;
+      padding: 30px;
+      margin-top: 35px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .comment-item {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .comment-name {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    /* ======================
+       RELATED
+    ====================== */
+
+    .related-section {
+      margin-top: 50px;
+    }
+
+    .related-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 100%;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+      transition: 0.3s;
+    }
+
+    .related-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .related-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .related-body {
+      padding: 16px;
+    }
+
+    .related-title {
+      color: #222;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .related-title:hover {
+      color: var(--news-blue);
+    }
+
+    /* ======================
+       FOOTER
+    ====================== */
+
+    footer {
+      margin-top: 60px;
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    /* Dropdown Styling */
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 10px 0;
+    }
+
+    .dropdown-item {
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 8px 20px;
+      transition: 0.3s;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f8f9fa;
+      color: var(--news-red);
+      padding-left: 25px;
+    }
+
+    .dropdown:hover>.dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+
+    /* --- NAV --- */
+    .navbar-main {
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-link {
+      color: #222 !important;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      padding: 12px 15px !important;
+    }
+
+    .nav-link:hover {
+      color: var(--news-red) !important;
+    }
+
+    .nav-link.active {
+      color: var(--news-blue) !important;
+      border-bottom: 3px solid var(--news-blue);
+    }
+
+    /* --- TRENDING --- */
+    .trending-box {
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 25px;
+    }
+
+    .trending-box {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      white-space: nowrap;
+      color: var(--news-red);
+      font-weight: 500;
+    }
+
+    /* ======================
+       LOADING
+    ====================== */
+
+    #loading {
+      background: white;
+      padding: 60px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ======================
+       MOBILE
+    ====================== */
+
+    @media(max-width:768px) {
+
+      .article-card {
+        padding: 25px;
+      }
+
+      .article-title {
+        font-size: 30px;
+      }
+
+      .newspaper-name {
+        font-size: 2rem;
+      }
+
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar-minimal">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="index.html" class="text-decoration-none text-dark fw-bold">
-                <i class="fas fa-arrow-left me-2"></i> QUAY LẠI TRANG CHỦ
-            </a>
-            <div class="fw-bold text-primary">PHAN CHÂU TRINH NEWS</div>
-        </div>
-    </nav>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container d-flex justify-content-between align-items-center">
 
-    <div class="container article-header">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div id="article-loading" class="text-center p-5">
-                    <div class="spinner-border text-danger" role="status"></div>
-                    <p class="mt-3">Đang tải nội dung...</p>
-                </div>
+      <div>
+        <i class="fas fa-calendar-alt me-1"></i>
+        <span id="current-date"></span>
+      </div>
 
-                <div id="article-content-area" style="display: none;">
-                    <!-- Thông tin bài viết sẽ đổ vào đây -->
-                    <span class="category-badge" id="art-category">Danh mục</span>
-                    <h1 class="article-title" id="art-title">Tiêu đề bài viết</h1>
-                    
-                    <div class="article-meta d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="far fa-user me-1"></i> Tác giả: <b id="art-author">Admin</b>
-                        </div>
-                        <div>
-                            <i class="far fa-calendar-alt me-1"></i> Ngày đăng: <span id="art-date">00/00/0000</span>
-                        </div>
-                    </div>
+      <div>
+        <a href="login.html" class="text-dark small fw-bold">
+          <i class="fas fa-user-shield me-1"></i>
+          Cổng thông tin nội bộ
+        </a>
+      </div>
 
-                    <img src="" id="art-image" class="main-image shadow-sm" alt="Feature Image">
+    </div>
+  </div>
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="article-excerpt" id="art-excerpt">
-                                Đây là nội dung tóm tắt của bài viết...
-                            </div>
-                            <div class="article-body" id="art-body">
-                                <!-- Nội dung chi tiết -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- HEADER -->
+  <header>
+
+    <div class="container text-center">
+
+      <a href="index.html" class="logo-area">
+
+        <h1 class="newspaper-name">
+          PHAN CHÂU TRINH NEWS
+        </h1>
+
+      </a>
+
+      <div class="newspaper-tagline">
+        TIN TỨC - SỰ KIỆN - KẾT NỐI NỘI BỘ
+      </div>
+
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container text-center">
-            <p class="mb-0 small text-muted">&copy; 2026 Bản quyền thuộc về Ban Biên Tập Bản Tin PCT.</p>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar navbar-expand-lg navbar-main">
+    <div class="container">
+      <button class="navbar-toggler w-100 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#newsNav">
+        <span class="navbar-toggler-icon"></span>
+        DANH MỤC TIN
+      </button>
+      <div class="collapse navbar-collapse" id="newsNav">
+        <ul class="navbar-nav mx-auto">
+          <!-- THỜI SỰ -->
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              Thời sự học đường
+            </a>
+          </li>
+
+          <!-- GƯƠNG MẶT -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="gmsd.html">
+              Gương mặt PCT
+            </a>
+
+            <ul class="dropdown-menu shadow">
+
+              <li>
+                <a class="dropdown-item py-2" href="gmsd.html?cat=hocsinh">
+                  <i class="fas fa-star me-2 text-warning"></i>
+                  Học sinh tiêu biểu
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item py-2" href="gmsd.html?cat=giaovien">
+                  <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>
+                  Thầy cô tâm huyết
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item py-2" href="gmsd.html?cat=cuuhs">
+                  <i class="fas fa-user-graduate me-2 text-success"></i>
+                  Cựu học sinh
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item py-2" href="gmsd.html?cat=clb">
+                  <i class="fas fa-users me-2 text-info"></i>
+                  CLB & Đội nhóm
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- CHUYÊN MÔN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="tailieu.html?cat=all">
+              <i class="fa-solid fa-graduation-cap"></i>
+              Chuyên môn
+            </a>
+
+            <ul class="dropdown-menu shadow">
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=toan">
+                  <i class="fa-solid fa-calculator text-primary"></i>
+                  Toán - Tin
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=van">
+                  <i class="fa-solid fa-pen-nib text-danger"></i>
+                  Ngữ Văn
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=anh">
+                  <i class="fa-solid fa-language text-info"></i>
+                  Tiếng Anh
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=ly">
+                  <i class="fa-solid fa-atom text-warning"></i>
+                  Vật Lý
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=hoa">
+                  <i class="fa-solid fa-flask-vial text-success"></i>
+                  Hóa Học
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=sinh">
+                  <i class="fa-solid fa-dna text-success"></i>
+                  Sinh học
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="tailieu.html?cat=sudia">
+                  <i class="fa-solid fa-earth-asia text-secondary"></i>
+                  Sử - Địa
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- MENU KHÁC -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showThongBao()">
+              Góc kỹ năng
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showThongBao()">
+              Sáng kiến số
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showThongBao()">
+              Thông báo
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="container article-wrapper">
+
+    <!-- LOADING -->
+    <div id="loading">
+
+      <div class="spinner-border text-primary"></div>
+
+      <p class="mt-3 text-muted">
+        Đang tải bài viết...
+      </p>
+
+    </div>
+
+    <!-- ARTICLE -->
+    <div id="article" style="display:none;">
+
+      <div class="article-card">
+
+        <a href="index.html" class="back-btn">
+
+          <i class="fas fa-arrow-left"></i>
+          Quay lại trang chủ
+
+        </a>
+
+        <div id="category" class="article-category"></div>
+
+        <h1 id="title" class="article-title"></h1>
+
+        <div id="meta" class="article-meta"></div>
+
+        <img id="image" class="article-img">
+
+        <div id="content" class="article-content"></div>
+
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="comment-box">
+
+        <h4 class="fw-bold mb-4">
+          <i class="fas fa-comments text-primary me-2"></i>
+          Bình luận
+        </h4>
+
+        <!-- FORM -->
+        <div class="mb-4">
+
+          <input type="text" id="comment-name" class="form-control mb-2" placeholder="Tên của bạn">
+
+          <textarea id="comment-text" class="form-control mb-3" rows="4" placeholder="Nhập bình luận..."></textarea>
+
+          <button id="send-comment" class="btn btn-primary">
+            Gửi bình luận
+          </button>
+
         </div>
-    </footer>
 
-    <!-- FIREBASE SCRIPTS -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
-    
-    <script>
-        // Cấu hình Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
-            authDomain: "pct-news-aec76.firebaseapp.com",
-            projectId: "pct-news-aec76",
-            storageBucket: "pct-news-aec76.firebasestorage.app",
-            messagingSenderId: "285083279404",
-            appId: "1:285083279404:web:068fe440e5855aeab3f189"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        <!-- LIST -->
+        <div id="comments-list">
 
-        // 1. Lấy ID từ URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleId = urlParams.get('id');
+          <p class="text-muted">
+            Chưa có bình luận nào.
+          </p>
 
-        if (articleId) {
-            // 2. Truy vấn Firestore lấy bài viết theo ID
-            db.collection("news").doc(articleId).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const dateStr = data.timestamp ? data.timestamp.toDate().toLocaleDateString('vi-VN') : "Vừa cập nhật";
+        </div>
 
-                    // Đổ dữ liệu vào giao diện
-                    document.getElementById('page-title').innerText = data.title + " | Phan Châu Trinh News";
-                    document.getElementById('art-title').innerText = data.title;
-                    document.getElementById('art-category').innerText = data.category || "TIN TỨC";
-                    document.getElementById('art-author').innerText = data.author || "Ban Biên Tập";
-                    document.getElementById('art-date').innerText = dateStr;
-                    document.getElementById('art-image').src = data.imageUrl || 'https://via.placeholder.com/800x450';
-                    document.getElementById('art-excerpt').innerText = data.excerpt || "";
-                    
-                    // Nội dung chi tiết (Dùng innerHTML để hỗ trợ thẻ <p>, <b>, <br>...)
-                    document.getElementById('art-body').innerHTML = data.content || data.excerpt;
+      </div>
 
-                    // Hiện nội dung, ẩn loading
-                    document.getElementById('article-loading').style.display = 'none';
-                    document.getElementById('article-content-area').style.display = 'block';
-                } else {
-                    document.getElementById('article-loading').innerHTML = "<h3 class='text-danger'>Bài viết không tồn tại hoặc đã bị xóa.</h3><a href='index.html'>Quay về trang chủ</a>";
-                }
-            }).catch((error) => {
-                console.error("Lỗi:", error);
-                document.getElementById('article-loading').innerHTML = "<p class='text-danger'>Lỗi kết nối dữ liệu. Vui lòng thử lại sau.</p>";
-            });
-        } else {
-            // Nếu không có ID trên URL thì đẩy về trang chủ
-            window.location.href = "index.html";
+      <!-- RELATED -->
+      <div class="related-section">
+
+        <h4 class="fw-bold mb-4">
+          <i class="fas fa-fire text-danger me-2"></i>
+          Bài viết liên quan
+        </h4>
+
+        <div class="row" id="related-posts"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+    <div id="thongBaoToast" class="toast align-items-center text-bg-primary border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          🎓 Nhà trường hiện đang tập trung phát triển hệ thống học liệu số và nâng cao chất lượng ôn thi
+          , mong các em cố gắng học tập tốt và các giáo viên hỗ trợ tốt.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container border-top pt-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h5 class="fw-bold text-dark">PHAN CHÂU TRINH NEWS</h5>
+          <p class="mb-0 small">Cơ quan ngôn luận nội bộ - THPT Phan Châu Trinh Đà Nẵng</p>
+          <p class="small text-muted">Số 154 Lê Lợi, Quận Hải Châu, Đà Nẵng</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <div class="mb-2">
+            <a target="_blank" href="https://www.facebook.com/doanpct/?locale=vi_VN" class="text-dark me-3"><i
+                class="fab fa-facebook fa-lg"></i></a>
+            <a target="_blank" href="https://www.youtube.com/@doantruongpctdanang1952/videos" class="text-dark me-3"><i
+                class="fab fa-youtube fa-lg"></i></a>
+            <a href="tel:12363834567" class="text-dark"><i class="fas fa-phone fa-lg"></i></a>
+          </div>
+          <p class="small mb-0">&copy; 2026 Bản quyền thuộc về Ban Biên Tập Bản Tin PCT.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- BOOTSTRAP -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    /* =========================
+       FIREBASE
+    ========================= */
+
+    const firebaseConfig = {
+
+      apiKey: "AIzaSyCdmDXFdXeVx9sBhQSDpjxgETPzxSjjOUY",
+
+      authDomain: "pct-news-aec76.firebaseapp.com",
+
+      projectId: "pct-news-aec76"
+
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+
+    const DEFAULT_IMAGE =
+      "https://via.placeholder.com/900x500?text=PCT+NEWS";
+
+    /* =========================
+       TIME
+    ========================= */
+
+    function updateTime() {
+
+      const now = new Date();
+
+      const thu = [
+        "Chủ Nhật",
+        "Thứ Hai",
+        "Thứ Ba",
+        "Thứ Tư",
+        "Thứ Năm",
+        "Thứ Sáu",
+        "Thứ Bảy"
+      ];
+
+      const dayName = thu[now.getDay()];
+
+      const day =
+        String(now.getDate()).padStart(2, '0');
+
+      const month =
+        String(now.getMonth() + 1).padStart(2, '0');
+
+      const year =
+        now.getFullYear();
+
+      const hour =
+        String(now.getHours()).padStart(2, '0');
+
+      const minute =
+        String(now.getMinutes()).padStart(2, '0');
+
+      const second =
+        String(now.getSeconds()).padStart(2, '0');
+
+      document.getElementById("current-date").innerText =
+        `${dayName}, ${day}/${month}/${year} - ${hour}:${minute}:${second}`;
+
+    }
+
+    updateTime();
+
+    setInterval(updateTime, 1000);
+
+    /* =========================
+       GET ID
+    ========================= */
+
+    function getId() {
+
+      const params =
+        new URLSearchParams(window.location.search);
+
+      return params.get("id");
+
+    }
+
+    // =============================
+    // TOAST THÔNG BÁO
+    // =============================
+    function showThongBao() {
+      const toastEl = document.getElementById("thongBaoToast");
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    }
+
+    /* =========================
+       LOAD ARTICLE
+    ========================= */
+
+    async function loadArticle() {
+
+      const id = getId();
+
+      if (!id) {
+
+        document.getElementById("loading").innerHTML = `
+          <div class="alert alert-danger">
+            Không tìm thấy ID bài viết.
+          </div>
+        `;
+
+        return;
+
+      }
+
+      try {
+
+        const doc =
+          await db.collection("artifacts")
+            .doc("pct-news-cms")
+            .collection("public")
+            .doc("data")
+            .collection("posts")
+            .doc(id)
+            .get();
+
+        if (!doc.exists) {
+
+          document.getElementById("loading").innerHTML = `
+            <div class="alert alert-danger">
+              Bài viết không tồn tại.
+            </div>
+          `;
+
+          return;
+
         }
-    </script>
+
+        const d = doc.data();
+
+        document.title =
+          (d.title || "Chi tiết bài viết") +
+          " - PCT News";
+
+        document.getElementById("title").innerText =
+          d.title || "Không có tiêu đề";
+
+        document.getElementById("category").innerText =
+          d.category || "Tin tức";
+
+        document.getElementById("meta").innerHTML = `
+          <i class="fas fa-user me-1"></i>
+          ${d.author || "Ban biên tập"}
+
+          &nbsp;&nbsp;•&nbsp;&nbsp;
+
+          <i class="fas fa-calendar-alt me-1"></i>
+
+          ${d.createdAt
+            ? d.createdAt.toDate().toLocaleDateString("vi-VN")
+            : "Mới đăng"}
+        `;
+
+        document.getElementById("image").src =
+          d.image || DEFAULT_IMAGE;
+
+        document.getElementById("content").innerHTML =
+          d.content || "<i>Không có nội dung.</i>";
+
+        document.getElementById("loading").style.display =
+          "none";
+
+        document.getElementById("article").style.display =
+          "block";
+
+        loadRelatedPosts(id);
+
+        loadComments(id);
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        document.getElementById("loading").innerHTML = `
+          <div class="alert alert-danger">
+            Lỗi tải bài viết từ Firebase.
+          </div>
+        `;
+
+      }
+
+    }
+
+    /* =========================
+       RELATED POSTS
+    ========================= */
+
+    async function loadRelatedPosts(currentId) {
+
+      const container =
+        document.getElementById("related-posts");
+
+      const snapshot =
+        await db.collection("artifacts")
+          .doc("pct-news-cms")
+          .collection("public")
+          .doc("data")
+          .collection("posts")
+          .orderBy("createdAt", "desc")
+          .limit(4)
+          .get();
+
+      container.innerHTML = "";
+
+      snapshot.forEach(doc => {
+
+        if (doc.id === currentId) return;
+
+        const d = doc.data();
+
+        container.innerHTML += `
+          <div class="col-md-4 mb-4">
+
+            <div class="related-card">
+
+              <img
+                src="${d.image || DEFAULT_IMAGE}"
+                class="related-img">
+
+              <div class="related-body">
+
+                <a href="article.html?id=${doc.id}"
+                  class="related-title">
+
+                  ${d.title || "Không có tiêu đề"}
+
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      });
+
+    }
+
+    /* =========================
+       LOAD COMMENTS
+    ========================= */
+
+    function loadComments(postId) {
+
+      const list =
+        document.getElementById("comments-list");
+
+      db.collection("artifacts")
+        .doc("pct-news-cms")
+        .collection("public")
+        .doc("data")
+        .collection("posts")
+        .where("postId", "==", postId)
+        .orderBy("createdAt", "desc")
+        .onSnapshot(snapshot => {
+
+          if (snapshot.empty) {
+
+            list.innerHTML = `
+              <p class="text-muted">
+                Chưa có bình luận nào.
+              </p>
+            `;
+
+            return;
+
+          }
+
+          list.innerHTML = "";
+
+          snapshot.forEach(doc => {
+
+            const d = doc.data();
+
+            list.innerHTML += `
+              <div class="comment-item">
+
+                <div class="comment-name">
+                  ${d.name || "Ẩn danh"}
+                </div>
+
+                <div class="small text-muted mb-2">
+
+                  ${d.createdAt
+                ? d.createdAt.toDate()
+                  .toLocaleString("vi-VN")
+                : ""}
+
+                </div>
+
+                <div>
+                  ${d.text || ""}
+                </div>
+
+              </div>
+            `;
+
+          });
+
+        });
+
+    }
+
+    /* =========================
+       SEND COMMENT
+    ========================= */
+
+    document.getElementById("send-comment")
+      .addEventListener("click", async () => {
+
+        const name =
+          document.getElementById("comment-name")
+            .value.trim();
+
+        const text =
+          document.getElementById("comment-text")
+            .value.trim();
+
+        const postId =
+          getId();
+
+        if (!text) {
+
+          alert("Vui lòng nhập bình luận");
+
+          return;
+
+        }
+
+        try {
+
+          awaitdb.collection("artifacts")
+            .doc("pct-news-cms")
+            .collection("public")
+            .doc("data")
+            .collection("posts")
+            .add({
+
+              postId,
+
+              name: name || "Ẩn danh",
+
+              text,
+
+              createdAt:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+            });
+
+          document.getElementById("comment-text").value = "";
+
+        }
+
+        catch (error) {
+
+          console.error(error);
+
+          alert("Lỗi gửi bình luận");
+
+        }
+
+      });
+
+    /* =========================
+       START
+    ========================= */
+
+    loadArticle();
+
+  </script>
+
 </body>
+
 </html>
