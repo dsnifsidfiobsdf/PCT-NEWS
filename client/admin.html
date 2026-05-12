@@ -21,6 +21,8 @@
   <!-- TinyMCE -->
   <script src="https://cdn.tiny.cloud/1/dl6iokr89ri6qiq51lqyo0n4rz32afxs8uixwyueacqy5upe/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
 
   <style>
     * {
@@ -405,6 +407,15 @@
       <i class="fas fa-bullhorn"></i> Tin nội bộ
     </a>
 
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('ideas')">
+      <i class="fas fa-lightbulb"></i> Góc kỹ năng
+    </a>
+
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('category-form')">
+      <i class="fas fa-folder"></i>
+      Danh mục
+    </a>
+
     <a href="javascript:void(0)" class="menu-item" onclick="navigate('comments-view')">
       <i class="fas fa-comments"></i> Bình luận
     </a>
@@ -585,13 +596,9 @@
           <div class="col-md-3 mb-3">
             <label class="form-label">Danh mục</label>
             <select id="category" class="form-select">
-              <option value="Học sinh tiêu biểu">Học sinh tiêu biểu</option>
-              <option value="Thầy cô tâm huyết">Thầy cô tâm huyết</option>
-              <option value="Cựu học sinh">Cựu học sinh</option>
-              <option value="CLB & Đội nhóm">CLB & Đội nhóm</option>
-              <option value="Sự kiện - Hoạt động">Sự kiện - Hoạt động</option>
-              <option value="Thời sự">Thời sự</option>
-              <option value="Khác">Khác</option>
+              <option value="">
+                Đang tải danh mục...
+              </option>
             </select>
           </div>
         </div>
@@ -848,6 +855,166 @@
       </div>
     </div>
 
+    <!-- CATEGORY FORM -->
+    <div id="category-form" class="content content-section">
+
+      <div class="box">
+
+        <h4 class="fw-bold mb-4">
+          Quản lý Danh mục
+        </h4>
+
+        <div class="row">
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Tên danh mục
+            </label>
+
+            <input type="text" id="categoryName" class="form-control" placeholder="Ví dụ: Học tập">
+
+          </div>
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Slug
+            </label>
+
+            <input type="text" id="categorySlug" class="form-control" placeholder="hoc-tap">
+
+          </div>
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Chọn Icon
+            </label>
+
+            <select id="categoryIcon" class="form-select">
+
+              <option value="fa-book">
+                📚 Học tập
+              </option>
+
+              <option value="fa-newspaper">
+                📰 Tin tức
+              </option>
+
+              <option value="fa-bullhorn">
+                📢 Thông báo
+              </option>
+
+              <option value="fa-users">
+                👥 Cộng đồng
+              </option>
+
+              <option value="fa-trophy">
+                🏆 Thành tích
+              </option>
+
+              <option value="fa-music">
+                🎵 Văn nghệ
+              </option>
+
+              <option value="fa-futbol">
+                ⚽ Thể thao
+              </option>
+
+              <option value="fa-lightbulb">
+                💡 Góc kỹ năng
+              </option>
+
+              <option value="fa-image">
+                🖼 Thư viện ảnh
+              </option>
+
+              <option value="fa-folder">
+                📁 Khác
+              </option>
+
+            </select>
+            <div class="mt-3">
+
+              <label class="form-label">
+                Thuộc menu
+              </label>
+
+              <select id="categoryParent" class="form-select">
+
+                <option value="main">
+                  Menu chính
+                </option>
+
+                <option value="gmsd">
+                  Gương mặt PCT
+                </option>
+
+                <option value="chuyenmon">
+                  Chuyên môn
+                </option>
+
+              </select>
+
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-primary px-4" onclick="saveCategory()">
+
+          <i class="fas fa-save me-2"></i>
+          Lưu danh mục
+
+        </button>
+
+      </div>
+
+      <div class="box mt-4">
+
+        <h5 class="fw-bold mb-3">
+          Danh sách danh mục
+        </h5>
+
+        <div class="table-responsive">
+
+          <table class="table align-middle">
+
+            <thead>
+              <tr>
+
+                <th>Tên</th>
+                <th>Slug</th>
+                <th>Icon</th>
+                <th>Menu</th>
+                <th>Hành động</th>
+
+              </tr>
+            </thead>
+
+            <tbody id="categoryTable">
+
+              <tr>
+
+                <td colspan="4" class="text-center text-muted">
+
+                  Chưa có danh mục
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
     <!-- COMMENTS -->
     <div id="comments-view" class="content content-section">
       <div class="box">
@@ -925,8 +1092,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import {
       getAuth,
-      signInAnonymously,
-      signInWithCustomToken,
       onAuthStateChanged,
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import {
@@ -938,6 +1103,10 @@
       doc,
       serverTimestamp,
       updateDoc,
+      query,
+      orderBy,
+      limit,
+      onSnapshot,
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // Khởi tạo Firebase từ môi trường (Nếu không có lấy mặc định)
@@ -961,6 +1130,29 @@
     // Cấu hình đường dẫn bảo mật bắt buộc của Firestore (Public Data)
     const getCol = (colName) =>
       collection(db, "artifacts", appId, "public", "data", colName);
+    const getNestedCol = (...segments) =>
+      collection(db, "artifacts", appId, "public", "data", ...segments);
+
+    const escapeHtml = (value = "") =>
+      String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+
+    const sanitizeHtml = (html = "") =>
+      DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
+
+    const MAX_PAGE_SIZE = 100;
+    const state = {
+      listeners: [],
+    };
+
+    window.unsubscribeAll = function () {
+      state.listeners.forEach((unsubscribe) => unsubscribe());
+      state.listeners = [];
+    };
 
     // API Keys
     const IMGBB_API_KEY = "c8e10c1df9380fd1aedf208a8cdd0a2a";
@@ -1078,16 +1270,17 @@
     }
 
     async function initAuth() {
-      try {
-        if (typeof __initial_auth_token !== "undefined") {
-          await signInWithCustomToken(auth, __initial_auth_token);
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loadAllData();
         } else {
-          await signInAnonymously(auth);
+          showToast("Vui lòng đăng nhập lại", "danger");
+
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1200);
         }
-      } catch (e) {
-        console.error("Authentication failed:", e);
-        showToast("Lỗi xác thực người dùng!", "danger");
-      }
+      });
     }
 
     onAuthStateChanged(auth, (user) => {
@@ -1099,12 +1292,14 @@
     window.loadAllData = async function () {
       showLoading(true);
       await Promise.all([
+        loadCategoriesToSelect(),
         loadPosts(),
         loadGMSD(),
         loadDocs(),
         loadSchedules(),
         loadInternal(),
         loadComments(),
+        loadCategories()
       ]);
       showLoading(false);
     };
@@ -1149,25 +1344,18 @@
 
     window.loadPosts = async function () {
       try {
-
-        const snapshot = await getDocs(getCol("posts"));
-        let posts = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(
+          query(getCol("posts"), orderBy("createdAt", "desc"), limit(MAX_PAGE_SIZE)),
+        );
+        const posts = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        // Sort ở client thay vì dùng orderBy (Theo quy tắc Firestore đơn giản)
-        posts.sort(
-          (a, b) =>
-            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
-        );
 
         document.getElementById("totalPosts").textContent = posts.length;
 
         const fullTable = document.getElementById("postTableFull");
         const dashTable = document.getElementById("postTableDashboard");
-        fullTable.innerHTML = "";
-        dashTable.innerHTML = "";
 
         if (posts.length === 0) {
           fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có bài viết.</td></tr>`;
@@ -1175,52 +1363,59 @@
           return;
         }
 
-        posts.forEach((post, index) => {
-          const imgHtml = post.image
-            ? `<img src="${post.image}" class="thumb">`
-            : `<div class="thumb bg-secondary text-white d-flex align-items-center justify-content-center"><i class="fas fa-image"></i></div>`;
+        const fullRows = posts
+          .map((post) => {
+            const imageUrl = escapeHtml(post.image || "");
+            const imgHtml = post.image
+              ? `<img src="${imageUrl}" class="thumb">`
+              : `<div class="thumb bg-secondary text-white d-flex align-items-center justify-content-center"><i class="fas fa-image"></i></div>`;
+            const safePostData = encodeURIComponent(JSON.stringify(post));
+            return `
+          <tr>
+            <td>${imgHtml}</td>
+            <td><strong>${escapeHtml(post.title)}</strong></td>
+            <td><span class="badge bg-primary">${escapeHtml(post.category)}</span></td>
+            <td>${escapeHtml(post.author)}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-1" onclick="editPost('${safePostData}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${escapeHtml(post.id)}', loadPosts)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+          })
+          .join("");
 
-          // Chuẩn bị dữ liệu an toàn để đưa vào hàm onclick
-          const safePostData = encodeURIComponent(JSON.stringify(post));
+        const dashRows = posts
+          .slice(0, 4)
+          .map((post) => {
+            const imageUrl = escapeHtml(post.image || "");
+            const imgHtml = post.image
+              ? `<img src="${imageUrl}" class="thumb">`
+              : `<div class="thumb bg-secondary text-white d-flex align-items-center justify-content-center"><i class="fas fa-image"></i></div>`;
+            const safePostData = encodeURIComponent(JSON.stringify(post));
+            return `
+          <tr>
+            <td>${imgHtml}</td>
+            <td><div class="text-truncate" style="max-width: 200px;"><strong>${escapeHtml(post.title)}</strong></div></td>
+            <td><span class="badge bg-primary">${escapeHtml(post.category)}</span></td>
+            <td>
+              <button class="btn btn-sm btn-warning me-1" onclick="editPost('${safePostData}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${escapeHtml(post.id)}', loadPosts)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+          })
+          .join("");
 
-          const rowFull = `
-              <tr>
-                <td>${imgHtml}</td>
-                <td><strong>${post.title}</strong></td>
-                <td><span class="badge bg-primary">${post.category}</span></td>
-                <td>${post.author}</td>
-                
-                <td>
-                  <button class="btn btn-sm btn-warning me-1"
-                    onclick="editPost('${safePostData}')">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${post.id}', loadPosts)"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-            `;
-          fullTable.innerHTML += rowFull;
-
-          if (index < 4) {
-            const rowDash = `
-                  <tr>
-                    <td>${imgHtml}</td>
-                    <td><div class="text-truncate" style="max-width: 200px;"><strong>${post.title}</strong></div></td>
-                    <td><span class="badge bg-primary">${post.category}</span></td>
-                    <td>
-                      <button class="btn btn-sm btn-warning me-1"
-                        onclick="editPost('${safePostData}')">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-danger" onclick="deleteRecord('posts', '${post.id}', loadPosts)"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                `;
-            dashTable.innerHTML += rowDash;
-          }
-        });
+        fullTable.innerHTML = fullRows;
+        dashTable.innerHTML = dashRows;
       } catch (e) {
-        console.error(e);
+        console.error("Load posts failed:", e);
+        showToast("Lỗi tải danh sách bài viết", "danger");
       }
     }
 
@@ -1339,22 +1534,18 @@
 
     window.loadGMSD = async function () {
       try {
-        const snapshot = await getDocs(getCol("gmsd"));
-        let items = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(
+          query(getCol("gmsd"), orderBy("createdAt", "desc"), limit(MAX_PAGE_SIZE)),
+        );
+        const items = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        items.sort(
-          (a, b) =>
-            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
-        );
 
         document.getElementById("totalPeople").textContent = items.length;
 
         const fullTable = document.getElementById("gmsdFullTable");
         const dashTable = document.getElementById("gmsdDashboardTable");
-        fullTable.innerHTML = "";
-        dashTable.innerHTML = "";
 
         if (items.length === 0) {
           fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`;
@@ -1362,40 +1553,45 @@
           return;
         }
 
-        items.forEach((item, index) => {
-          const imgHtml = item.image
-            ? `<img src="${item.image}" class="thumb rounded-circle" style="width:50px; height:50px;">`
-            : `<i class="fas fa-user-circle fs-1 text-muted"></i>`;
-
-          const safeItemData = encodeURIComponent(JSON.stringify(item));
-
-          fullTable.innerHTML += `
+        const fullRows = items
+          .map((item) => {
+            const imageUrl = escapeHtml(item.image || "");
+            const imgHtml = item.image
+              ? `<img src="${imageUrl}" class="thumb rounded-circle" style="width:50px; height:50px;">`
+              : `<i class="fas fa-user-circle fs-1 text-muted"></i>`;
+            const safeItemData = encodeURIComponent(JSON.stringify(item));
+            return `
               <tr>
                 <td>${imgHtml}</td>
-                <td><strong>${item.name}</strong></td>
-                <td>${item.role}</td>
-                <td>${item.reward}</td>
+                <td><strong>${escapeHtml(item.name)}</strong></td>
+                <td>${escapeHtml(item.role)}</td>
+                <td>${escapeHtml(item.reward)}</td>
                 <td>
-                    <button class="btn btn-sm btn-warning me-1"
-                      onclick="editGMSD('${safeItemData}')">
+                    <button class="btn btn-sm btn-warning me-1" onclick="editGMSD('${safeItemData}')">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('gmsd', '${item.id}', loadGMSD)"><i class="fas fa-trash"></i></button>
-                </td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteRecord('gmsd', '${escapeHtml(item.id)}', loadGMSD)"><i class="fas fa-trash"></i></button>
+                 </td>
               </tr>
             `;
+          })
+          .join("");
 
-          if (index < 3) {
-            dashTable.innerHTML += `
+        const dashRows = items
+          .slice(0, 3)
+          .map((item) => `
                   <tr>
-                    <td><strong>${item.name}</strong></td>
-                    <td>${item.role}</td>
+                    <td><strong>${escapeHtml(item.name)}</strong></td>
+                    <td>${escapeHtml(item.role)}</td>
                   </tr>
-                `;
-          }
-        });
+                `)
+          .join("");
+
+        fullTable.innerHTML = fullRows;
+        dashTable.innerHTML = dashRows;
       } catch (e) {
-        console.error(e);
+        console.error("Load GMSD failed:", e);
+        showToast("Lỗi tải danh sách gương mặt", "danger");
       }
     }
 
@@ -1491,51 +1687,51 @@
 
     window.loadDocs = async function () {
       try {
-        const snapshot = await getDocs(getCol("docs"));
-        let items = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(
+          query(getCol("docs"), orderBy("createdAt", "desc"), limit(MAX_PAGE_SIZE)),
+        );
+        const items = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        items.sort(
-          (a, b) =>
-            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
-        );
 
         document.getElementById("totalDocs").textContent = items.length;
         const fullTable = document.getElementById("docsFullTable");
-        fullTable.innerHTML = "";
 
-        if (items.length === 0)
-          return (fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`);
+        if (items.length === 0) {
+          fullTable.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`;
+          return;
+        }
 
-        items.forEach((item) => {
-          const safeItemData = encodeURIComponent(JSON.stringify(item));
-          fullTable.innerHTML += `
+        fullTable.innerHTML = items
+          .map((item) => {
+            const safeItemData = encodeURIComponent(JSON.stringify(item));
+            const safeLink = escapeHtml(item.link || "");
+            return `
               <tr>
-                <td><i class="fas fa-file-pdf text-danger me-2"></i><strong>${item.title}</strong></td>
-                <td>${item.author || "Ẩn danh"}</td>
-                <td><span class="badge bg-secondary">${item.class}</span></td>
-                <td><a href="${item.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-link"></i></a></td>
+                <td><i class="fas fa-file-pdf text-danger me-2"></i><strong>${escapeHtml(item.title)}</strong></td>
+                <td>${escapeHtml(item.author || "Ẩn danh")}</td>
+                <td><span class="badge bg-secondary">${escapeHtml(item.class)}</span></td>
+                <td><a href="${safeLink}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-link"></i></a></td>
                 <td>
-                  <button class="btn btn-sm btn-primary me-1"
-                    onclick="window.open('${item.link}')">
+                  <a href="${safeLink}" target="_blank" class="btn btn-sm btn-primary me-1">
                     <i class="fas fa-eye"></i>
-                  </button>
-
-                  <button class="btn btn-sm btn-warning me-1"
-                    onclick="editDoc('${safeItemData}')">
+                  </a>
+                  <button class="btn btn-sm btn-warning me-1" onclick="editDoc('${safeItemData}')">
                     <i class="fas fa-edit"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-danger"
-                    onclick="deleteRecord('docs','${item.id}',loadDocs)">
+                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('docs', '${escapeHtml(item.id)}', loadDocs)">
                     <i class="fas fa-trash"></i>
                   </button>
-                </td>
+                 </td>
               </tr>
             `;
-        });
-      } catch (e) { }
+          })
+          .join("");
+      } catch (e) {
+        console.error("Load docs failed:", e);
+        showToast("Lỗi tải tài liệu", "danger");
+      }
     }
 
     window.editDoc = function (encodedItemData) {
@@ -1619,49 +1815,61 @@
 
     window.loadSchedules = async function () {
       try {
-        const snapshot = await getDocs(getCol("schedules"));
-        let items = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(
+          query(getCol("schedules"), orderBy("date", "asc"), limit(MAX_PAGE_SIZE)),
+        );
+        const items = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        items.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by upcoming date
 
         const fullTable = document.getElementById("scheduleFullTable");
         const dashTable = document.getElementById("scheduleDashboardTable");
-        fullTable.innerHTML = "";
-        dashTable.innerHTML = "";
 
         if (items.length === 0) {
           fullTable.innerHTML =
-            dashTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Không có lịch.</td></tr>`;
+            dashTable.innerHTML = `<table><td colspan="4" class="text-center text-muted">Không có lịch.</td></tr>`;
           return;
         }
 
-        items.forEach((item, i) => {
-          const dateStr = new Date(item.date).toLocaleString("vi-VN");
-          const safeItemData = encodeURIComponent(JSON.stringify(item));
-          fullTable.innerHTML += `
-              <tr>
-                <td><strong>${item.title}</strong></td>
-                <td><span class="badge bg-info text-dark">${dateStr}</span></td>
-                <td><small>${item.desc}</small></td>
+        fullTable.innerHTML = items
+          .map((item, i) => {
+            const dateStr = new Date(item.date).toLocaleString("vi-VN");
+            const safeItemData = encodeURIComponent(JSON.stringify(item));
+            return `
+              </table>
+                <td><strong>${escapeHtml(item.title)}</strong></td>
+                <td><span class="badge bg-info text-dark">${escapeHtml(dateStr)}</span></td>
+                <td><small>${escapeHtml(item.desc)}</small></td>
                 <td>
-                  <button class="btn btn-sm btn-warning me-1"
-                    onclick="editSchedule('${safeItemData}')">
+                  <button class="btn btn-sm btn-warning me-1" onclick="editSchedule('${safeItemData}')">
                     <i class="fas fa-edit"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-danger"
-                    onclick="deleteRecord('schedules','${item.id}',loadSchedules)">
+                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('schedules', '${escapeHtml(item.id)}', loadSchedules)">
                     <i class="fas fa-trash"></i>
                   </button>
-                </td>
+                 </td>
               </tr>
             `;
-          if (i < 3)
-            dashTable.innerHTML += `<tr><td><strong>${item.title}</strong></td><td><small>${dateStr}</small></td></tr>`;
-        });
-      } catch (e) { }
+          })
+          .join("");
+
+        dashTable.innerHTML = items
+          .slice(0, 3)
+          .map((item) => {
+            const dateStr = new Date(item.date).toLocaleString("vi-VN");
+            return `
+              <tr>
+                <td><strong>${escapeHtml(item.title)}</strong></td>
+                <td><small>${escapeHtml(dateStr)}</small></td>
+              </tr>
+            `;
+          })
+          .join("");
+      } catch (e) {
+        console.error("Load schedules failed:", e);
+        showToast("Lỗi tải lịch trình", "danger");
+      }
     }
 
     window.editSchedule = function (encodedItemData) {
@@ -1711,12 +1919,13 @@
       }
     };
 
+    // === FIXED: Internal News Functions - Using ONLY "noi_bo" collection (no nested paths) ===
     window.saveInternalNews = async function () {
       const title = document.getElementById("internalTitle").value.trim();
-      const content = tinymce.get("internalContent")?.getContent();
+      const content = sanitizeHtml(tinymce.get("internalContent")?.getContent() || "");
 
       if (!title || !content) {
-        showToast("Vui lòng nhập đầy đủ tiêu đề và nội dung!");
+        showToast("Vui lòng nhập đầy đủ tiêu đề và nội dung!", "danger");
         return;
       }
 
@@ -1724,63 +1933,342 @@
         await addDoc(getCol("noi_bo"), {
           title,
           content,
-          isBreaking: true, // nếu bạn muốn hiện ở ticker
+          isBreaking: true,
           createdAt: serverTimestamp(),
         });
 
         showToast("Đã phát thông báo nội bộ!");
+        await loadInternal();
 
-        await loadInternal(); // refresh danh sách nếu có
+        // Clear form
+        document.getElementById("internalTitle").value = "";
+        tinymce.get("internalContent").setContent("");
       } catch (e) {
         console.error("Save internal news error:", e);
-        showToast("Lỗi khi lưu thông báo!");
+        showToast("Lỗi khi lưu thông báo!", "danger");
       }
     };
 
+    window.saveCategory = async function () {
+
+      const name =
+        document
+          .getElementById("categoryName")
+          .value
+          .trim();
+
+      const slug =
+        document
+          .getElementById("categorySlug")
+          .value
+          .trim();
+
+      const icon =
+        document
+          .getElementById("categoryIcon")
+          .value
+          .trim();
+
+      const parent =
+        document
+          .getElementById(
+            "categoryParent"
+          )
+          .value;
+
+      if (!name || !slug) {
+
+        return showToast(
+          "Nhập tên và slug",
+          "danger"
+        );
+
+      }
+
+      try {
+
+        await addDoc(
+          getCol("categories"),
+          {
+
+            name,
+            slug,
+
+            icon:
+              icon || "fa-folder",
+
+            parent,
+
+            visible: true,
+
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+        showToast(
+          "Đã thêm danh mục!"
+        );
+
+        document
+          .getElementById("categoryName")
+          .value = "";
+
+        document
+          .getElementById("categorySlug")
+          .value = "";
+
+        document
+          .getElementById("categoryIcon")
+          .value = "";
+
+        loadCategories();
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast(
+          "Lỗi thêm danh mục",
+          "danger"
+        );
+
+      }
+
+    };
+
+    window.loadCategories = async function () {
+
+      try {
+
+        const snapshot =
+          await getDocs(
+
+            query(
+              getCol("categories"),
+              orderBy(
+                "createdAt",
+                "desc"
+              )
+            )
+
+          );
+
+        const items =
+          snapshot.docs.map(doc => ({
+
+            id: doc.id,
+            ...doc.data()
+
+          }));
+
+        const table =
+          document.getElementById(
+            "categoryTable"
+          );
+
+        if (items.length === 0) {
+
+          table.innerHTML = `
+        <tr>
+
+          <td colspan="4"
+            class="text-center text-muted">
+
+            Chưa có danh mục
+
+          </td>
+
+        </tr>
+      `;
+
+          return;
+
+        }
+
+        table.innerHTML =
+          items.map(item => `
+
+        <tr>
+
+          <td>
+
+            <strong>
+              ${escapeHtml(item.name)}
+            </strong>
+
+          </td>
+
+          <td>
+            ${escapeHtml(item.slug)}
+          </td>
+
+          <td>
+
+            <i class="fas ${escapeHtml(item.icon)}"></i>
+
+          </td>
+
+          <td>
+
+            ${escapeHtml(item.parent || "main")}
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-sm btn-danger"
+
+              onclick="
+                deleteRecord(
+                  'categories',
+                  '${item.id}',
+                  loadCategories
+                )
+              ">
+
+              <i class="fas fa-trash"></i>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast(
+          "Lỗi tải danh mục",
+          "danger"
+        );
+
+      }
+
+    };
+
+    window.loadCategoriesToSelect =
+      async function () {
+
+        try {
+
+          const snapshot =
+            await getDocs(
+
+              query(
+                getCol("categories"),
+                orderBy(
+                  "createdAt",
+                  "desc"
+                )
+              )
+
+            );
+
+          const items =
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+
+          const select =
+            document.getElementById(
+              "category"
+            );
+
+          if (!select) return;
+
+          if (items.length === 0) {
+
+            select.innerHTML = `
+          <option value="">
+            Chưa có danh mục
+          </option>
+        `;
+
+            return;
+          }
+
+          select.innerHTML =
+            items.map(item => `
+
+          <option value="${escapeHtml(item.name)}">
+
+            ${escapeHtml(item.name)}
+
+          </option>
+
+        `).join("");
+
+        } catch (e) {
+
+          console.error(e);
+
+          showToast(
+            "Lỗi load category select",
+            "danger"
+          );
+
+        }
+
+      };
+
     window.loadInternal = async function () {
       try {
-        const snapshot = await getDocs(getCol("internal"));
-        let items = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(
+          query(getCol("noi_bo"), orderBy("createdAt", "desc"), limit(MAX_PAGE_SIZE)),
+        );
+        const items = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        items.sort(
-          (a, b) =>
-            (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0),
-        );
 
         const fullTable = document.getElementById("internalFullTable");
-        fullTable.innerHTML = "";
-        if (items.length > 0)
-          document.getElementById("breakingNews").textContent =
-            "📢 THÔNG BÁO: " + items[0].title;
+        const breakingNews = document.getElementById("breakingNews");
 
-        items.forEach((item) => {
-          const safeItemData = encodeURIComponent(JSON.stringify(item));
-          fullTable.innerHTML += `
+        if (items.length > 0) {
+          breakingNews.textContent =
+            "📢 THÔNG BÁO: " + escapeHtml(items[0].title);
+        } else {
+          breakingNews.textContent =
+            "Chào mừng đến với hệ thống Quản trị viên PCT News CMS...";
+        }
+
+        if (items.length === 0) {
+          fullTable.innerHTML = `<tr><td colspan="3" class="text-center text-muted">Chưa có dữ liệu.</td></tr>`;
+          return;
+        }
+
+        fullTable.innerHTML = items
+          .map((item) => {
+            const safeItemData = encodeURIComponent(JSON.stringify(item));
+            return `
               <tr>
-                <td><strong>${item.title}</strong></td>
+                <td><strong>${escapeHtml(item.title)}</strong></td>
                 <td><small class="text-muted">Gần đây</small></td>
                 <td>
-                  <button class="btn btn-sm btn-info me-1"
-                    onclick="previewInternal('${safeItemData}')">
+                  <button class="btn btn-sm btn-info me-1" onclick="previewInternal('${safeItemData}')">
                     <i class="fas fa-eye"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-warning me-1"
-                    onclick="editInternalNews('${safeItemData}')">
+                  <button class="btn btn-sm btn-warning me-1" onclick="editInternalNews('${safeItemData}')">
                     <i class="fas fa-edit"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-danger"
-                    onclick="deleteRecord('internal','${item.id}',loadInternal)">
+                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('noi_bo', '${escapeHtml(item.id)}', loadInternal)">
                     <i class="fas fa-trash"></i>
                   </button>
                 </td>
               </tr>
             `;
-        });
-      } catch (e) { }
+          })
+          .join("");
+      } catch (e) {
+        console.error("Load internal news failed:", e);
+        showToast("Lỗi tải thông báo nội bộ", "danger");
+      }
     }
 
     window.previewInternal = function (encodedItemData) {
@@ -1788,14 +2276,11 @@
 
       openEditModal(`
           <div>
-            <h3 class="fw-bold mb-3">${item.title}</h3>
-
+            <h3 class="fw-bold mb-3">${escapeHtml(item.title)}</h3>
             <div class="border rounded p-3 bg-light">
               ${item.content}
             </div>
-
-            <button class="btn btn-secondary mt-3 w-100"
-              onclick="closeEditModal()">
+            <button class="btn btn-secondary mt-3 w-100" onclick="closeEditModal()">
               Đóng
             </button>
           </div>
@@ -1808,7 +2293,7 @@
             <form id="editInternalForm" onsubmit="updateInternal(event, '${item.id}')">
                 <div class="mb-3">
                     <label class="form-label">Tiêu đề thông báo</label>
-                    <input type="text" id="editInternalTitle" class="form-control" value="${item.title || ""}" required>
+                    <input type="text" id="editInternalTitle" class="form-control" value="${escapeHtml(item.title || "")}" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nội dung</label>
@@ -1822,63 +2307,73 @@
 
     window.updateInternal = async function (e, itemId) {
       e.preventDefault();
-      const title = document.getElementById("editInternalTitle").value;
-      const content = tinymce.get("editInternalContent").getContent();
-      if (!title) return showToast("Nhập Tiêu đề", "warning");
+      const title = document.getElementById("editInternalTitle").value.trim();
+      const content = sanitizeHtml(tinymce.get("editInternalContent").getContent() || "");
+
+      if (!title) {
+        showToast("Nhập Tiêu đề", "warning");
+        return;
+      }
+      if (!content) {
+        showToast("Nhập Nội dung", "warning");
+        return;
+      }
 
       showLoading(true);
       try {
-        await updateDoc(doc(getCol("internal"), itemId), { title, content });
+        await updateDoc(doc(getCol("noi_bo"), itemId), { title, content });
         showToast("Cập nhật thành công!");
         closeEditModal();
         tinymce.remove(".tinymce-editor-modal");
         await loadInternal();
       } catch (e) {
+        console.error("Update internal failed:", e);
         showToast("Lỗi cập nhật", "danger");
       } finally {
         showLoading(false);
       }
     };
+    // === END FIXED INTERNAL NEWS FUNCTIONS ===
 
     window.loadComments = async function () {
       try {
-        const snapshot = await getDocs(getCol("comments"));
-        let items = snapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(query(getCol("comments"), limit(MAX_PAGE_SIZE)));
+        const items = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         document.getElementById("totalComments").textContent = items.length;
         const fullTable = document.getElementById("commentFullTable");
-        fullTable.innerHTML = "";
-        if (items.length === 0)
-          return (fullTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Chưa có bình luận.</td></tr>`);
 
-        items.forEach((item) => {
-          fullTable.innerHTML += `
+        if (items.length === 0) {
+          fullTable.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Chưa có bình luận.</td></tr>`;
+          return;
+        }
+
+        fullTable.innerHTML = items
+          .map((item) => `
               <tr>
-                <td><i class="fas fa-user text-muted me-2"></i>${item.user || "Ẩn danh"}</td>
-                <td>"${item.content}"</td>
-                <td><span class="badge bg-secondary">Post ID: ${item.postId}</span></td>
+                <td><i class="fas fa-user text-muted me-2"></i>${escapeHtml(item.user || "Ẩn danh")}</td>
+                <td>"${escapeHtml(item.content)}"</td>
+                <td><span class="badge bg-secondary">Post ID: ${escapeHtml(item.postId)}</span></td>
                 <td>
-                  <button class="btn btn-sm btn-success me-1"
-                    onclick="approveComment('${item.id}')">
+                  <button class="btn btn-sm btn-success me-1" onclick="approveComment('${escapeHtml(item.id)}')">
                     <i class="fas fa-check"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-warning me-1"
-                    onclick="hideComment('${item.id}')">
+                  <button class="btn btn-sm btn-warning me-1" onclick="hideComment('${escapeHtml(item.id)}')">
                     <i class="fas fa-eye-slash"></i>
                   </button>
-
-                  <button class="btn btn-sm btn-danger"
-                    onclick="deleteRecord('comments','${item.id}',loadComments)">
+                  <button class="btn btn-sm btn-danger" onclick="deleteRecord('comments', '${escapeHtml(item.id)}', loadComments)">
                     <i class="fas fa-trash"></i>
                   </button>
                 </td>
               </tr>
-            `;
-        });
-      } catch (e) { }
+            `)
+          .join("");
+      } catch (e) {
+        console.error("Load comments failed:", e);
+        showToast("Lỗi tải bình luận", "danger");
+      }
     }
 
     window.approveComment = async function (id) {
@@ -1919,12 +2414,14 @@
         "Bạn có chắc chắn muốn xóa mục này vĩnh viễn?",
         async () => {
           try {
-            await deleteDoc(doc(getCol(collectionName), id));
+            // collectionName is now always a string (not array) for simplicity
+            const collectionRef = getCol(collectionName);
+            await deleteDoc(doc(collectionRef, id));
             showToast("Xóa thành công", "success");
             if (reloadCallback) reloadCallback();
           } catch (e) {
+            console.error("Delete record failed:", e);
             showToast("Lỗi khi xóa", "danger");
-            console.error(e);
           }
         },
       );

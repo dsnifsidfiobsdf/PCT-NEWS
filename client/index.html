@@ -382,140 +382,107 @@
     <!-- NAVIGATION -->
     <nav class="navbar navbar-expand-lg navbar-main">
         <div class="container">
+
             <button class="navbar-toggler w-100 border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#newsNav">
+
                 <span class="navbar-toggler-icon"></span>
                 DANH MỤC TIN
+
             </button>
+
             <div class="collapse navbar-collapse" id="newsNav">
+
                 <ul class="navbar-nav mx-auto">
+
                     <!-- THỜI SỰ -->
                     <li class="nav-item">
+
                         <a class="nav-link active" href="index.html">
+
                             Thời sự học đường
+
                         </a>
+
                     </li>
 
                     <!-- GƯƠNG MẶT -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="gmsd.html">
+
+                        <a class="nav-link dropdown-toggle" href="gmsd.html" role="button">
+
                             Gương mặt PCT
+
                         </a>
 
-                        <ul class="dropdown-menu shadow">
+                        <ul class="dropdown-menu shadow" id="gmsdDropdown">
 
-                            <li>
-                                <a class="dropdown-item py-2" href="gmsd.html?cat=hocsinh">
-                                    <i class="fas fa-star me-2 text-warning"></i>
-                                    Học sinh tiêu biểu
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item py-2" href="gmsd.html?cat=giaovien">
-                                    <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>
-                                    Thầy cô tâm huyết
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item py-2" href="gmsd.html?cat=cuuhs">
-                                    <i class="fas fa-user-graduate me-2 text-success"></i>
-                                    Cựu học sinh
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item py-2" href="gmsd.html?cat=clb">
-                                    <i class="fas fa-users me-2 text-info"></i>
-                                    CLB & Đội nhóm
-                                </a>
-                            </li>
+                            <!-- FIREBASE AUTO -->
 
                         </ul>
+
                     </li>
 
                     <!-- CHUYÊN MÔN -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="tailieu.html?cat=all">
+
+                        <a class="nav-link dropdown-toggle" href="tailieu.html?cat=all" role="button">
+
                             <i class="fa-solid fa-graduation-cap"></i>
+
                             Chuyên môn
+
                         </a>
 
-                        <ul class="dropdown-menu shadow">
+                        <ul class="dropdown-menu shadow" id="chuyenmonDropdown">
 
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=toan">
-                                    <i class="fa-solid fa-calculator text-primary"></i>
-                                    Toán - Tin
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=van">
-                                    <i class="fa-solid fa-pen-nib text-danger"></i>
-                                    Ngữ Văn
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=anh">
-                                    <i class="fa-solid fa-language text-info"></i>
-                                    Tiếng Anh
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=ly">
-                                    <i class="fa-solid fa-atom text-warning"></i>
-                                    Vật Lý
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=hoa">
-                                    <i class="fa-solid fa-flask-vial text-success"></i>
-                                    Hóa Học
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=sinh">
-                                    <i class="fa-solid fa-dna text-success"></i>
-                                    Sinh học
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="tailieu.html?cat=sudia">
-                                    <i class="fa-solid fa-earth-asia text-secondary"></i>
-                                    Sử - Địa
-                                </a>
-                            </li>
+                            <!-- FIREBASE AUTO -->
 
                         </ul>
+
                     </li>
 
-                    <!-- MENU KHÁC -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showThongBao()">
-                            Góc kỹ năng
-                        </a>
-                    </li>
+                    <!-- CATEGORY THƯỜNG -->
+                    <ul id="mainCategories" class="navbar-nav d-flex flex-row">
+                    </ul>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showThongBao()">
-                            Sáng kiến số
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showThongBao()">
-                            Thông báo
-                        </a>
-                    </li>
-                </ul>
             </div>
+
+            <!-- MENU KHÁC -->
+            <li class="nav-item">
+
+                <a class="nav-link" href="gockynang.html">
+
+                    Góc kỹ năng
+
+                </a>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a class="nav-link" href="#" onclick="showThongBao()">
+
+                    Sáng kiến số
+
+                </a>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a class="nav-link" href="#" onclick="showThongBao()">
+
+                    Thông báo
+
+                </a>
+
+            </li>
+
+            </ul>
+
+        </div>
+
         </div>
     </nav>
 
@@ -685,6 +652,7 @@
         </div>
     </div>
     <!-- FIREBASE SCRIPTS -->
+    <script src="chatbot.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -758,6 +726,121 @@
                 `;
                 });
             });
+        }
+
+        function loadNavbarCategories() {
+
+            const gmsdDropdown =
+                document.getElementById(
+                    "gmsdDropdown"
+                );
+
+            const chuyenmonDropdown =
+                document.getElementById(
+                    "chuyenmonDropdown"
+                );
+
+            const mainCategories =
+                document.getElementById(
+                    "mainCategories"
+                );
+
+            db.collection("artifacts")
+                .doc("pct-news-cms")
+                .collection("public")
+                .doc("data")
+                .collection("categories")
+                .orderBy("createdAt", "desc")
+                .onSnapshot(snapshot => {
+
+                    gmsdDropdown.innerHTML = "";
+
+                    chuyenmonDropdown.innerHTML = "";
+
+                    mainCategories.innerHTML = "";
+
+                    snapshot.forEach(doc => {
+
+                        const data = doc.data();
+
+                        const name =
+                            data.name || "Danh mục";
+
+                        const slug =
+                            data.slug || "";
+
+                        const icon =
+                            data.icon || "fa-folder";
+
+                        const parent =
+                            data.parent || "main";
+
+                        // GMSD
+                        if (parent === "gmsd") {
+
+                            gmsdDropdown.innerHTML += `
+
+                        <li>
+
+                            <a class="dropdown-item py-2"
+                               href="gmsd.html?cat=${slug}">
+
+                                <i class="fas ${icon} me-2"></i>
+
+                                ${name}
+
+                            </a>
+
+                        </li>
+
+                    `;
+                        }
+
+                        // CHUYÊN MÔN
+                        else if (parent === "chuyenmon") {
+
+                            chuyenmonDropdown.innerHTML += `
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="tailieu.html?cat=${slug}">
+
+                                <i class="fas ${icon} me-2"></i>
+
+                                ${name}
+
+                            </a>
+
+                        </li>
+
+                    `;
+                        }
+
+                        // MENU CHÍNH
+                        else {
+
+                            mainCategories.innerHTML += `
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               href="index.html?cat=${slug}">
+
+                                <i class="fas ${icon} me-1"></i>
+
+                                ${name}
+
+                            </a>
+
+                        </li>
+
+                    `;
+                        }
+
+                    });
+
+                });
         }
 
         // =============================
@@ -1117,7 +1200,6 @@
                             <div class="small text-danger fw-bold">
                                 ${data.date || "Chưa có ngày"}
                             </div>
-
                             <div class="fw-semibold">
                                 ${data.title || "Không có tiêu đề"}
                             </div>
@@ -1175,6 +1257,7 @@
 
                 });
         }
+
         // =============================
         // TOAST THÔNG BÁO
         // =============================
@@ -1188,6 +1271,7 @@
         // START
         // =============================
         window.addEventListener("DOMContentLoaded", () => {
+            loadNavbarCategories();
             loadNews();          // QUAN TRỌNG NHẤT
             loadHotNews();
             loadSchedules();
