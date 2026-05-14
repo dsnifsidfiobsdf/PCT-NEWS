@@ -137,6 +137,12 @@
       background: linear-gradient(90deg, #2563eb, #3b82f6);
     }
 
+    .disabled-menu {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
     /* MAIN */
     .main {
       margin-left: 280px;
@@ -269,6 +275,10 @@
       display: flex;
     }
 
+    .content-section {
+      display: none;
+    }
+
     .edit-modal {
       background: white;
       padding: 30px;
@@ -386,42 +396,60 @@
 
     <div class="menu-title">Dashboard</div>
 
-    <a href="javascript:void(0)" class="menu-item active" onclick="navigate('dashboard')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('dashboard', this)">
       <i class="fas fa-chart-line"></i> Dashboard
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('post-form')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('post-form', this)">
       <i class="fas fa-newspaper"></i> Quản lý Bài viết
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('gmsd-form')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('gmsd-form', this)">
       <i class="fas fa-users"></i> Gương mặt PCT
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('document-form')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('document-form', this)">
       <i class="fas fa-file-pdf"></i> Tài liệu PDF
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('schedule-form')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('schedule-form', this)">
       <i class="fas fa-calendar"></i> Đặt lịch
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('internal-news')">
+    <a href="javascript:void(0)" class="menu-item" onclick="navigate('internal-news', this)">
       <i class="fas fa-bullhorn"></i> Tin nội bộ
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('ideas')">
-      <i class="fas fa-lightbulb"></i> Góc kỹ năng
+    <a href="javascript:void(0)" class="menu-item disabled-menu">
+
+      <i class="fas fa-lightbulb"></i>
+      Góc kỹ năng
+      <small class="ms-2 text-warning">
+        (Đang phát triển)
+      </small>
+
     </a>
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('category-form')">
+    <div class="menu-item" data-bs-toggle="collapse" href="#categoryDropdown" role="button" aria-expanded="false">
+
       <i class="fas fa-folder"></i>
-      Danh mục
-    </a>
+      Quản lý danh mục
 
-    <a href="javascript:void(0)" class="menu-item" onclick="navigate('comments-view')">
-      <i class="fas fa-comments"></i> Bình luận
-    </a>
+    </div>
+
+    <div class="collapse ms-3" id="categoryDropdown">
+
+      <a href="javascript:void(0)" class="menu-item" onclick="navigate('gmsd-category-form', this)">
+        <i class="fas fa-users"></i>
+        Gương mặt sáng giá PCT
+      </a>
+
+      <a href="javascript:void(0)" class="menu-item" onclick="navigate('specialized-category-form', this)">
+        <i class="fas fa-book"></i>
+        Chuyên môn
+      </a>
+
+    </div>
 
     <a href="index.html" target="_blank" class="menu-item mt-4">
       <i class="fas fa-globe"></i> Xem trang chủ
@@ -579,7 +607,7 @@
     </div>
 
     <!-- POST FORM -->
-    <div id="post-form" class="content content-section">
+    <div id="post-form" class="content-section">
       <div class="box">
         <div class="d-flex justify-content-between mb-4">
           <h4 class="fw-bold" id="postFormTitle">Đăng bài viết mới</h4>
@@ -647,7 +675,7 @@
     </div>
 
     <!-- GMSD FORM -->
-    <div id="gmsd-form" class="content content-section">
+    <div id="gmsd-form" class="content-section">
       <div class="box">
         <h4 class="fw-bold mb-4">Thêm Gương mặt PCT</h4>
 
@@ -707,7 +735,7 @@
     </div>
 
     <!-- DOCUMENT FORM -->
-    <div id="document-form" class="content content-section">
+    <div id="document-form" class="content-section">
       <div class="box">
         <h4 class="fw-bold mb-4">Tải lên Tài liệu (PDF)</h4>
 
@@ -770,7 +798,7 @@
     </div>
 
     <!-- SCHEDULE -->
-    <div id="schedule-form" class="content content-section">
+    <div id="schedule-form" class="content-section">
       <div class="box">
         <h4 class="fw-bold mb-4">Thêm Sự kiện / Lịch trình</h4>
 
@@ -820,7 +848,7 @@
     </div>
 
     <!-- INTERNAL NEWS -->
-    <div id="internal-news" class="content content-section">
+    <div id="internal-news" class="content-section">
       <div class="box">
         <h4 class="fw-bold mb-4">Phát Thông báo Nội bộ</h4>
         <div class="mb-3">
@@ -859,153 +887,113 @@
     </div>
 
     <!-- CATEGORY FORM -->
-    <div id="category-form" class="content content-section">
+    <!-- ========================= -->
+    <!-- CATEGORY MANAGEMENT -->
+    <!-- ========================= -->
+
+    <!-- GMSD CATEGORY -->
+    <div id="gmsd-category-form" class="content-section">
 
       <div class="box">
 
-        <h4 class="fw-bold mb-4">
-          Quản lý Danh mục
-        </h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4 class="fw-bold mb-0">
+            Quản lý danh mục Gương mặt PCT
+          </h4>
 
-        <div class="row">
+          <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#gmsdCreateForm">
 
-          <div class="col-md-4 mb-3">
+            <i class="fas fa-plus me-2"></i>
+            Thêm danh mục
 
-            <label class="form-label">
-              Tên danh mục
-            </label>
+          </button>
+        </div>
 
-            <input type="text" id="categoryName" class="form-control" placeholder="Ví dụ: Học tập">
+        <!-- FORM -->
+        <div class="collapse" id="gmsdCreateForm">
 
-          </div>
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
 
-          <div class="col-md-4 mb-3">
+              <div class="row g-3">
 
-            <label class="form-label">
-              Slug
-            </label>
+                <div class="col-md-4">
+                  <label class="form-label">
+                    Tên danh mục
+                  </label>
 
-            <input type="text" id="categorySlug" class="form-control" placeholder="hoc-tap">
+                  <input type="text" id="gmsdCategoryName" class="form-control" placeholder="Ví dụ: Học sinh tiêu biểu">
+                </div>
 
-          </div>
+                <div class="col-md-4">
+                  <label class="form-label">
+                    Slug
+                  </label>
 
-          <div class="col-md-4 mb-3">
+                  <input type="text" id="gmsdCategorySlug" class="form-control" placeholder="hoc-sinh-tieu-bieu">
+                </div>
 
-            <label class="form-label">
-              Chọn Icon
-            </label>
+                <div class="col-md-4">
+                  <label class="form-label">
+                    Icon
+                  </label>
 
-            <select id="categoryIcon" class="form-select">
+                  <select id="gmsdCategoryIcon" class="form-select">
 
-              <option value="fa-book">
-                📚 Học tập
-              </option>
+                    <option value="fa-users">
+                      👥 Users
+                    </option>
 
-              <option value="fa-newspaper">
-                📰 Tin tức
-              </option>
+                    <option value="fa-star">
+                      ⭐ Star
+                    </option>
 
-              <option value="fa-bullhorn">
-                📢 Thông báo
-              </option>
+                    <option value="fa-trophy">
+                      🏆 Trophy
+                    </option>
 
-              <option value="fa-users">
-                👥 Cộng đồng
-              </option>
+                    <option value="fa-graduation-cap">
+                      🎓 Graduation
+                    </option>
 
-              <option value="fa-trophy">
-                🏆 Thành tích
-              </option>
+                  </select>
+                </div>
 
-              <option value="fa-music">
-                🎵 Văn nghệ
-              </option>
+              </div>
 
-              <option value="fa-futbol">
-                ⚽ Thể thao
-              </option>
+              <button class="btn btn-success mt-3" onclick="saveGMSDCategory()">
 
-              <option value="fa-lightbulb">
-                💡 Góc kỹ năng
-              </option>
+                <i class="fas fa-save me-2"></i>
+                Lưu danh mục
 
-              <option value="fa-image">
-                🖼 Thư viện ảnh
-              </option>
-
-              <option value="fa-folder">
-                📁 Khác
-              </option>
-
-            </select>
-            <div class="mt-3">
-
-              <label class="form-label">
-                Thuộc menu
-              </label>
-
-              <select id="categoryParent" class="form-select">
-
-                <option value="main">
-                  Menu chính
-                </option>
-
-                <option value="gmsd">
-                  Gương mặt PCT
-                </option>
-
-                <option value="chuyenmon">
-                  Chuyên môn
-                </option>
-
-              </select>
+              </button>
 
             </div>
           </div>
 
         </div>
 
-        <button class="btn btn-primary px-4" onclick="saveCategory()">
-
-          <i class="fas fa-save me-2"></i>
-          Lưu danh mục
-
-        </button>
-
-      </div>
-
-      <div class="box mt-4">
-
-        <h5 class="fw-bold mb-3">
-          Danh sách danh mục
-        </h5>
-
+        <!-- TABLE -->
         <div class="table-responsive">
 
           <table class="table align-middle">
 
             <thead>
               <tr>
-
-                <th>Tên</th>
-                <th>Slug</th>
                 <th>Icon</th>
-                <th>Menu</th>
-                <th>Hành động</th>
-
+                <th>Tên danh mục</th>
+                <th>Slug</th>
+                <th>Trạng thái</th>
+                <th>CRUD</th>
               </tr>
             </thead>
 
-            <tbody id="categoryTable">
+            <tbody id="gmsdCategoryTable">
 
               <tr>
-
-                <td colspan="4" class="text-center text-muted">
-
-                  Chưa có danh mục
-
+                <td colspan="5" class="text-center text-muted">
+                  Chưa có dữ liệu.
                 </td>
-
               </tr>
 
             </tbody>
@@ -1018,30 +1006,128 @@
 
     </div>
 
-    <!-- COMMENTS -->
-    <div id="comments-view" class="content content-section">
+    <!-- ========================= -->
+    <!-- SPECIALIZED CATEGORY -->
+    <!-- ========================= -->
+
+    <div id="specialized-category-form" class="content-section">
+
       <div class="box">
-        <h4 class="fw-bold mb-4">Kiểm duyệt Bình luận</h4>
-        <div class="table-responsive">
-          <table class="table align-middle">
-            <thead>
-              <tr>
-                <th>Người dùng</th>
-                <th>Nội dung bình luận</th>
-                <th>Bài viết ID</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody id="commentFullTable">
-              <tr>
-                <td colspan="4" class="text-center text-muted">
-                  Chưa có bình luận nào...
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+          <h4 class="fw-bold mb-0">
+            Quản lý danh mục Chuyên môn
+          </h4>
+
+          <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#specializedCreateForm">
+
+            <i class="fas fa-plus me-2"></i>
+            Thêm danh mục
+
+          </button>
+
         </div>
+
+        <!-- FORM -->
+        <div class="collapse" id="specializedCreateForm">
+
+          <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+              <div class="row g-3">
+
+                <div class="col-md-4">
+
+                  <label class="form-label">
+                    Tên danh mục
+                  </label>
+
+                  <input type="text" id="specializedCategoryName" class="form-control" placeholder="Ví dụ: Toán">
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <label class="form-label">
+                    Slug
+                  </label>
+
+                  <input type="text" id="specializedCategorySlug" class="form-control" placeholder="toan">
+
+                </div>
+
+                <div class="col-md-3">
+
+                  <label class="form-label">
+                    Icon
+                  </label>
+
+                  <input type="text" id="specializedCategoryIcon" class="form-control" value="fa-book">
+
+                </div>
+
+                <div class="col-md-2 d-grid">
+
+                  <label class="form-label opacity-0">
+                    Add
+                  </label>
+
+                  <button class="btn btn-success" onclick="saveSpecializedCategory()">
+
+                    <i class="fas fa-save me-2"></i>
+                    Lưu
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive">
+
+          <table class="table align-middle">
+
+            <thead>
+
+              <tr>
+
+                <th>Tên danh mục</th>
+                <th>Slug</th>
+                <th>Icon</th>
+                <th>Trạng thái</th>
+                <th>CRUD</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="specializedCategoryTable">
+
+              <tr>
+
+                <td colspan="5" class="text-center text-muted">
+                  Chưa có dữ liệu.
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
+
     </div>
   </main>
 
@@ -1176,21 +1262,6 @@
       },
     });
 
-    window.navigate = function (sectionId) {
-      document
-        .querySelectorAll(".content-section")
-        .forEach((sec) => sec.classList.remove("active"));
-      document.getElementById(sectionId)?.classList.add("active");
-
-      document
-        .querySelectorAll(".menu-item")
-        .forEach((item) => item.classList.remove("active"));
-      const activeBtn = document.querySelector(
-        `[onclick="navigate('${sectionId}')"]`,
-      );
-      if (activeBtn) activeBtn.classList.add("active");
-    };
-
     window.showToast = function (message, type = "success") {
       const toast = document.getElementById("liveToast");
       document.getElementById("toastMsg").textContent = message;
@@ -1302,7 +1373,8 @@
         loadSchedules(),
         loadInternal(),
         loadComments(),
-        loadCategories()
+        loadGMSDCategories(),
+        loadSpecializedCategories()
       ]);
       showLoading(false);
     };
@@ -1840,7 +1912,7 @@
             const dateStr = new Date(item.date).toLocaleString("vi-VN");
             const safeItemData = encodeURIComponent(JSON.stringify(item));
             return `
-              </table>
+              <tr>
                 <td><strong>${escapeHtml(item.title)}</strong></td>
                 <td><span class="badge bg-info text-dark">${escapeHtml(dateStr)}</span></td>
                 <td><small>${escapeHtml(item.desc)}</small></td>
@@ -2039,6 +2111,587 @@
       }
 
     };
+
+    window.saveGMSDCategory = async function () {
+
+      const name =
+        document.getElementById("gmsdCategoryName").value.trim();
+
+      const slug =
+        document.getElementById("gmsdCategorySlug").value.trim();
+
+      const icon =
+        document.getElementById("gmsdCategoryIcon").value;
+
+      if (!name || !slug)
+        return showToast("Nhập đủ dữ liệu", "danger");
+
+      try {
+
+        await addDoc(getCol("gmsd_categories"), {
+
+          name,
+          slug,
+          icon,
+
+          visible: true,
+
+          createdAt: serverTimestamp()
+
+        });
+
+        showToast("Đã thêm danh mục");
+
+        loadGMSDCategories();
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast("Lỗi", "danger");
+
+      }
+
+    };
+
+    window.saveSpecializedCategory = async function () {
+
+      const name =
+        document.getElementById("specializedCategoryName").value.trim();
+
+      const slug =
+        document.getElementById("specializedCategorySlug").value.trim();
+
+      const icon =
+        document.getElementById("specializedCategoryIcon").value;
+
+      if (!name || !slug)
+        return showToast("Nhập đủ dữ liệu", "danger");
+
+      try {
+
+        await addDoc(getCol("specialized_categories"), {
+
+          name,
+          slug,
+          icon,
+
+          visible: true,
+
+          createdAt: serverTimestamp()
+
+        });
+
+        showToast("Đã thêm danh mục");
+
+        loadSpecializedCategories();
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast("Lỗi", "danger");
+
+      }
+
+    };
+
+    window.loadGMSDCategories = async function () {
+
+      const snapshot = await getDocs(
+        query(
+          getCol("gmsd_categories"),
+          orderBy("createdAt", "desc")
+        )
+      );
+
+      const table =
+        document.getElementById("gmsdCategoryTable");
+
+      const items =
+        snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+      if (!items.length) {
+
+        table.innerHTML = `
+      <tr>
+        <td colspan="5"
+          class="text-center text-muted">
+          Chưa có dữ liệu
+        </td>
+      </tr>
+    `;
+
+        return;
+
+      }
+
+      table.innerHTML = items.map(item => `
+
+    <tr>
+
+      <td>${escapeHtml(item.name)}</td>
+
+      <td>${escapeHtml(item.slug)}</td>
+
+      <td>
+        <i class="fas ${escapeHtml(item.icon)}"></i>
+      </td>
+
+      <td>
+
+        <button class="btn btn-sm ${item.visible ? "btn-success" : "btn-secondary"}"
+          onclick="toggleCategoryVisibility(
+            'gmsd_categories',
+            '${item.id}',
+            ${item.visible}
+          )">
+
+          ${item.visible ? "Hiện" : "Ẩn"}
+
+        </button>
+
+      </td>
+
+      <td>
+        <button
+          class="btn btn-sm btn-warning me-1"
+          onclick="editGMSDCategory(
+            '${item.id}',
+            '${escapeHtml(item.name)}',
+            '${escapeHtml(item.slug)}',
+            '${escapeHtml(item.icon)}'
+          )">
+
+          <i class="fas fa-edit"></i>
+
+        </button>
+
+        <button class="btn btn-sm btn-danger"
+          onclick="
+            deleteRecord(
+              'gmsd_categories',
+              '${item.id}',
+              loadGMSDCategories
+            )
+          ">
+
+          <i class="fas fa-trash"></i>
+
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+
+    };
+
+    window.loadSpecializedCategories = async function () {
+
+      const snapshot = await getDocs(
+        query(
+          getCol("specialized_categories"),
+          orderBy("createdAt", "desc")
+        )
+      );
+
+      const table =
+        document.getElementById("specializedCategoryTable");
+
+      const items =
+        snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+      if (!items.length) {
+
+        table.innerHTML = `
+          <tr>
+            <td colspan="5"
+              class="text-center text-muted">
+              Chưa có dữ liệu
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      table.innerHTML = items.map(item => `
+
+        <tr>
+
+          <td>${escapeHtml(item.name)}</td>
+
+          <td>${escapeHtml(item.slug)}</td>
+
+          <td>
+            <i class="fas ${escapeHtml(item.icon)}"></i>
+          </td>
+
+          <td>
+
+            <button class="btn btn-sm ${item.visible ? "btn-success" : "btn-secondary"}"
+              onclick="toggleCategoryVisibility(
+                'specialized_categories',
+                '${item.id}',
+                ${item.visible}
+              )">
+
+              ${item.visible ? "Hiện" : "Ẩn"}
+
+            </button>
+
+          </td>
+
+          <td>
+            <button
+              class="btn btn-sm btn-warning me-1"
+              onclick="editSpecializedCategory(
+                '${item.id}',
+                '${escapeHtml(item.name)}',
+                '${escapeHtml(item.slug)}',
+                '${escapeHtml(item.icon)}'
+              )">
+
+              <i class="fas fa-edit"></i>
+
+            </button>
+
+            <button class="btn btn-sm btn-danger"
+              onclick="
+                deleteRecord(
+                  'specialized_categories',
+                  '${item.id}',
+                  loadSpecializedCategories
+                )
+              ">
+
+              <i class="fas fa-trash"></i>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+    };
+
+    window.toggleCategoryVisibility = async function (collectionName, id, currentState) {
+      try {
+
+        await updateDoc(
+          doc(
+            getCol(collectionName),
+            id
+          ),
+          {
+            visible: !currentState
+          }
+        );
+
+        if (
+          collectionName ===
+          "gmsd_categories"
+        ) {
+
+          loadGMSDCategories();
+
+        } else {
+
+          loadSpecializedCategories();
+
+        }
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast(
+          "Lỗi cập nhật",
+          "danger"
+        );
+
+      }
+
+    };
+
+    window.editGMSDCategory =
+      function (
+        id,
+        name,
+        slug,
+        icon
+      ) {
+
+        openEditModal(`
+
+      <form
+        onsubmit="
+          updateGMSDCategory(
+            event,
+            '${id}'
+          )
+        ">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Tên danh mục
+          </label>
+
+          <input
+            type="text"
+            id="editGMSDName"
+            class="form-control"
+            value="${name}">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Slug
+          </label>
+
+          <input
+            type="text"
+            id="editGMSDSlug"
+            class="form-control"
+            value="${slug}">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Icon
+          </label>
+
+          <input
+            type="text"
+            id="editGMSDIcon"
+            class="form-control"
+            value="${icon}">
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-warning w-100">
+
+          <i class="fas fa-save me-2"></i>
+          Cập nhật
+
+        </button>
+
+      </form>
+
+    `);
+
+      };
+
+    window.updateGMSDCategory =
+      async function (
+        event,
+        id
+      ) {
+
+        event.preventDefault();
+
+        try {
+
+          await updateDoc(
+
+            doc(
+              getCol("gmsd_categories"),
+              id
+            ),
+
+            {
+
+              name:
+                document.getElementById(
+                  "editGMSDName"
+                ).value,
+
+              slug:
+                document.getElementById(
+                  "editGMSDSlug"
+                ).value,
+
+              icon:
+                document.getElementById(
+                  "editGMSDIcon"
+                ).value
+
+            }
+
+          );
+
+          closeEditModal();
+
+          loadGMSDCategories();
+
+          showToast(
+            "Đã cập nhật"
+          );
+
+        } catch (e) {
+
+          console.error(e);
+
+          showToast(
+            "Lỗi cập nhật",
+            "danger"
+          );
+
+        }
+
+      };
+
+    window.editSpecializedCategory =
+      function (
+        id,
+        name,
+        slug,
+        icon
+      ) {
+
+        openEditModal(`
+
+      <form
+        onsubmit="
+          updateSpecializedCategory(
+            event,
+            '${id}'
+          )
+        ">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Tên danh mục
+          </label>
+
+          <input
+            type="text"
+            id="editSpecializedName"
+            class="form-control"
+            value="${name}">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Slug
+          </label>
+
+          <input
+            type="text"
+            id="editSpecializedSlug"
+            class="form-control"
+            value="${slug}">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Icon
+          </label>
+
+          <input
+            type="text"
+            id="editSpecializedIcon"
+            class="form-control"
+            value="${icon}">
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-warning w-100">
+
+          <i class="fas fa-save me-2"></i>
+          Cập nhật
+
+        </button>
+
+      </form>
+
+    `);
+
+      };
+
+    window.updateSpecializedCategory =
+      async function (
+        event,
+        id
+      ) {
+
+        event.preventDefault();
+
+        try {
+
+          await updateDoc(
+
+            doc(
+              getCol(
+                "specialized_categories"
+              ),
+              id
+            ),
+
+            {
+
+              name:
+                document.getElementById(
+                  "editSpecializedName"
+                ).value,
+
+              slug:
+                document.getElementById(
+                  "editSpecializedSlug"
+                ).value,
+
+              icon:
+                document.getElementById(
+                  "editSpecializedIcon"
+                ).value
+
+            }
+
+          );
+
+          closeEditModal();
+
+          loadSpecializedCategories();
+
+          showToast(
+            "Đã cập nhật"
+          );
+
+        } catch (e) {
+
+          console.error(e);
+
+          showToast(
+            "Lỗi cập nhật",
+            "danger"
+          );
+
+        }
+
+      };
 
     window.loadCategories = async function () {
 
@@ -2375,7 +3028,6 @@
           .join("");
       } catch (e) {
         console.error("Load comments failed:", e);
-        showToast("Lỗi tải bình luận", "danger");
       }
     }
 
@@ -2430,6 +3082,12 @@
       );
     };
 
+    function showSkillDeveloping() {
+      alert(
+        "📚 Chuyên mục Góc kỹ năng hiện đang được Nhà trường phát triển và cập nhật nội dung. Vui lòng quay lại trong thời gian tới!"
+      );
+    }
+
     window.logout = async function () {
       if (!confirm("Bạn muốn đăng xuất?")) return;
 
@@ -2446,6 +3104,99 @@
         console.error(e);
         showToast("Lỗi đăng xuất", "danger");
       }
+    };
+
+    window.generateSlug = function (text = "") {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/[^a-z0-9 ]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+
+    };
+
+    const gmsdInput =
+      document.getElementById(
+        "gmsdCategoryName"
+      );
+
+    if (gmsdInput) {
+
+      gmsdInput.addEventListener(
+        "input",
+        function () {
+
+          document.getElementById(
+            "gmsdCategorySlug"
+          ).value =
+            generateSlug(this.value);
+
+        }
+      );
+
+    }
+
+    const specializedInput =
+      document.getElementById(
+        "specializedCategoryName"
+      );
+
+    if (specializedInput) {
+
+      specializedInput.addEventListener(
+        "input",
+        function () {
+
+          document.getElementById(
+            "specializedCategorySlug"
+          ).value =
+            generateSlug(this.value);
+
+        }
+      );
+
+    }
+
+    window.navigate = function (id, element = null) {
+
+      // Ẩn tất cả section
+      document
+        .querySelectorAll(".content-section")
+        .forEach(section => {
+
+          section.style.display = "none";
+
+        });
+
+      // Hiện section được chọn
+      const target =
+        document.getElementById(id);
+
+      if (target) {
+
+        target.style.display = "block";
+
+      }
+
+      // Xóa active tất cả menu
+      document
+        .querySelectorAll(".menu-item")
+        .forEach(item => {
+
+          item.classList.remove("active");
+
+        });
+
+      // Active menu hiện tại
+      if (element) {
+
+        element.classList.add("active");
+
+      }
+
     };
 
     // Bootstrap
