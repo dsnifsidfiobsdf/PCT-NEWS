@@ -952,6 +952,19 @@
       </div>
     </div>
   </footer>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+    <div id="thongBaoToast" class="toast align-items-center text-bg-primary border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          🎓 Nhà trường hiện đang tập trung phát triển hệ thống học liệu số và nâng cao chất lượng ôn thi
+          , mong các em cố gắng học tập tốt và các giáo viên hỗ trợ tốt.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
   <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
@@ -1020,35 +1033,30 @@
     function loadNavbarCategories() {
 
       const gmsdDropdown =
-        document.getElementById(
-          "gmsdDropdown"
-        );
+        document.getElementById("gmsdDropdown");
 
       const chuyenmonDropdown =
-        document.getElementById(
-          "chuyenmonDropdown"
-        );
+        document.getElementById("chuyenmonDropdown");
 
       const mainCategories =
-        document.getElementById(
-          "mainCategories"
-        );
+        document.getElementById("mainCategories");
 
+      if (!gmsdDropdown ||
+        !chuyenmonDropdown ||
+        !mainCategories) return;
+
+      // GMSD CATEGORIES
       db.collection("artifacts")
         .doc("pct-news-cms")
         .collection("public")
         .doc("data")
-        .collection("categories")
+        .collection("gmsd_categories")
         .orderBy("createdAt", "desc")
-        .onSnapshot(snapshot => {
+        .onSnapshot((snapshot) => {
 
-          gmsdDropdown.innerHTML = "";
+          let html = "";
 
-          chuyenmonDropdown.innerHTML = "";
-
-          mainCategories.innerHTML = "";
-
-          snapshot.forEach(doc => {
+          snapshot.forEach((doc) => {
 
             const data = doc.data();
 
@@ -1061,77 +1069,110 @@
             const icon =
               data.icon || "fa-folder";
 
-            const parent =
-              data.parent || "main";
+            html += `
+                    <li>
+                        <a class="dropdown-item py-2"
+                           href="gmsd.html?cat=${slug}">
 
-            // GMSD
-            if (parent === "gmsd") {
+                            <i class="fas ${icon} me-2"></i>
+                            ${name}
 
-              gmsdDropdown.innerHTML += `
-
-                        <li>
-
-                            <a class="dropdown-item py-2"
-                               href="gmsd.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-2"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-            }
-
-            // CHUYÊN MÔN
-            else if (parent === "chuyenmon") {
-
-              chuyenmonDropdown.innerHTML += `
-
-                        <li>
-
-                            <a class="dropdown-item"
-                               href="tailieu.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-2"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-            }
-
-            // MENU CHÍNH
-            else {
-
-              mainCategories.innerHTML += `
-
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               href="index.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-1"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-            }
-
+                        </a>
+                    </li>
+                `;
           });
 
-        });
-    }
+          gmsdDropdown.innerHTML = html;
 
+        });
+
+
+      // SPECIALIZED CATEGORIES
+      db.collection("artifacts")
+        .doc("pct-news-cms")
+        .collection("public")
+        .doc("data")
+        .collection("specialized_categories")
+        .orderBy("createdAt", "desc")
+        .onSnapshot((snapshot) => {
+
+          let html = "";
+
+          snapshot.forEach((doc) => {
+
+            const data = doc.data();
+
+            const name =
+              data.name || "Danh mục";
+
+            const slug =
+              data.slug || "";
+
+            const icon =
+              data.icon || "fa-folder";
+
+            html += `
+                    <li>
+                        <a class="dropdown-item py-2"
+                           href="tailieu.html?cat=${slug}">
+
+                            <i class="fas ${icon} me-2"></i>
+                            ${name}
+
+                        </a>
+                    </li>
+                `;
+          });
+
+          chuyenmonDropdown.innerHTML = html;
+
+        });
+
+
+      // MAIN CATEGORIES
+      db.collection("artifacts")
+        .doc("pct-news-cms")
+        .collection("public")
+        .doc("data")
+        .collection("categories")
+        .orderBy("createdAt", "desc")
+        .onSnapshot((snapshot) => {
+
+          let html = "";
+
+          snapshot.forEach((doc) => {
+
+            const data = doc.data();
+
+            const name =
+              data.name || "Danh mục";
+
+            const slug =
+              data.slug || "";
+
+            const icon =
+              data.icon || "fa-folder";
+
+            html += `
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="index.html?cat=${slug}">
+
+                            <i class="fas ${icon} me-1"></i>
+                            ${name}
+
+                        </a>
+
+                    </li>
+                `;
+          });
+
+          mainCategories.innerHTML = html;
+
+        });
+
+    }
     // =========================
     // CATEGORY URL
     // =========================
@@ -1454,59 +1495,6 @@
       modal.show();
 
     }
-
-    // =========================
-    // TOAST
-    // =========================
-    function showThongBao() {
-
-      const toastHTML = `
-
-      <div class="toast-container position-fixed bottom-0 end-0 p-3">
-
-        <div id="liveToast"
-          class="toast align-items-center text-bg-primary border-0">
-
-          <div class="d-flex">
-
-            <div class="toast-body">
-
-              🌟 Hệ thống đang cập nhật thêm nội dung mới.
-
-            </div>
-
-            <button type="button"
-              class="btn-close btn-close-white me-2 m-auto"
-              data-bs-dismiss="toast">
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    `;
-
-      const oldToast =
-        document.querySelector(".toast-container");
-
-      if (oldToast) oldToast.remove();
-
-      document.body.insertAdjacentHTML(
-        "beforeend",
-        toastHTML
-      );
-
-      const toast =
-        new bootstrap.Toast(
-          document.getElementById("liveToast")
-        );
-
-      toast.show();
-
-    }
-
   </script>
   <script>
 

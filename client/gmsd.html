@@ -871,35 +871,30 @@
         function loadNavbarCategories() {
 
             const gmsdDropdown =
-                document.getElementById(
-                    "gmsdDropdown"
-                );
+                document.getElementById("gmsdDropdown");
 
             const chuyenmonDropdown =
-                document.getElementById(
-                    "chuyenmonDropdown"
-                );
+                document.getElementById("chuyenmonDropdown");
 
             const mainCategories =
-                document.getElementById(
-                    "mainCategories"
-                );
+                document.getElementById("mainCategories");
 
+            if (!gmsdDropdown ||
+                !chuyenmonDropdown ||
+                !mainCategories) return;
+
+            // GMSD CATEGORIES
             db.collection("artifacts")
                 .doc("pct-news-cms")
                 .collection("public")
                 .doc("data")
-                .collection("categories")
+                .collection("gmsd_categories")
                 .orderBy("createdAt", "desc")
-                .onSnapshot(snapshot => {
+                .onSnapshot((snapshot) => {
 
-                    gmsdDropdown.innerHTML = "";
+                    let html = "";
 
-                    chuyenmonDropdown.innerHTML = "";
-
-                    mainCategories.innerHTML = "";
-
-                    snapshot.forEach(doc => {
+                    snapshot.forEach((doc) => {
 
                         const data = doc.data();
 
@@ -912,77 +907,110 @@
                         const icon =
                             data.icon || "fa-folder";
 
-                        const parent =
-                            data.parent || "main";
+                        html += `
+                    <li>
+                        <a class="dropdown-item py-2"
+                           href="gmsd.html?cat=${slug}">
 
-                        // GMSD
-                        if (parent === "gmsd") {
+                            <i class="fas ${icon} me-2"></i>
+                            ${name}
 
-                            gmsdDropdown.innerHTML += `
-
-                        <li>
-
-                            <a class="dropdown-item py-2"
-                               href="gmsd.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-2"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-                        }
-
-                        // CHUYÊN MÔN
-                        else if (parent === "chuyenmon") {
-
-                            chuyenmonDropdown.innerHTML += `
-
-                        <li>
-
-                            <a class="dropdown-item"
-                               href="tailieu.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-2"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-                        }
-
-                        // MENU CHÍNH
-                        else {
-
-                            mainCategories.innerHTML += `
-
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               href="index.html?cat=${slug}">
-
-                                <i class="fas ${icon} me-1"></i>
-
-                                ${name}
-
-                            </a>
-
-                        </li>
-
-                    `;
-                        }
-
+                        </a>
+                    </li>
+                `;
                     });
 
-                });
-        }
+                    gmsdDropdown.innerHTML = html;
 
+                });
+
+
+            // SPECIALIZED CATEGORIES
+            db.collection("artifacts")
+                .doc("pct-news-cms")
+                .collection("public")
+                .doc("data")
+                .collection("specialized_categories")
+                .orderBy("createdAt", "desc")
+                .onSnapshot((snapshot) => {
+
+                    let html = "";
+
+                    snapshot.forEach((doc) => {
+
+                        const data = doc.data();
+
+                        const name =
+                            data.name || "Danh mục";
+
+                        const slug =
+                            data.slug || "";
+
+                        const icon =
+                            data.icon || "fa-folder";
+
+                        html += `
+                    <li>
+                        <a class="dropdown-item py-2"
+                           href="tailieu.html?cat=${slug}">
+
+                            <i class="fas ${icon} me-2"></i>
+                            ${name}
+
+                        </a>
+                    </li>
+                `;
+                    });
+
+                    chuyenmonDropdown.innerHTML = html;
+
+                });
+
+
+            // MAIN CATEGORIES
+            db.collection("artifacts")
+                .doc("pct-news-cms")
+                .collection("public")
+                .doc("data")
+                .collection("categories")
+                .orderBy("createdAt", "desc")
+                .onSnapshot((snapshot) => {
+
+                    let html = "";
+
+                    snapshot.forEach((doc) => {
+
+                        const data = doc.data();
+
+                        const name =
+                            data.name || "Danh mục";
+
+                        const slug =
+                            data.slug || "";
+
+                        const icon =
+                            data.icon || "fa-folder";
+
+                        html += `
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="index.html?cat=${slug}">
+
+                            <i class="fas ${icon} me-1"></i>
+                            ${name}
+
+                        </a>
+
+                    </li>
+                `;
+                    });
+
+                    mainCategories.innerHTML = html;
+
+                });
+
+        }
         /* =========================
            LOAD POSTS
         ========================= */
@@ -1556,7 +1584,7 @@
         ========================= */
         window.addEventListener("DOMContentLoaded", () => {
             loadNavbarCategories();
-            
+
             updateTime();
 
             setInterval(updateTime, 1000);
