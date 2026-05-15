@@ -398,9 +398,9 @@
             </div>
 
             <div>
-                <a href="admin.html" class="text-decoration-none text-dark small fw-bold">
+                <a href="login.html" class="text-decoration-none text-dark small fw-bold">
                     <i class="fas fa-user-shield me-1"></i>
-                    Cổng nội bộ
+                    Cổng thông tin nội bộ
                 </a>
             </div>
 
@@ -426,106 +426,62 @@
     <!-- NAVIGATION -->
     <nav class="navbar navbar-expand-lg navbar-main">
         <div class="container">
-
             <button class="navbar-toggler w-100 border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#newsNav">
-
                 <span class="navbar-toggler-icon"></span>
                 DANH MỤC TIN
-
             </button>
 
             <div class="collapse navbar-collapse" id="newsNav">
-
                 <ul class="navbar-nav mx-auto">
-
                     <!-- THỜI SỰ -->
                     <li class="nav-item">
-
                         <a class="nav-link" href="index.html">
-
                             Thời sự học đường
-
                         </a>
-
                     </li>
 
                     <!-- GƯƠNG MẶT -->
                     <li class="nav-item dropdown">
-
                         <a class="nav-link dropdown-toggle" href="gmsd.html" role="button">
-
                             Gương mặt PCT
-
                         </a>
-
                         <ul class="dropdown-menu shadow" id="gmsdDropdown">
-
                             <!-- FIREBASE AUTO -->
-
                         </ul>
-
                     </li>
 
                     <!-- CHUYÊN MÔN -->
                     <li class="nav-item dropdown">
-
-                        <a class="nav-link active dropdown-toggle" href="tailieu.html?cat=all" role="button">
-
+                        <a class="nav-link dropdown-toggle active" href="tailieu.html?cat=all" role="button">
                             <i class="fa-solid fa-graduation-cap"></i>
-
-                            Chuyên môn
-
+                            Môn học
                         </a>
-
                         <ul class="dropdown-menu shadow" id="chuyenmonDropdown">
-
                             <!-- FIREBASE AUTO -->
-
                         </ul>
-
                     </li>
-
                     <!-- CATEGORY THƯỜNG -->
-                    <div id="mainCategories" class="d-flex">
-
-                    </div>
-
+                    <ul id="mainCategories" class="navbar-nav d-flex flex-row"></ul>
                     <!-- MENU KHÁC -->
                     <li class="nav-item">
-
                         <a class="nav-link" href="gockynang.html">
 
                             Góc kỹ năng
-
                         </a>
-
                     </li>
-
                     <li class="nav-item">
-
                         <a class="nav-link" href="#" onclick="showThongBao()">
-
                             Sáng kiến số
-
                         </a>
-
                     </li>
-
                     <li class="nav-item">
-
                         <a class="nav-link" href="#" onclick="showThongBao()">
-
                             Thông báo
-
                         </a>
-
                     </li>
-
                 </ul>
-
             </div>
-
         </div>
     </nav>
     <!-- MAIN -->
@@ -545,7 +501,7 @@
             </h2>
 
             <!-- FILTER -->
-            <div class="mb-4 d-flex flex-wrap gap-3">
+            <div class="mb-4 d-flex flex-wrap gap-3 align-items-center">
 
                 <span class="filter-item active" data-cat="all">
                     Tất cả
@@ -578,6 +534,27 @@
                 <span class="filter-item" data-cat="sudia">
                     Sử - Địa
                 </span>
+
+                <!-- DROPDOWN KHÁC -->
+                <div class="dropdown">
+
+                    <span class="filter-item dropdown-toggle" data-bs-toggle="dropdown" style="user-select:none;">
+
+                        Khác
+
+                    </span>
+
+                    <ul class="dropdown-menu shadow" id="tailieuOtherDropdown">
+
+                        <li>
+                            <span class="dropdown-item text-muted">
+                                Đang tải...
+                            </span>
+                        </li>
+
+                    </ul>
+
+                </div>
 
             </div>
 
@@ -738,7 +715,7 @@
             document.getElementById("page-title").innerText =
                 currentCat === "all"
                     ? "Kho tài liệu học tập"
-                    : "Tài liệu " + subjectMap[currentCat];
+                    : "Tài liệu " + (subjectMap[currentCat] || currentCat);
 
             document.title = title + " - PCT News";
 
@@ -1107,11 +1084,14 @@
                 .orderBy("createdAt", "desc")
                 .onSnapshot((snapshot) => {
 
-                    let html = "";
+                    let html = ``;
 
                     snapshot.forEach((doc) => {
 
                         const data = doc.data();
+
+                        // CHỈ hiện khi visible !== false
+                        if (data.visible === false) return;
 
                         const name =
                             data.name || "Danh mục";
@@ -1122,21 +1102,24 @@
                         const icon =
                             data.icon || "fa-folder";
 
+                        const color =
+                            data.color || "#0d6efd";
+
                         html += `
-                    <li>
-                        <a class="dropdown-item py-2"
-                           href="gmsd.html?cat=${slug}">
+                            <li>
+                                <a class="dropdown-item py-2"
+                                href="gmsd.html?cat=${slug}">
 
-                            <i class="fas ${icon} me-2"></i>
-                            ${name}
+                                    <i class="fas ${icon} me-2"
+                                    style="color:${color}"></i>
 
-                        </a>
-                    </li>
-                `;
+                                    ${name}
+
+                                </a>
+                            </li>
+                        `;
                     });
-
                     gmsdDropdown.innerHTML = html;
-
                 });
 
 
@@ -1149,11 +1132,14 @@
                 .orderBy("createdAt", "desc")
                 .onSnapshot((snapshot) => {
 
-                    let html = "";
+                    let html = ``;
 
                     snapshot.forEach((doc) => {
 
                         const data = doc.data();
+
+                        // CHỈ hiện khi visible !== false
+                        if (data.visible === false) return;
 
                         const name =
                             data.name || "Danh mục";
@@ -1164,21 +1150,24 @@
                         const icon =
                             data.icon || "fa-folder";
 
+                        const color =
+                            data.color || "#0d6efd";
+
                         html += `
-                    <li>
-                        <a class="dropdown-item py-2"
-                           href="tailieu.html?cat=${slug}">
+                            <li>
+                                <a class="dropdown-item py-2"
+                                href="tailieu.html?cat=${slug}">
 
-                            <i class="fas ${icon} me-2"></i>
-                            ${name}
+                                    <i class="fas ${icon} me-2"
+                                    style="color:${color}"></i>
 
-                        </a>
-                    </li>
-                `;
+                                    ${name}
+
+                                </a>
+                            </li>
+                        `;
                     });
-
                     chuyenmonDropdown.innerHTML = html;
-
                 });
 
 
@@ -1194,25 +1183,99 @@
                     let html = "";
 
                     snapshot.forEach((doc) => {
+                        const data = doc.data();
+
+                        if (data.visible === false) return;
+
+                        const name = data.name || "Danh mục";
+
+                        const slug = data.slug || "";
+
+                        const icon = data.icon || "fa-folder";
+
+                        const color = data.color || "#0d6efd";
+
+                        html += `
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                href="index.html?cat=${slug}">
+
+                                    <i class="fas ${icon} me-1"
+                                    style="color:${color}"></i>
+
+                                    ${name}
+
+                                </a>
+
+                            </li>
+                        `;
+                    });
+                    mainCategories.innerHTML = html;
+
+                });
+
+        }
+
+        function loadTailieuOtherFilters() {
+
+            const dropdown =
+                document.getElementById(
+                    "tailieuOtherDropdown"
+                );
+
+            if (!dropdown) return;
+
+            const defaultSlugs = [
+                "toan",
+                "van",
+                "anh",
+                "ly",
+                "hoa",
+                "sinh",
+                "sudia"
+            ];
+
+            db.collection("artifacts")
+                .doc("pct-news-cms")
+                .collection("public")
+                .doc("data")
+                .collection("specialized_categories")
+                .orderBy("createdAt", "desc")
+                .onSnapshot((snapshot) => {
+
+                    let html = "";
+
+                    snapshot.forEach((doc) => {
 
                         const data = doc.data();
 
-                        const name =
-                            data.name || "Danh mục";
+                        if (data.visible === false) return;
 
                         const slug =
                             data.slug || "";
 
+                        // BỎ QUA category mặc định
+                        if (defaultSlugs.includes(slug)) return;
+
+                        const name =
+                            data.name || slug;
+
                         const icon =
                             data.icon || "fa-folder";
 
+                        const color =
+                            data.color || "#0d6efd";
+
                         html += `
-                    <li class="nav-item">
+                    <li>
 
-                        <a class="nav-link"
-                           href="index.html?cat=${slug}">
+                        <a class="dropdown-item"
+                            href="tailieu.html?cat=${slug}">
 
-                            <i class="fas ${icon} me-1"></i>
+                            <i class="fas ${icon} me-2"
+                            style="color:${color}"></i>
+
                             ${name}
 
                         </a>
@@ -1221,7 +1284,20 @@
                 `;
                     });
 
-                    mainCategories.innerHTML = html;
+                    if (!html) {
+
+                        html = `
+                    <li>
+
+                        <span class="dropdown-item text-muted">
+                            Chưa có danh mục
+                        </span>
+
+                    </li>
+                `;
+                    }
+
+                    dropdown.innerHTML = html;
 
                 });
 
@@ -1243,6 +1319,7 @@
 
             loadDocs();
 
+            loadTailieuOtherFilters();
         });
 
     </script>

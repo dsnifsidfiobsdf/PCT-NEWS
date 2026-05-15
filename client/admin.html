@@ -623,15 +623,6 @@
             <label class="form-label">Tác giả</label>
             <input type="text" id="author" class="form-control" placeholder="Tên tác giả..." />
           </div>
-
-          <div class="col-md-3 mb-3">
-            <label class="form-label">Danh mục</label>
-            <select id="category" class="form-select">
-              <option value="">
-                Đang tải danh mục...
-              </option>
-            </select>
-          </div>
         </div>
 
         <div class="mb-3">
@@ -692,6 +683,42 @@
             <label class="form-label">Thành tích nổi bật</label>
             <input type="text" id="gmsdReward" class="form-control" placeholder="Giải Nhất HSG Quốc Gia" />
           </div>
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Danh mục (Slug)
+            </label>
+
+            <select id="gmsdSlug" class="form-select">
+
+              <option value="">
+                -- Chọn danh mục --
+              </option>
+
+              <!-- mặc định -->
+              <option value="hoc-sinh-tieu-bieu">
+                🎓 Học sinh tiêu biểu
+              </option>
+
+              <option value="guong-mat-truyen-cam-hung">
+                🌟 Truyền cảm hứng
+              </option>
+
+              <option value="hoc-tap">
+                📚 Học tập
+              </option>
+
+              <option value="the-thao">
+                ⚽ Thể thao
+              </option>
+
+              <option value="nghien-cuu">
+                🔬 Nghiên cứu
+              </option>
+
+            </select>
+
+          </div>
         </div>
 
         <div class="mb-3">
@@ -707,6 +734,7 @@
         <button class="btn btn-success px-4" onclick="saveGMSD(event)">
           <i class="fas fa-check me-2"></i>Lưu thông tin
         </button>
+
       </div>
 
       <div class="box mt-4">
@@ -755,6 +783,22 @@
               <option value="Khối 11">Khối 11</option>
               <option value="Khối 12">Khối 12</option>
               <option value="Khác">Khác</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Danh mục (Slug)</label>
+
+            <select id="docSlug" class="form-select">
+
+              <option value="">-- Chọn danh mục --</option>
+
+              <!-- Mặc định -->
+              <option value="toan-hoc">🧮 Toán học</option>
+              <option value="vat-ly">⚛ Vật lý</option>
+              <option value="hoa-hoc">🧪 Hóa học</option>
+              <option value="tin-hoc">💻 Tin học</option>
+              <option value="ngoai-ngu">🌐 Ngoại ngữ</option>
+
             </select>
           </div>
         </div>
@@ -887,25 +931,16 @@
     </div>
 
     <!-- CATEGORY FORM -->
-    <!-- ========================= -->
-    <!-- CATEGORY MANAGEMENT -->
-    <!-- ========================= -->
-
     <!-- GMSD CATEGORY -->
     <div id="gmsd-category-form" class="content-section">
-
       <div class="box">
-
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h4 class="fw-bold mb-0">
             Quản lý danh mục Gương mặt PCT
           </h4>
-
           <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#gmsdCreateForm">
-
             <i class="fas fa-plus me-2"></i>
             Thêm danh mục
-
           </button>
         </div>
 
@@ -917,7 +952,7 @@
 
               <div class="row g-3">
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label class="form-label">
                     Tên danh mục
                   </label>
@@ -925,7 +960,7 @@
                   <input type="text" id="gmsdCategoryName" class="form-control" placeholder="Ví dụ: Học sinh tiêu biểu">
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label class="form-label">
                     Slug
                   </label>
@@ -940,23 +975,100 @@
 
                   <select id="gmsdCategoryIcon" class="form-select">
 
-                    <option value="fa-users">
-                      👥 Users
-                    </option>
-
-                    <option value="fa-star">
-                      ⭐ Star
-                    </option>
-
-                    <option value="fa-trophy">
-                      🏆 Trophy
-                    </option>
-
-                    <option value="fa-graduation-cap">
-                      🎓 Graduation
-                    </option>
+                    <option value="fa-users">👥 Người dùng</option>
+                    <option value="fa-user-graduate">🎓 Học sinh</option>
+                    <option value="fa-chalkboard-teacher">👨‍🏫 Giáo viên</option>
+                    <option value="fa-school">🏫 Trường học</option>
+                    <option value="fa-book">📚 Sách vở</option>
+                    <option value="fa-book-open">📖 Tài liệu</option>
+                    <option value="fa-pen">✍ Bài viết</option>
+                    <option value="fa-pencil-alt">📝 Ghi chú</option>
+                    <option value="fa-newspaper">📰 Tin tức</option>
+                    <option value="fa-lightbulb">💡 Ý tưởng</option>
+                    <option value="fa-brain">🧠 Tư duy</option>
+                    <option value="fa-flask">🧪 Thí nghiệm</option>
+                    <option value="fa-microscope">🔬 Nghiên cứu</option>
+                    <option value="fa-atom">⚛ Khoa học</option>
+                    <option value="fa-calculator">🧮 Toán học</option>
+                    <option value="fa-language">🌐 Ngoại ngữ</option>
+                    <option value="fa-globe">🌍 Quốc tế</option>
+                    <option value="fa-earth-asia">🌏 Thế giới</option>
+                    <option value="fa-code">💻 Lập trình</option>
+                    <option value="fa-laptop-code">🖥 Công nghệ</option>
+                    <option value="fa-robot">🤖 AI</option>
+                    <option value="fa-mobile-alt">📱 Điện thoại</option>
+                    <option value="fa-camera">📷 Nhiếp ảnh</option>
+                    <option value="fa-video">🎬 Video</option>
+                    <option value="fa-music">🎵 Âm nhạc</option>
+                    <option value="fa-headphones">🎧 Podcast</option>
+                    <option value="fa-palette">🎨 Mỹ thuật</option>
+                    <option value="fa-image">🖼 Thiết kế</option>
+                    <option value="fa-film">🎞 Điện ảnh</option>
+                    <option value="fa-gamepad">🎮 Game</option>
+                    <option value="fa-football-ball">⚽ Thể thao</option>
+                    <option value="fa-basketball-ball">🏀 Bóng rổ</option>
+                    <option value="fa-dumbbell">🏋 Fitness</option>
+                    <option value="fa-heart">❤️ Cộng đồng</option>
+                    <option value="fa-handshake">🤝 Hợp tác</option>
+                    <option value="fa-comments">💬 Thảo luận</option>
+                    <option value="fa-bullhorn">📢 Thông báo</option>
+                    <option value="fa-fire">🔥 Nổi bật</option>
+                    <option value="fa-star">⭐ Yêu thích</option>
+                    <option value="fa-crown">👑 Thành tựu</option>
+                    <option value="fa-trophy">🏆 Cuộc thi</option>
+                    <option value="fa-medal">🥇 Giải thưởng</option>
+                    <option value="fa-chart-line">📈 Phát triển</option>
+                    <option value="fa-chart-bar">📊 Thống kê</option>
+                    <option value="fa-rocket">🚀 Khởi nghiệp</option>
+                    <option value="fa-briefcase">💼 Nghề nghiệp</option>
+                    <option value="fa-money-bill-wave">💰 Tài chính</option>
+                    <option value="fa-store">🏪 Kinh doanh</option>
+                    <option value="fa-leaf">🍀 Môi trường</option>
+                    <option value="fa-seedling">🌱 Sáng tạo trẻ</option>
+                    <option value="fa-bolt">⚡ Năng lượng</option>
+                    <option value="fa-sun">☀ Cuộc sống</option>
+                    <option value="fa-moon">🌙 Ban đêm</option>
+                    <option value="fa-plane">✈ Du lịch</option>
+                    <option value="fa-map">🗺 Khám phá</option>
+                    <option value="fa-utensils">🍜 Ẩm thực</option>
+                    <option value="fa-coffee">☕ Cafe</option>
+                    <option value="fa-smile">😊 Giải trí</option>
+                    <option value="fa-laugh">😂 Vui nhộn</option>
+                    <option value="fa-gem">💎 Premium</option>
+                    <option value="fa-lock">🔒 Bảo mật</option>
+                    <option value="fa-shield-alt">🛡 An toàn</option>
+                    <option value="fa-cogs">⚙ Hệ thống</option>
+                    <option value="fa-tools">🛠 Công cụ</option>
+                    <option value="fa-folder">📁 Danh mục</option>
+                    <option value="fa-folder-open">📂 Thư mục</option>
+                    <option value="fa-database">🗄 Dữ liệu</option>
+                    <option value="fa-cloud">☁ Cloud</option>
+                    <option value="fa-server">🖧 Server</option>
+                    <option value="fa-link">🔗 Liên kết</option>
+                    <option value="fa-home">🏠 Trang chủ</option>
+                    <option value="fa-info-circle">ℹ Giới thiệu</option>
+                    <option value="fa-question-circle">❓ Hỏi đáp</option>
+                    <option value="fa-envelope">✉ Liên hệ</option>
+                    <option value="fa-phone">📞 Hỗ trợ</option>
+                    <option value="fa-calendar">📅 Sự kiện</option>
+                    <option value="fa-clock">⏰ Thời gian</option>
+                    <option value="fa-bell">🔔 Thông báo</option>
+                    <option value="fa-flag">🚩 Hoạt động</option>
+                    <option value="fa-check-circle">✅ Hoàn thành</option>
+                    <option value="fa-exclamation-circle">⚠ Cảnh báo</option>
+                    <option value="fa-times-circle">❌ Lỗi</option>
 
                   </select>
+                </div>
+
+                <div class="col-md-2">
+
+                  <label class="form-label">
+                    Màu danh mục
+                  </label>
+
+                  <input type="color" id="gmsdCategoryColor" class="form-control form-control-color" value="#0d6efd">
+
                 </div>
 
               </div>
@@ -1064,7 +1176,36 @@
                     Icon
                   </label>
 
-                  <input type="text" id="specializedCategoryIcon" class="form-control" value="fa-book">
+                  <select id="specializedCategoryIcon" class="form-select">
+
+                    <option value="fa-book">📚 Sách vở</option>
+                    <option value="fa-calculator">🧮 Toán học</option>
+                    <option value="fa-flask">🧪 Hóa học</option>
+                    <option value="fa-atom">⚛ Vật lý</option>
+                    <option value="fa-language">🌐 Ngoại ngữ</option>
+                    <option value="fa-laptop-code">💻 Tin học</option>
+                    <option value="fa-earth-asia">🌏 Địa lý</option>
+                    <option value="fa-landmark">🏛 Lịch sử</option>
+                    <option value="fa-music">🎵 Âm nhạc</option>
+                    <option value="fa-palette">🎨 Mỹ thuật</option>
+                    <option value="fa-dumbbell">🏋 Thể dục</option>
+                    <option value="fa-brain">🧠 Tư duy</option>
+                    <option value="fa-microscope">🔬 Nghiên cứu</option>
+                    <option value="fa-code">⌨ Lập trình</option>
+                    <option value="fa-robot">🤖 AI</option>
+
+                  </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                  <label class="form-label">
+                    Màu danh mục
+                  </label>
+
+                  <input type="color" id="specializedCategoryColor" class="form-control form-control-color"
+                    value="#0d6efd">
 
                 </div>
 
@@ -1178,6 +1319,15 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
+    // 🔒 kiểm tra phiên đăng nhập
+    if (
+      sessionStorage.getItem(
+        "pctAdminSession"
+      ) !== "active"
+    ) {
+      window.location.href =
+        "login.html";
+    }
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import {
       getAuth,
@@ -1367,6 +1517,8 @@
       showLoading(true);
       await Promise.all([
         loadCategoriesToSelect(),
+        loadDocumentSlugs(),
+        loadGMSDSlugs(),
         loadPosts(),
         loadGMSD(),
         loadDocs(),
@@ -1584,6 +1736,10 @@
         const image = await uploadToImgBB(file);
         await addDoc(getCol("gmsd"), {
           name,
+          slug:
+            document.getElementById(
+              "gmsdSlug"
+            ).value,
           role,
           reward,
           story,
@@ -1745,6 +1901,10 @@
       try {
         await addDoc(getCol("docs"), {
           title,
+          slug:
+            document.getElementById(
+              "docSlug"
+            ).value,
           author,
           class: docClass,
           link,
@@ -2123,6 +2283,9 @@
       const icon =
         document.getElementById("gmsdCategoryIcon").value;
 
+      const color =
+        document.getElementById("gmsdCategoryColor").value;
+
       if (!name || !slug)
         return showToast("Nhập đủ dữ liệu", "danger");
 
@@ -2133,6 +2296,7 @@
           name,
           slug,
           icon,
+          color,
 
           visible: true,
 
@@ -2143,6 +2307,9 @@
         showToast("Đã thêm danh mục");
 
         loadGMSDCategories();
+
+        document.getElementById("gmsdCategoryName").value = "";
+        document.getElementById("gmsdCategorySlug").value = "";
 
       } catch (e) {
 
@@ -2165,6 +2332,9 @@
       const icon =
         document.getElementById("specializedCategoryIcon").value;
 
+      const color =
+        document.getElementById("specializedCategoryColor").value;
+
       if (!name || !slug)
         return showToast("Nhập đủ dữ liệu", "danger");
 
@@ -2175,9 +2345,8 @@
           name,
           slug,
           icon,
-
+          color,
           visible: true,
-
           createdAt: serverTimestamp()
 
         });
@@ -2185,6 +2354,9 @@
         showToast("Đã thêm danh mục");
 
         loadSpecializedCategories();
+
+        document.getElementById("specializedCategoryName").value = "";
+        document.getElementById("specializedCategorySlug").value = "";
 
       } catch (e) {
 
@@ -2238,7 +2410,20 @@
       <td>${escapeHtml(item.slug)}</td>
 
       <td>
-        <i class="fas ${escapeHtml(item.icon)}"></i>
+        <i 
+          class="fas ${escapeHtml(item.icon)}"
+          style="color:${item.color || '#0d6efd'}"
+        ></i>
+
+        <span
+          class="badge ms-2"
+          style="
+            background:${item.color || '#0d6efd'};
+            color:white;
+          "
+        >
+          ${item.color || '#0d6efd'}
+        </span>
       </td>
 
       <td>
@@ -2263,7 +2448,8 @@
             '${item.id}',
             '${escapeHtml(item.name)}',
             '${escapeHtml(item.slug)}',
-            '${escapeHtml(item.icon)}'
+            '${escapeHtml(item.icon)}',
+            '${item.color || "#0d6efd"}'
           )">
 
           <i class="fas fa-edit"></i>
@@ -2331,7 +2517,20 @@
           <td>${escapeHtml(item.slug)}</td>
 
           <td>
-            <i class="fas ${escapeHtml(item.icon)}"></i>
+            <i 
+              class="fas ${escapeHtml(item.icon)}"
+              style="color:${item.color || '#0d6efd'}"
+            ></i>
+
+            <span
+              class="badge ms-2"
+              style="
+                background:${item.color || '#0d6efd'};
+                color:white;
+              "
+            >
+              ${item.color || '#0d6efd'}
+            </span>
           </td>
 
           <td>
@@ -2386,27 +2585,33 @@
 
     window.toggleCategoryVisibility = async function (collectionName, id, currentState) {
       try {
-
-        await updateDoc(
-          doc(
-            getCol(collectionName),
-            id
-          ),
-          {
-            visible: !currentState
-          }
+        const ref = doc(
+          db,
+          "artifacts",
+          appId,
+          "public",
+          "data",
+          collectionName,
+          id
         );
 
-        if (
-          collectionName ===
-          "gmsd_categories"
-        ) {
+        await updateDoc(ref, {
+          visible: !currentState
+        });
 
-          loadGMSDCategories();
+        showToast(
+          !currentState
+            ? "Đã hiện danh mục"
+            : "Đã ẩn danh mục"
+        );
+
+        if (collectionName === "gmsd_categories") {
+
+          await loadGMSDCategories();
 
         } else {
 
-          loadSpecializedCategories();
+          await loadSpecializedCategories();
 
         }
 
@@ -2415,7 +2620,7 @@
         console.error(e);
 
         showToast(
-          "Lỗi cập nhật",
+          "Lỗi cập nhật trạng thái",
           "danger"
         );
 
@@ -2423,79 +2628,317 @@
 
     };
 
+    window.editGMSDCategory = function (
+      id,
+      name,
+      slug,
+      icon,
+      color
+    ) {
+
+      openEditModal(`
+
+        <form onsubmit="updateGMSDCategory(event, '${id}')">
+
+          <div class="mb-3">
+            <label class="form-label">Tên danh mục</label>
+            <input
+              type="text"
+              id="editGMSDName"
+              class="form-control"
+              value="${name}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Slug</label>
+            <input
+              type="text"
+              id="editGMSDSlug"
+              class="form-control"
+              value="${slug}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Icon</label>
+
+            <select id="gmsdCategoryIcon" class="form-select">
+                    <option value="fa-users">👥 Người dùng</option>
+                    <option value="fa-user-graduate">🎓 Học sinh</option>
+                    <option value="fa-chalkboard-teacher">👨‍🏫 Giáo viên</option>
+                    <option value="fa-school">🏫 Trường học</option>
+                    <option value="fa-book">📚 Sách vở</option>
+                    <option value="fa-book-open">📖 Tài liệu</option>
+                    <option value="fa-pen">✍ Bài viết</option>
+                    <option value="fa-pencil-alt">📝 Ghi chú</option>
+                    <option value="fa-newspaper">📰 Tin tức</option>
+                    <option value="fa-lightbulb">💡 Ý tưởng</option>
+                    <option value="fa-brain">🧠 Tư duy</option>
+                    <option value="fa-flask">🧪 Thí nghiệm</option>
+                    <option value="fa-microscope">🔬 Nghiên cứu</option>
+                    <option value="fa-atom">⚛ Khoa học</option>
+                    <option value="fa-calculator">🧮 Toán học</option>
+                    <option value="fa-language">🌐 Ngoại ngữ</option>
+                    <option value="fa-globe">🌍 Quốc tế</option>
+                    <option value="fa-earth-asia">🌏 Thế giới</option>
+                    <option value="fa-code">💻 Lập trình</option>
+                    <option value="fa-laptop-code">🖥 Công nghệ</option>
+                    <option value="fa-robot">🤖 AI</option>
+                    <option value="fa-mobile-alt">📱 Điện thoại</option>
+                    <option value="fa-camera">📷 Nhiếp ảnh</option>
+                    <option value="fa-video">🎬 Video</option>
+                    <option value="fa-music">🎵 Âm nhạc</option>
+                    <option value="fa-headphones">🎧 Podcast</option>
+                    <option value="fa-palette">🎨 Mỹ thuật</option>
+                    <option value="fa-image">🖼 Thiết kế</option>
+                    <option value="fa-film">🎞 Điện ảnh</option>
+                    <option value="fa-gamepad">🎮 Game</option>
+                    <option value="fa-football-ball">⚽ Thể thao</option>
+                    <option value="fa-basketball-ball">🏀 Bóng rổ</option>
+                    <option value="fa-dumbbell">🏋 Fitness</option>
+                    <option value="fa-heart">❤️ Cộng đồng</option>
+                    <option value="fa-handshake">🤝 Hợp tác</option>
+                    <option value="fa-comments">💬 Thảo luận</option>
+                    <option value="fa-bullhorn">📢 Thông báo</option>
+                    <option value="fa-fire">🔥 Nổi bật</option>
+                    <option value="fa-star">⭐ Yêu thích</option>
+                    <option value="fa-crown">👑 Thành tựu</option>
+                    <option value="fa-trophy">🏆 Cuộc thi</option>
+                    <option value="fa-medal">🥇 Giải thưởng</option>
+                    <option value="fa-chart-line">📈 Phát triển</option>
+                    <option value="fa-chart-bar">📊 Thống kê</option>
+                    <option value="fa-rocket">🚀 Khởi nghiệp</option>
+                    <option value="fa-briefcase">💼 Nghề nghiệp</option>
+                    <option value="fa-money-bill-wave">💰 Tài chính</option>
+                    <option value="fa-store">🏪 Kinh doanh</option>
+                    <option value="fa-leaf">🍀 Môi trường</option>
+                    <option value="fa-seedling">🌱 Sáng tạo trẻ</option>
+                    <option value="fa-bolt">⚡ Năng lượng</option>
+                    <option value="fa-sun">☀ Cuộc sống</option>
+                    <option value="fa-moon">🌙 Ban đêm</option>
+                    <option value="fa-plane">✈ Du lịch</option>
+                    <option value="fa-map">🗺 Khám phá</option>
+                    <option value="fa-utensils">🍜 Ẩm thực</option>
+                    <option value="fa-coffee">☕ Cafe</option>
+                    <option value="fa-smile">😊 Giải trí</option>
+                    <option value="fa-laugh">😂 Vui nhộn</option>
+                    <option value="fa-gem">💎 Premium</option>
+                    <option value="fa-lock">🔒 Bảo mật</option>
+                    <option value="fa-shield-alt">🛡 An toàn</option>
+                    <option value="fa-cogs">⚙ Hệ thống</option>
+                    <option value="fa-tools">🛠 Công cụ</option>
+                    <option value="fa-folder">📁 Danh mục</option>
+                    <option value="fa-folder-open">📂 Thư mục</option>
+                    <option value="fa-database">🗄 Dữ liệu</option>
+                    <option value="fa-cloud">☁ Cloud</option>
+                    <option value="fa-server">🖧 Server</option>
+                    <option value="fa-link">🔗 Liên kết</option>
+                    <option value="fa-home">🏠 Trang chủ</option>
+                    <option value="fa-info-circle">ℹ Giới thiệu</option>
+                    <option value="fa-question-circle">❓ Hỏi đáp</option>
+                    <option value="fa-envelope">✉ Liên hệ</option>
+                    <option value="fa-phone">📞 Hỗ trợ</option>
+                    <option value="fa-calendar">📅 Sự kiện</option>
+                    <option value="fa-clock">⏰ Thời gian</option>
+                    <option value="fa-bell">🔔 Thông báo</option>
+                    <option value="fa-flag">🚩 Hoạt động</option>
+                    <option value="fa-check-circle">✅ Hoàn thành</option>
+                    <option value="fa-exclamation-circle">⚠ Cảnh báo</option>
+                    <option value="fa-times-circle">❌ Lỗi</option>
+            </select>
+
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Màu</label>
+            <input
+              type="color"
+              id="editGMSDColor"
+              class="form-control form-control-color"
+              value="${color || "#0d6efd"}">
+          </div>
+
+          <button type="submit" class="btn btn-warning w-100">
+            <i class="fas fa-save me-2"></i>
+            Cập nhật
+          </button>
+
+        </form>
+
+      `);
+
+      // 🔥 FIX QUAN TRỌNG: đảm bảo DOM đã render xong
+      setTimeout(() => {
+        const iconSelect = document.getElementById("editGMSDIcon");
+        if (iconSelect) iconSelect.value = icon;
+      }, 0);
+    };
+
     window.editGMSDCategory =
       function (
         id,
         name,
         slug,
-        icon
+        icon,
+        color
       ) {
 
         openEditModal(`
+          <form
+            onsubmit="
+              updateGMSDCategory(
+                event,
+                '${id}'
+              )
+            ">
 
-      <form
-        onsubmit="
-          updateGMSDCategory(
-            event,
-            '${id}'
-          )
-        ">
+            <div class="mb-3">
 
-        <div class="mb-3">
+              <label class="form-label">
+                Tên danh mục
+              </label>
 
-          <label class="form-label">
-            Tên danh mục
-          </label>
+              <input
+                type="text"
+                id="editGMSDName"
+                class="form-control"
+                value="${name}">
 
-          <input
-            type="text"
-            id="editGMSDName"
-            class="form-control"
-            value="${name}">
+            </div>
 
-        </div>
+            <div class="mb-3">
 
-        <div class="mb-3">
+              <label class="form-label">
+                Slug
+              </label>
 
-          <label class="form-label">
-            Slug
-          </label>
+              <input
+                type="text"
+                id="editGMSDSlug"
+                class="form-control"
+                value="${slug}">
 
-          <input
-            type="text"
-            id="editGMSDSlug"
-            class="form-control"
-            value="${slug}">
+            </div>
 
-        </div>
+            <div class="mb-3">
 
-        <div class="mb-3">
+              <label class="form-label">
+                Icon
+              </label>
 
-          <label class="form-label">
-            Icon
-          </label>
+              <select id="gmsdCategoryIcon" class="form-select">
 
-          <input
-            type="text"
-            id="editGMSDIcon"
-            class="form-control"
-            value="${icon}">
+                    <option value="fa-users">👥 Người dùng</option>
+                    <option value="fa-user-graduate">🎓 Học sinh</option>
+                    <option value="fa-chalkboard-teacher">👨‍🏫 Giáo viên</option>
+                    <option value="fa-school">🏫 Trường học</option>
+                    <option value="fa-book">📚 Sách vở</option>
+                    <option value="fa-book-open">📖 Tài liệu</option>
+                    <option value="fa-pen">✍ Bài viết</option>
+                    <option value="fa-pencil-alt">📝 Ghi chú</option>
+                    <option value="fa-newspaper">📰 Tin tức</option>
+                    <option value="fa-lightbulb">💡 Ý tưởng</option>
+                    <option value="fa-brain">🧠 Tư duy</option>
+                    <option value="fa-flask">🧪 Thí nghiệm</option>
+                    <option value="fa-microscope">🔬 Nghiên cứu</option>
+                    <option value="fa-atom">⚛ Khoa học</option>
+                    <option value="fa-calculator">🧮 Toán học</option>
+                    <option value="fa-language">🌐 Ngoại ngữ</option>
+                    <option value="fa-globe">🌍 Quốc tế</option>
+                    <option value="fa-earth-asia">🌏 Thế giới</option>
+                    <option value="fa-code">💻 Lập trình</option>
+                    <option value="fa-laptop-code">🖥 Công nghệ</option>
+                    <option value="fa-robot">🤖 AI</option>
+                    <option value="fa-mobile-alt">📱 Điện thoại</option>
+                    <option value="fa-camera">📷 Nhiếp ảnh</option>
+                    <option value="fa-video">🎬 Video</option>
+                    <option value="fa-music">🎵 Âm nhạc</option>
+                    <option value="fa-headphones">🎧 Podcast</option>
+                    <option value="fa-palette">🎨 Mỹ thuật</option>
+                    <option value="fa-image">🖼 Thiết kế</option>
+                    <option value="fa-film">🎞 Điện ảnh</option>
+                    <option value="fa-gamepad">🎮 Game</option>
+                    <option value="fa-football-ball">⚽ Thể thao</option>
+                    <option value="fa-basketball-ball">🏀 Bóng rổ</option>
+                    <option value="fa-dumbbell">🏋 Fitness</option>
+                    <option value="fa-heart">❤️ Cộng đồng</option>
+                    <option value="fa-handshake">🤝 Hợp tác</option>
+                    <option value="fa-comments">💬 Thảo luận</option>
+                    <option value="fa-bullhorn">📢 Thông báo</option>
+                    <option value="fa-fire">🔥 Nổi bật</option>
+                    <option value="fa-star">⭐ Yêu thích</option>
+                    <option value="fa-crown">👑 Thành tựu</option>
+                    <option value="fa-trophy">🏆 Cuộc thi</option>
+                    <option value="fa-medal">🥇 Giải thưởng</option>
+                    <option value="fa-chart-line">📈 Phát triển</option>
+                    <option value="fa-chart-bar">📊 Thống kê</option>
+                    <option value="fa-rocket">🚀 Khởi nghiệp</option>
+                    <option value="fa-briefcase">💼 Nghề nghiệp</option>
+                    <option value="fa-money-bill-wave">💰 Tài chính</option>
+                    <option value="fa-store">🏪 Kinh doanh</option>
+                    <option value="fa-leaf">🍀 Môi trường</option>
+                    <option value="fa-seedling">🌱 Sáng tạo trẻ</option>
+                    <option value="fa-bolt">⚡ Năng lượng</option>
+                    <option value="fa-sun">☀ Cuộc sống</option>
+                    <option value="fa-moon">🌙 Ban đêm</option>
+                    <option value="fa-plane">✈ Du lịch</option>
+                    <option value="fa-map">🗺 Khám phá</option>
+                    <option value="fa-utensils">🍜 Ẩm thực</option>
+                    <option value="fa-coffee">☕ Cafe</option>
+                    <option value="fa-smile">😊 Giải trí</option>
+                    <option value="fa-laugh">😂 Vui nhộn</option>
+                    <option value="fa-gem">💎 Premium</option>
+                    <option value="fa-lock">🔒 Bảo mật</option>
+                    <option value="fa-shield-alt">🛡 An toàn</option>
+                    <option value="fa-cogs">⚙ Hệ thống</option>
+                    <option value="fa-tools">🛠 Công cụ</option>
+                    <option value="fa-folder">📁 Danh mục</option>
+                    <option value="fa-folder-open">📂 Thư mục</option>
+                    <option value="fa-database">🗄 Dữ liệu</option>
+                    <option value="fa-cloud">☁ Cloud</option>
+                    <option value="fa-server">🖧 Server</option>
+                    <option value="fa-link">🔗 Liên kết</option>
+                    <option value="fa-home">🏠 Trang chủ</option>
+                    <option value="fa-info-circle">ℹ Giới thiệu</option>
+                    <option value="fa-question-circle">❓ Hỏi đáp</option>
+                    <option value="fa-envelope">✉ Liên hệ</option>
+                    <option value="fa-phone">📞 Hỗ trợ</option>
+                    <option value="fa-calendar">📅 Sự kiện</option>
+                    <option value="fa-clock">⏰ Thời gian</option>
+                    <option value="fa-bell">🔔 Thông báo</option>
+                    <option value="fa-flag">🚩 Hoạt động</option>
+                    <option value="fa-check-circle">✅ Hoàn thành</option>
+                    <option value="fa-exclamation-circle">⚠ Cảnh báo</option>
+                    <option value="fa-times-circle">❌ Lỗi</option>
 
-        </div>
+                  </select>
 
-        <button
-          type="submit"
-          class="btn btn-warning w-100">
+            </div>
 
-          <i class="fas fa-save me-2"></i>
-          Cập nhật
+            <div class="mb-3">
 
-        </button>
+              <label class="form-label">
+                Màu
+              </label>
 
-      </form>
+              <input
+                type="color"
+                id="editGMSDColor"
+                class="form-control form-control-color"
+                value="${color || "#0d6efd"}">
 
-    `);
+            </div>
 
+            <button
+              type="submit"
+              class="btn btn-warning w-100">
+
+              <i class="fas fa-save me-2"></i>
+              Cập nhật
+
+            </button>
+
+          </form>
+        `);
       };
 
     window.updateGMSDCategory =
@@ -2530,8 +2973,12 @@
               icon:
                 document.getElementById(
                   "editGMSDIcon"
-                ).value
+                ).value,
 
+              color:
+                document.getElementById(
+                  "editGMSDColor"
+                ).value
             }
 
           );
@@ -2632,6 +3079,434 @@
 
       };
 
+    window.updateSpecializedCategory =
+      async function (
+        event,
+        id
+      ) {
+
+        event.preventDefault();
+
+        try {
+
+          await updateDoc(
+
+            doc(
+              getCol(
+                "specialized_categories"
+              ),
+              id
+            ),
+
+            {
+
+              name:
+                document.getElementById(
+                  "editSpecializedName"
+                ).value,
+
+              slug:
+                document.getElementById(
+                  "editSpecializedSlug"
+                ).value,
+
+              icon:
+                document.getElementById(
+                  "editSpecializedIcon"
+                ).value
+
+            }
+
+          );
+
+          closeEditModal();
+
+          loadSpecializedCategories();
+
+          showToast(
+            "Đã cập nhật"
+          );
+
+        } catch (e) {
+
+          console.error(e);
+
+          showToast(
+            "Lỗi cập nhật",
+            "danger"
+          );
+
+        }
+
+      };
+
+    window.loadCategories = async function () {
+
+      try {
+
+        const snapshot =
+          await getDocs(
+
+            query(
+              getCol("categories"),
+              orderBy(
+                "createdAt",
+                "desc"
+              )
+            )
+
+          );
+
+        const items =
+          snapshot.docs.map(doc => ({
+
+            id: doc.id,
+            ...doc.data()
+
+          }));
+
+        const table =
+          document.getElementById(
+            "categoryTable"
+          );
+
+        if (items.length === 0) {
+
+          table.innerHTML = `
+        <tr>
+
+          <td colspan="4"
+            class="text-center text-muted">
+
+            Chưa có danh mục
+
+          </td>
+
+        </tr>
+      `;
+
+          return;
+
+        }
+
+        table.innerHTML =
+          items.map(item => `
+
+        <tr>
+
+          <td>
+
+            <strong>
+              ${escapeHtml(item.name)}
+            </strong>
+
+          </td>
+
+          <td>
+            ${escapeHtml(item.slug)}
+          </td>
+
+          <td>
+
+            <i class="fas ${escapeHtml(item.icon)}"></i>
+
+          </td>
+
+          <td>
+
+            ${escapeHtml(item.parent || "main")}
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-sm btn-danger"
+
+              onclick="
+                deleteRecord(
+                  'categories',
+                  '${item.id}',
+                  loadCategories
+                )
+              ">
+
+              <i class="fas fa-trash"></i>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+      } catch (e) {
+
+        console.error(e);
+
+        showToast(
+          "Lỗi tải danh mục",
+          "danger"
+        );
+
+      }
+
+    };
+
+    window.loadCategoriesToSelect =
+      async function () {
+
+        try {
+
+          const snapshot =
+            await getDocs(
+
+              query(
+                getCol("categories"),
+                orderBy(
+                  "createdAt",
+                  "desc"
+                )
+              )
+
+            );
+
+          const items =
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+
+          const select =
+            document.getElementById(
+              "category"
+            );
+
+          if (!select) return;
+
+          if (items.length === 0) {
+
+            select.innerHTML = `
+          <option value="">
+            Chưa có danh mục
+          </option>
+        `;
+
+            return;
+          }
+
+          select.innerHTML =
+            items.map(item => `
+
+          <option value="${escapeHtml(item.name)}">
+
+            ${escapeHtml(item.name)}
+
+          </option>
+
+        `).join("");
+
+        } catch (e) {
+
+          console.error(e);
+
+          showToast(
+            "Lỗi load category select",
+            "danger"
+          );
+
+        }
+
+      };
+    window.loadDocumentSlugs =
+      async function () {
+
+        try {
+
+          const select =
+            document.getElementById(
+              "docSlug"
+            );
+
+          if (!select) return;
+
+          const defaultOptions =
+            select.innerHTML;
+
+          const snapshot =
+            await getDocs(
+
+              query(
+                getCol(
+                  "specialized_categories"
+                ),
+                orderBy(
+                  "createdAt",
+                  "desc"
+                )
+              )
+
+            );
+
+          const items =
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+
+          select.innerHTML =
+            defaultOptions;
+
+          items.forEach(item => {
+
+            select.innerHTML += `
+
+              <option value="${item.slug}">
+                ${item.name}
+              </option>
+
+            `;
+
+          });
+
+        } catch (e) {
+
+          console.error(e);
+
+        }
+
+      };
+
+    window.loadGMSDSlugs =
+      async function () {
+
+        try {
+
+          const select =
+            document.getElementById(
+              "gmsdSlug"
+            );
+
+          if (!select) return;
+
+          const defaultOptions =
+            select.innerHTML;
+
+          const snapshot =
+            await getDocs(
+
+              query(
+                getCol(
+                  "gmsd_categories"
+                ),
+                orderBy(
+                  "createdAt",
+                  "desc"
+                )
+              )
+
+            );
+
+          const items =
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+
+          select.innerHTML =
+            defaultOptions;
+
+          items.forEach(item => {
+
+            select.innerHTML += `
+
+          <option value="${item.slug}">
+            ${item.name}
+          </option>
+
+        `;
+
+          });
+
+        } catch (e) {
+
+          console.error(e);
+
+        }
+
+      };
+
+    window.editSpecializedCategory = function (
+      id,
+      name,
+      slug,
+      icon
+    ) {
+
+      openEditModal(`
+
+    <form onsubmit="updateSpecializedCategory(event, '${id}')">
+
+      <div class="mb-3">
+        <label class="form-label">Tên danh mục</label>
+        <input
+          type="text"
+          id="editSpecializedName"
+          class="form-control"
+          value="${name}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Slug</label>
+        <input
+          type="text"
+          id="editSpecializedSlug"
+          class="form-control"
+          value="${slug}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Icon</label>
+
+        <select id="editSpecializedIcon" class="form-control">
+
+          <option value="fa-book">📚 Sách vở</option>
+          <option value="fa-calculator">🧮 Toán học</option>
+          <option value="fa-flask">🧪 Hóa học</option>
+          <option value="fa-atom">⚛ Vật lý</option>
+          <option value="fa-language">🌐 Ngoại ngữ</option>
+          <option value="fa-laptop-code">💻 Tin học</option>
+          <option value="fa-earth-asia">🌏 Địa lý</option>
+          <option value="fa-landmark">🏛 Lịch sử</option>
+          <option value="fa-music">🎵 Âm nhạc</option>
+          <option value="fa-palette">🎨 Mỹ thuật</option>
+          <option value="fa-dumbbell">🏋 Thể dục</option>
+          <option value="fa-brain">🧠 Tư duy</option>
+          <option value="fa-microscope">🔬 Nghiên cứu</option>
+          <option value="fa-code">⌨ Lập trình</option>
+          <option value="fa-robot">🤖 AI</option>
+
+        </select>
+
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100">
+        <i class="fas fa-save me-2"></i>
+        Cập nhật
+      </button>
+
+    </form>
+
+  `);
+
+      // 🔥 FIX: đảm bảo select set đúng value sau render
+      setTimeout(() => {
+        const iconSelect = document.getElementById("editSpecializedIcon");
+        if (iconSelect) iconSelect.value = icon;
+      }, 0);
+
+    };
     window.updateSpecializedCategory =
       async function (
         event,
@@ -2990,7 +3865,7 @@
       }
     };
     // === END FIXED INTERNAL NEWS FUNCTIONS ===
-
+    // === COMMENT MANAGEMENT === (DON'T TOUCH THIS CODE UNLESS YOU KNOW WHAT YOU'RE DOING, IT'S FRAGILE AND EASY TO BREAK)
     window.loadComments = async function () {
       try {
         const snapshot = await getDocs(query(getCol("comments"), limit(MAX_PAGE_SIZE)));
@@ -3030,6 +3905,7 @@
         console.error("Load comments failed:", e);
       }
     }
+    // === COMMENT MANAGEMENT === (DON'T TOUCH THIS CODE UNLESS YOU KNOW WHAT YOU'RE DOING, IT'S FRAGILE AND EASY TO BREAK)
 
     window.approveComment = async function (id) {
       try {

@@ -14,7 +14,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, 0.45)),
+                url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1600");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .login-box {
@@ -22,6 +29,9 @@
             background: white;
             padding: 30px;
             border-radius: 12px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
@@ -31,8 +41,27 @@
     <div class="login-box">
         <h4 class="text-center">Admin Login</h4>
         <input id="email" class="form-control mb-2" placeholder="Email">
-        <input id="password" type="password" class="form-control mb-2" placeholder="Mật khẩu">
-        <button class="btn btn-primary w-100" onclick="login()">Đăng nhập</button>
+        <div class="input-group mb-2">
+
+            <input id="password" type="password" class="form-control" placeholder="Mật khẩu">
+
+            <button id="togglePassword" type="button" class="btn btn-outline-secondary">
+
+                Hiện
+
+            </button>
+
+        </div>
+        <button id="loginButton" class="btn btn-primary w-100" onclick="login()">
+
+            <span id="loginSpinner" class="spinner-border spinner-border-sm d-none me-2">
+            </span>
+
+            <span class="button-text">
+                Đăng nhập
+            </span>
+
+        </button>
         <div id="error" class="text-danger mt-2 small"></div>
     </div>
     <script type="module">
@@ -208,11 +237,60 @@
             togglePassword.textContent = isHidden ? "Ẩn" : "Hiện";
         });
 
+        if (
+            isAdminPage() &&
+            sessionStorage.getItem(sessionKey) !== "active"
+        ) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await handleAuthorizedUser(user);
+
+            const hasSession =
+                sessionStorage.getItem(sessionKey) === "active";
+
+            // ✅ Đã đăng nhập hợp lệ
+            if (user && hasSession) {
+
+                if (!isValidAdminEmail(user.email)) {
+
+                    await signOut(auth);
+
+                    sessionStorage.removeItem(sessionKey);
+
+                    showError(
+                        "Tài khoản không có quyền Admin."
+                    );
+
+                    return;
+                }
+
+                // đang ở login -> vào admin
+                if (!isAdminPage()) {
+
+                    window.location.href =
+                        "admin.html";
+
+                }
+
+                return;
             }
+
+            // ❌ chưa login mà vào admin
+            if (!user && isAdminPage()) {
+
+                sessionStorage.removeItem(sessionKey);
+
+                window.location.href =
+                    "login.html";
+
+            }
+
         });
     </script>
 </body>
+
 </html>
