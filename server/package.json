@@ -11,5 +11,8 @@
   "main": "index.js",
   "scripts": {
     "test": "Jesh"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
   }
 }
