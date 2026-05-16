@@ -938,9 +938,24 @@
                         ? data.content.replace(/<[^>]*>?/gm, '')
                         : "";
 
-                    const excerpt = cleanContent.length > 180
-                        ? cleanContent.substring(0, 180) + "..."
-                        : cleanContent;
+                    const parser = new DOMParser();
+
+                    const doc = parser.parseFromString(
+                    cleanContent,
+                    "text/html"
+                    );
+
+                    const plainText = (
+                    doc.body.textContent || ""
+                    )
+
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                    const excerpt =
+                    plainText.length > 180
+                        ? plainText.substring(0, 180) + "..."
+                        : plainText;
 
                     const safeTitle = escapeHTML(title);
                     const safeExcerpt = escapeHTML(excerpt);

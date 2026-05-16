@@ -630,6 +630,7 @@
     </footer>
 
     <!-- FIREBASE -->
+    <script src="chatbot.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -778,7 +779,7 @@
                 filtered = filtered.filter(doc => {
 
                     const title =
-                        (doc.role || "").toLowerCase();
+                        (doc.title || "").toLowerCase();
 
                     const author =
                         (doc.author || "").toLowerCase();
@@ -804,9 +805,7 @@
                     return t1 - t2;
                 }
 
-                return (a.role || "")
-                    .localeCompare(b.role || "");
-
+                return (a.title || "").localeCompare(b.title || "");
             });
 
             /* EMPTY */
@@ -837,14 +836,13 @@
                 const date =
                     formatDate(data.createdAt);
 
-                const title =
-                    data.role || "Không có tiêu đề";
+                const title = data.title || "Không có tên";
 
                 const author =
                     data.author || "Ẩn danh";
 
                 const url =
-                    data.url || "#";
+                    data.link || "#";
 
                 container.innerHTML += `
                     <div class="doc-item">
@@ -862,12 +860,12 @@
                                 </div>
 
                                 <div class="doc-meta">
-                                    ${author} • ${date}
+                                    ${author} • ${data.class || "Chưa phân loại"} • ${date}
                                 </div>
 
                                 <div class="doc-badge">
                                     <span class="badge bg-primary">
-                                        ${subjectMap[currentCat]}
+                                        ${subjectMap[data.slug] || data.slug || "Tài liệu"}
                                     </span>
                                 </div>
 
@@ -919,16 +917,23 @@
         </div>
     `;
 
-            let query = db.collection("tests");
+            let query = db
+                .collection("artifacts")
+                .doc("pct-news-cms")
+                .collection("public")
+                .doc("data")
+                .collection("docs");
 
             // CHỈ FILTER KHI KHÔNG PHẢI ALL
             if (currentCat !== "all") {
-                query = query.where("class", "==", currentCat);
+                query = query.where("slug", "==", currentCat);
             }
+
+            console.log("CURRENT CAT:", currentCat);
 
             query.get()
                 .then(snapshot => {
-
+                    console.log("SIZE:", snapshot.size);
                     if (snapshot.empty) {
                         container.innerHTML = `
                     <div class="alert alert-light border text-center">
@@ -954,52 +959,12 @@
 
                         if (sort === "old") return t1 - t2;
 
-                        return (a.role || "")
-                            .localeCompare(b.role || "");
+                        return (a.title || "").localeCompare(b.title || "");
                     });
 
-                    container.innerHTML = "";
+                    allDocs = docs;
 
-                    docs.forEach(data => {
-
-                        const date = data.createdAt
-                            ? new Date(
-                                data.createdAt.seconds * 1000
-                            ).toLocaleDateString("vi-VN")
-                            : "Mới cập nhật";
-
-                        container.innerHTML += `
-                    <div class="doc-item d-flex justify-content-between align-items-center p-3 border rounded mb-3 bg-white">
-
-                        <div>
-
-                            <div class="doc-title mb-1">
-                                ${data.role || "Không có tên"}
-                            </div>
-
-                            <div class="small text-muted">
-                                ${data.author || "Ẩn danh"} • ${date}
-                            </div>
-
-                            <span class="badge bg-primary mt-2">
-                                ${subjectMap[data.class] || "Tài liệu"}
-                            </span>
-
-                        </div>
-
-                        <a href="${data.url}"
-                           target="_blank"
-                           class="btn btn-outline-primary btn-sm">
-
-                            <i class="fas fa-file-pdf me-1"></i>
-                            Xem
-
-                        </a>
-
-                    </div>
-                `;
-                    });
-
+                    renderDocs(allDocs);
                 })
                 .catch(err => {
 

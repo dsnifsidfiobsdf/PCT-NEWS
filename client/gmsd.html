@@ -749,7 +749,7 @@
 
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
+    <script src="chatbot.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <!-- BOOTSTRAP -->
@@ -1016,18 +1016,16 @@
                         .doc("pct-news-cms")
                         .collection("public")
                         .doc("data")
-                        .collection("posts")
+                        .collection("gmsd")
                         .orderBy("createdAt", "desc");
 
-                if (
-                    currentCat !== "all" &&
-                    categoryMap[currentCat]
-                ) {
+                // FILTER THEO SLUG
+                if (currentCat !== "all") {
 
                     query = query.where(
-                        "category",
+                        "slug",
                         "==",
-                        categoryMap[currentCat]
+                        currentCat
                     );
 
                 }
@@ -1054,15 +1052,14 @@
                 document.getElementById(
                     "featured-news-container"
                 ).innerHTML = `
-                    <div class="alert alert-danger">
-                        Lỗi tải dữ liệu Firebase.
-                    </div>
-                `;
+            <div class="alert alert-danger">
+                Lỗi tải dữ liệu Firebase.
+            </div>
+        `;
 
             }
 
         }
-
         /* =========================
            RENDER POSTS
         ========================= */
@@ -1124,16 +1121,14 @@
 
                 const title =
                     escapeHTML(
-                        data.title || "Không có tiêu đề"
+                        data.name || "Không có tiêu đề"
                     );
 
                 const category =
-                    escapeHTML(
-                        data.category || "Tin tức"
-                    );
+                    data.slug || "Gương mặt";
 
                 const contentText =
-                    stripHTML(data.content || "");
+                    stripHTML(data.story || "");
 
                 const excerpt =
                     contentText.length > 180
@@ -1149,7 +1144,7 @@
                     formatDate(data.createdAt);
 
                 const link =
-                    `article.html?id=${item.id}`;
+                    `gmsd-detail.html?id=${item.id}`;
 
                 if (index === 0) {
 
@@ -1224,6 +1219,12 @@
         }
 
         function loadOtherFilters() {
+            const hiddenDefaultSlugs = [
+                "hocsinh",
+                "giaovien",
+                "cuuhs",
+                "clb"
+            ];
 
             const dropdown =
                 document.getElementById(
@@ -1248,6 +1249,12 @@
 
                         if (data.visible === false) return;
 
+                        if (
+                            hiddenDefaultSlugs.includes(
+                                (data.slug || "").trim()
+                            )
+                        ) return;
+
                         const name =
                             data.name || "Danh mục";
 
@@ -1261,27 +1268,27 @@
                             data.color || "#0d6efd";
 
                         html += `
-                            <li>
+                    <li>
 
-                                <a class="dropdown-item"
-                                href="gmsd.html?cat=${slug}">
+                        <a
+                            class="dropdown-item"
+                            href="gmsd.html?cat=${slug}">
 
-                                    <i class="fas ${icon} me-2"
-                                    style="color:${color}"></i>
+                            <i class="fas ${icon} me-2"
+                               style="color:${color}"></i>
 
-                                    ${name}
+                            ${name}
 
-                                </a>
+                        </a>
 
-                            </li>
-                        `;
+                    </li>
+                `;
                     });
 
                     dropdown.innerHTML = html;
 
                 });
         }
-
         /* =========================
            LOAD HOT NEWS
         ========================= */
@@ -1317,13 +1324,13 @@
 
                         const title =
                             escapeHTML(
-                                data.title || "Không có tiêu đề"
+                                data.name || "Không có tiêu đề"
                             );
 
                         container.innerHTML += `
                             <div class="hot-news-item">
 
-                                <a href="article.html?id=${doc.id}"
+                                <a href="gmsd-detail.html?id=${doc.id}"
                                     class="hot-news-title">
 
                                     🔥 ${title}
@@ -1374,7 +1381,7 @@
                                 <a href="article.html?id=${doc.id}"
                                     class="text-danger fw-bold text-decoration-none">
 
-                                    ${escapeHTML(data.title || "")}
+                                    ${escapeHTML(data.name || "")}
 
                                 </a>
                             `);
@@ -1443,7 +1450,7 @@
                                 </div>
 
                                 <div class="fw-semibold">
-                                    ${escapeHTML(data.title || "Không có tiêu đề")}
+                                    ${escapeHTML(data.name || "Không có tiêu đề")}
                                 </div>
 
                             </div>
@@ -1535,7 +1542,7 @@
                         const data = doc.data();
 
                         const title =
-                            (data.title || "")
+                            (data.name || "")
                                 .toLowerCase();
 
                         const content =
